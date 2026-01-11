@@ -1,0 +1,9 @@
+{
+  "cliVersion": "3.32.0",
+  "generatorName": "fernapi/fern-go-sdk",
+  "generatorVersion": "1.22.4",
+  "generatorConfig": {
+    "packageName": "foru_ms_sdk"
+  },
+  "sdkVersion": "v0.0.26"
+}
