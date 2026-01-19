@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllSsOs(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetSSORequest,
+	request *foru_ms_sdk.ListSsOsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetSSOResponse], error) {
+) (*core.Response[*foru_ms_sdk.SSOListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllSsOs(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetSSOResponse
+	var response *foru_ms_sdk.SSOListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllSsOs(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetSSOResponse]{
+	return &core.Response[*foru_ms_sdk.SSOListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateAnSSO(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostSSORequest,
+	request *foru_ms_sdk.CreateSsOsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostSSOResponse], error) {
+) (*core.Response[*foru_ms_sdk.SSOResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateAnSSO(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostSSOResponse
+	var response *foru_ms_sdk.SSOResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateAnSSO(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostSSOResponse]{
+	return &core.Response[*foru_ms_sdk.SSOResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAnSSO(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetSsoIdRequest,
+	request *foru_ms_sdk.RetrieveSsOsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetSsoIdResponse], error) {
+) (*core.Response[*foru_ms_sdk.SSOResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetAnSSO(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetSsoIdResponse
+	var response *foru_ms_sdk.SSOResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetAnSSO(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetSsoIdResponse]{
+	return &core.Response[*foru_ms_sdk.SSOResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAnSSO(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteSsoIdRequest,
+	request *foru_ms_sdk.DeleteSsOsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteSsoIdResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteAnSSO(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteSsoIdResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,18 +202,18 @@ func (r *RawClient) DeleteAnSSO(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteSsoIdResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdateAnSSO(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchSsoIdRequest,
+	request *foru_ms_sdk.UpdateSsOsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PatchSsoIdResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdateSsOsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateAnSSO(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PatchSsoIdResponse
+	var response *foru_ms_sdk.UpdateSsOsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -248,7 +248,7 @@ func (r *RawClient) UpdateAnSSO(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PatchSsoIdResponse]{
+	return &core.Response[*foru_ms_sdk.UpdateSsOsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

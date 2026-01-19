@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllRoles(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetRolesRequest,
+	request *foru_ms_sdk.ListRolesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetRolesResponse], error) {
+) (*core.Response[*foru_ms_sdk.RoleListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllRoles(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetRolesResponse
+	var response *foru_ms_sdk.RoleListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllRoles(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetRolesResponse]{
+	return &core.Response[*foru_ms_sdk.RoleListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateARole(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostRolesRequest,
+	request *foru_ms_sdk.CreateRolesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostRolesResponse], error) {
+) (*core.Response[*foru_ms_sdk.RoleResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateARole(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostRolesResponse
+	var response *foru_ms_sdk.RoleResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateARole(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostRolesResponse]{
+	return &core.Response[*foru_ms_sdk.RoleResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetARole(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetRolesIDRequest,
+	request *foru_ms_sdk.RetrieveRolesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetRolesIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.RoleResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetARole(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetRolesIDResponse
+	var response *foru_ms_sdk.RoleResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetARole(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetRolesIDResponse]{
+	return &core.Response[*foru_ms_sdk.RoleResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteARole(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteRolesIDRequest,
+	request *foru_ms_sdk.DeleteRolesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteRolesIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteARole(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteRolesIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,18 +202,18 @@ func (r *RawClient) DeleteARole(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteRolesIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdateARole(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchRolesIDRequest,
+	request *foru_ms_sdk.UpdateRolesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PatchRolesIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdateRolesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateARole(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PatchRolesIDResponse
+	var response *foru_ms_sdk.UpdateRolesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -248,7 +248,7 @@ func (r *RawClient) UpdateARole(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PatchRolesIDResponse]{
+	return &core.Response[*foru_ms_sdk.UpdateRolesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

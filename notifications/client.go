@@ -32,12 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllNotifications(
+// Retrieve a paginated list of notifications. Use cursor for pagination.
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetNotificationsRequest,
+	request *foru_ms_sdk.ListNotificationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetNotificationsResponse, error) {
-	response, err := c.WithRawResponse.ListAllNotifications(
+) (*foru_ms_sdk.NotificationListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +49,13 @@ func (c *Client) ListAllNotifications(
 	return response.Body, nil
 }
 
-func (c *Client) CreateANotification(
+// Create a new notification.
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostNotificationsRequest,
+	request *foru_ms_sdk.CreateNotificationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostNotificationsResponse, error) {
-	response, err := c.WithRawResponse.CreateANotification(
+) (*foru_ms_sdk.NotificationResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +66,13 @@ func (c *Client) CreateANotification(
 	return response.Body, nil
 }
 
-func (c *Client) GetANotification(
+// Retrieve a notification by ID or slug (if supported).
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetNotificationsIDRequest,
+	request *foru_ms_sdk.RetrieveNotificationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetNotificationsIDResponse, error) {
-	response, err := c.WithRawResponse.GetANotification(
+) (*foru_ms_sdk.NotificationResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +83,13 @@ func (c *Client) GetANotification(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteANotification(
+// Permanently delete a notification.
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteNotificationsIDRequest,
+	request *foru_ms_sdk.DeleteNotificationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteNotificationsIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteANotification(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +100,13 @@ func (c *Client) DeleteANotification(
 	return response.Body, nil
 }
 
-func (c *Client) UpdateANotification(
+// Update an existing notification. Only provided fields will be modified.
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchNotificationsIDRequest,
+	request *foru_ms_sdk.UpdateNotificationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchNotificationsIDResponse, error) {
-	response, err := c.WithRawResponse.UpdateANotification(
+) (*foru_ms_sdk.UpdateNotificationsResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,

@@ -10,18 +10,18 @@ import (
 )
 
 var (
-	postNotificationsRequestFieldUserID           = big.NewInt(1 << 0)
-	postNotificationsRequestFieldNotifierID       = big.NewInt(1 << 1)
-	postNotificationsRequestFieldType             = big.NewInt(1 << 2)
-	postNotificationsRequestFieldDescription      = big.NewInt(1 << 3)
-	postNotificationsRequestFieldThreadID         = big.NewInt(1 << 4)
-	postNotificationsRequestFieldPostID           = big.NewInt(1 << 5)
-	postNotificationsRequestFieldPrivateMessageID = big.NewInt(1 << 6)
-	postNotificationsRequestFieldStatus           = big.NewInt(1 << 7)
-	postNotificationsRequestFieldExtendedData     = big.NewInt(1 << 8)
+	createNotificationsRequestFieldUserID           = big.NewInt(1 << 0)
+	createNotificationsRequestFieldNotifierID       = big.NewInt(1 << 1)
+	createNotificationsRequestFieldType             = big.NewInt(1 << 2)
+	createNotificationsRequestFieldDescription      = big.NewInt(1 << 3)
+	createNotificationsRequestFieldThreadID         = big.NewInt(1 << 4)
+	createNotificationsRequestFieldPostID           = big.NewInt(1 << 5)
+	createNotificationsRequestFieldPrivateMessageID = big.NewInt(1 << 6)
+	createNotificationsRequestFieldStatus           = big.NewInt(1 << 7)
+	createNotificationsRequestFieldExtendedData     = big.NewInt(1 << 8)
 )
 
-type PostNotificationsRequest struct {
+type CreateNotificationsRequest struct {
 	// Target user ID to receive notification (maps to userId)
 	UserID string `json:"userId" url:"-"`
 	// User ID who triggered the notification (optional, defaults to authenticated user)
@@ -37,7 +37,7 @@ type PostNotificationsRequest struct {
 	// Related private message ID
 	PrivateMessageID *string `json:"privateMessageId,omitempty" url:"-"`
 	// Initial notification status
-	Status *PostNotificationsRequestStatus `json:"status,omitempty" url:"-"`
+	Status *CreateNotificationsRequestStatus `json:"status,omitempty" url:"-"`
 	// Additional notification data
 	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
 
@@ -45,88 +45,89 @@ type PostNotificationsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PostNotificationsRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (c *CreateNotificationsRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetUserID(userID string) {
-	p.UserID = userID
-	p.require(postNotificationsRequestFieldUserID)
+func (c *CreateNotificationsRequest) SetUserID(userID string) {
+	c.UserID = userID
+	c.require(createNotificationsRequestFieldUserID)
 }
 
 // SetNotifierID sets the NotifierID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetNotifierID(notifierID *string) {
-	p.NotifierID = notifierID
-	p.require(postNotificationsRequestFieldNotifierID)
+func (c *CreateNotificationsRequest) SetNotifierID(notifierID *string) {
+	c.NotifierID = notifierID
+	c.require(createNotificationsRequestFieldNotifierID)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetType(type_ string) {
-	p.Type = type_
-	p.require(postNotificationsRequestFieldType)
+func (c *CreateNotificationsRequest) SetType(type_ string) {
+	c.Type = type_
+	c.require(createNotificationsRequestFieldType)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetDescription(description *string) {
-	p.Description = description
-	p.require(postNotificationsRequestFieldDescription)
+func (c *CreateNotificationsRequest) SetDescription(description *string) {
+	c.Description = description
+	c.require(createNotificationsRequestFieldDescription)
 }
 
 // SetThreadID sets the ThreadID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetThreadID(threadID *string) {
-	p.ThreadID = threadID
-	p.require(postNotificationsRequestFieldThreadID)
+func (c *CreateNotificationsRequest) SetThreadID(threadID *string) {
+	c.ThreadID = threadID
+	c.require(createNotificationsRequestFieldThreadID)
 }
 
 // SetPostID sets the PostID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetPostID(postID *string) {
-	p.PostID = postID
-	p.require(postNotificationsRequestFieldPostID)
+func (c *CreateNotificationsRequest) SetPostID(postID *string) {
+	c.PostID = postID
+	c.require(createNotificationsRequestFieldPostID)
 }
 
 // SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetPrivateMessageID(privateMessageID *string) {
-	p.PrivateMessageID = privateMessageID
-	p.require(postNotificationsRequestFieldPrivateMessageID)
+func (c *CreateNotificationsRequest) SetPrivateMessageID(privateMessageID *string) {
+	c.PrivateMessageID = privateMessageID
+	c.require(createNotificationsRequestFieldPrivateMessageID)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetStatus(status *PostNotificationsRequestStatus) {
-	p.Status = status
-	p.require(postNotificationsRequestFieldStatus)
+func (c *CreateNotificationsRequest) SetStatus(status *CreateNotificationsRequestStatus) {
+	c.Status = status
+	c.require(createNotificationsRequestFieldStatus)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsRequest) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(postNotificationsRequestFieldExtendedData)
+func (c *CreateNotificationsRequest) SetExtendedData(extendedData map[string]interface{}) {
+	c.ExtendedData = extendedData
+	c.require(createNotificationsRequestFieldExtendedData)
 }
 
 var (
-	deleteNotificationsIDRequestFieldID = big.NewInt(1 << 0)
+	deleteNotificationsRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeleteNotificationsIDRequest struct {
+type DeleteNotificationsRequest struct {
+	// Notification ID
 	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeleteNotificationsIDRequest) require(field *big.Int) {
+func (d *DeleteNotificationsRequest) require(field *big.Int) {
 	if d.explicitFields == nil {
 		d.explicitFields = big.NewInt(0)
 	}
@@ -135,85 +136,99 @@ func (d *DeleteNotificationsIDRequest) require(field *big.Int) {
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteNotificationsIDRequest) SetID(id string) {
+func (d *DeleteNotificationsRequest) SetID(id string) {
 	d.ID = id
-	d.require(deleteNotificationsIDRequestFieldID)
+	d.require(deleteNotificationsRequestFieldID)
 }
 
 var (
-	getNotificationsIDRequestFieldID = big.NewInt(1 << 0)
+	listNotificationsRequestFieldLimit  = big.NewInt(1 << 0)
+	listNotificationsRequestFieldCursor = big.NewInt(1 << 1)
+	listNotificationsRequestFieldStatus = big.NewInt(1 << 2)
+	listNotificationsRequestFieldUserID = big.NewInt(1 << 3)
 )
 
-type GetNotificationsIDRequest struct {
+type ListNotificationsRequest struct {
+	// Items per page (max 75)
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Cursor for pagination
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// Filter by notification status
+	Status *ListNotificationsRequestStatus `json:"-" url:"status,omitempty"`
+	// Filter by recipient user ID (admin only)
+	UserID *string `json:"-" url:"userId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListNotificationsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listNotificationsRequestFieldLimit)
+}
+
+// SetCursor sets the Cursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listNotificationsRequestFieldCursor)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsRequest) SetStatus(status *ListNotificationsRequestStatus) {
+	l.Status = status
+	l.require(listNotificationsRequestFieldStatus)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsRequest) SetUserID(userID *string) {
+	l.UserID = userID
+	l.require(listNotificationsRequestFieldUserID)
+}
+
+var (
+	retrieveNotificationsRequestFieldID = big.NewInt(1 << 0)
+)
+
+type RetrieveNotificationsRequest struct {
+	// Notification ID
 	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetNotificationsIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (r *RetrieveNotificationsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getNotificationsIDRequestFieldID)
+func (r *RetrieveNotificationsRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveNotificationsRequestFieldID)
 }
 
 var (
-	getNotificationsRequestFieldPage   = big.NewInt(1 << 0)
-	getNotificationsRequestFieldLimit  = big.NewInt(1 << 1)
-	getNotificationsRequestFieldSearch = big.NewInt(1 << 2)
+	notificationListResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetNotificationsRequest struct {
-	Page   *int    `json:"-" url:"page,omitempty"`
-	Limit  *int    `json:"-" url:"limit,omitempty"`
-	Search *string `json:"-" url:"search,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetNotificationsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getNotificationsRequestFieldPage)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getNotificationsRequestFieldLimit)
-}
-
-// SetSearch sets the Search field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsRequest) SetSearch(search *string) {
-	g.Search = search
-	g.require(getNotificationsRequestFieldSearch)
-}
-
-var (
-	deleteNotificationsIDResponseFieldSuccess = big.NewInt(1 << 0)
-)
-
-type DeleteNotificationsIDResponse struct {
-	Success bool `json:"success" url:"success"`
+type NotificationListResponse struct {
+	Data *NotificationListResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -222,164 +237,198 @@ type DeleteNotificationsIDResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (d *DeleteNotificationsIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
-	}
-	return d.Success
-}
-
-func (d *DeleteNotificationsIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeleteNotificationsIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteNotificationsIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deleteNotificationsIDResponseFieldSuccess)
-}
-
-func (d *DeleteNotificationsIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteNotificationsIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteNotificationsIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteNotificationsIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteNotificationsIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteNotificationsIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	getNotificationsIDResponseFieldData = big.NewInt(1 << 0)
-)
-
-type GetNotificationsIDResponse struct {
-	Data *GetNotificationsIDResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetNotificationsIDResponse) GetData() *GetNotificationsIDResponseData {
-	if g == nil {
+func (n *NotificationListResponse) GetData() *NotificationListResponseData {
+	if n == nil {
 		return nil
 	}
-	return g.Data
+	return n.Data
 }
 
-func (g *GetNotificationsIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (n *NotificationListResponse) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
 }
 
-func (g *GetNotificationsIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (n *NotificationListResponse) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	n.explicitFields.Or(n.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponse) SetData(data *GetNotificationsIDResponseData) {
-	g.Data = data
-	g.require(getNotificationsIDResponseFieldData)
+func (n *NotificationListResponse) SetData(data *NotificationListResponseData) {
+	n.Data = data
+	n.require(notificationListResponseFieldData)
 }
 
-func (g *GetNotificationsIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetNotificationsIDResponse
+func (n *NotificationListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler NotificationListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetNotificationsIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*n = NotificationListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetNotificationsIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetNotificationsIDResponse
+func (n *NotificationListResponse) MarshalJSON() ([]byte, error) {
+	type embed NotificationListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*n),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetNotificationsIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (n *NotificationListResponse) String() string {
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(n); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", n)
 }
 
 var (
-	getNotificationsIDResponseDataFieldID               = big.NewInt(1 << 0)
-	getNotificationsIDResponseDataFieldUserID           = big.NewInt(1 << 1)
-	getNotificationsIDResponseDataFieldNotifierID       = big.NewInt(1 << 2)
-	getNotificationsIDResponseDataFieldType             = big.NewInt(1 << 3)
-	getNotificationsIDResponseDataFieldDescription      = big.NewInt(1 << 4)
-	getNotificationsIDResponseDataFieldStatus           = big.NewInt(1 << 5)
-	getNotificationsIDResponseDataFieldThreadID         = big.NewInt(1 << 6)
-	getNotificationsIDResponseDataFieldPostID           = big.NewInt(1 << 7)
-	getNotificationsIDResponseDataFieldPrivateMessageID = big.NewInt(1 << 8)
-	getNotificationsIDResponseDataFieldExtendedData     = big.NewInt(1 << 9)
-	getNotificationsIDResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
-	getNotificationsIDResponseDataFieldUpdatedAt        = big.NewInt(1 << 11)
+	notificationListResponseDataFieldItems      = big.NewInt(1 << 0)
+	notificationListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	notificationListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type GetNotificationsIDResponseData struct {
+type NotificationListResponseData struct {
+	Items []*NotificationListResponseDataItemsItem `json:"items" url:"items"`
+	// Cursor for next page
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	// Total count of items
+	Count int `json:"count" url:"count"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (n *NotificationListResponseData) GetItems() []*NotificationListResponseDataItemsItem {
+	if n == nil {
+		return nil
+	}
+	return n.Items
+}
+
+func (n *NotificationListResponseData) GetNextCursor() *string {
+	if n == nil {
+		return nil
+	}
+	return n.NextCursor
+}
+
+func (n *NotificationListResponseData) GetCount() int {
+	if n == nil {
+		return 0
+	}
+	return n.Count
+}
+
+func (n *NotificationListResponseData) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
+}
+
+func (n *NotificationListResponseData) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationListResponseData) SetItems(items []*NotificationListResponseDataItemsItem) {
+	n.Items = items
+	n.require(notificationListResponseDataFieldItems)
+}
+
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationListResponseData) SetNextCursor(nextCursor *string) {
+	n.NextCursor = nextCursor
+	n.require(notificationListResponseDataFieldNextCursor)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationListResponseData) SetCount(count int) {
+	n.Count = count
+	n.require(notificationListResponseDataFieldCount)
+}
+
+func (n *NotificationListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler NotificationListResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*n = NotificationListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
+	if err != nil {
+		return err
+	}
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (n *NotificationListResponseData) MarshalJSON() ([]byte, error) {
+	type embed NotificationListResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (n *NotificationListResponseData) String() string {
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(n); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", n)
+}
+
+var (
+	notificationListResponseDataItemsItemFieldID               = big.NewInt(1 << 0)
+	notificationListResponseDataItemsItemFieldUserID           = big.NewInt(1 << 1)
+	notificationListResponseDataItemsItemFieldNotifierID       = big.NewInt(1 << 2)
+	notificationListResponseDataItemsItemFieldType             = big.NewInt(1 << 3)
+	notificationListResponseDataItemsItemFieldDescription      = big.NewInt(1 << 4)
+	notificationListResponseDataItemsItemFieldStatus           = big.NewInt(1 << 5)
+	notificationListResponseDataItemsItemFieldThreadID         = big.NewInt(1 << 6)
+	notificationListResponseDataItemsItemFieldPostID           = big.NewInt(1 << 7)
+	notificationListResponseDataItemsItemFieldPrivateMessageID = big.NewInt(1 << 8)
+	notificationListResponseDataItemsItemFieldExtendedData     = big.NewInt(1 << 9)
+	notificationListResponseDataItemsItemFieldCreatedAt        = big.NewInt(1 << 10)
+	notificationListResponseDataItemsItemFieldUpdatedAt        = big.NewInt(1 << 11)
+)
+
+type NotificationListResponseDataItemsItem struct {
 	ID string `json:"id" url:"id"`
 	// Recipient user ID
 	UserID string `json:"userId" url:"userId"`
@@ -411,232 +460,230 @@ type GetNotificationsIDResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetNotificationsIDResponseData) GetID() string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetID() string {
+	if n == nil {
 		return ""
 	}
-	return g.ID
+	return n.ID
 }
 
-func (g *GetNotificationsIDResponseData) GetUserID() string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetUserID() string {
+	if n == nil {
 		return ""
 	}
-	return g.UserID
+	return n.UserID
 }
 
-func (g *GetNotificationsIDResponseData) GetNotifierID() string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetNotifierID() string {
+	if n == nil {
 		return ""
 	}
-	return g.NotifierID
+	return n.NotifierID
 }
 
-func (g *GetNotificationsIDResponseData) GetType() *string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetType() *string {
+	if n == nil {
 		return nil
 	}
-	return g.Type
+	return n.Type
 }
 
-func (g *GetNotificationsIDResponseData) GetDescription() *string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetDescription() *string {
+	if n == nil {
 		return nil
 	}
-	return g.Description
+	return n.Description
 }
 
-func (g *GetNotificationsIDResponseData) GetStatus() *string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetStatus() *string {
+	if n == nil {
 		return nil
 	}
-	return g.Status
+	return n.Status
 }
 
-func (g *GetNotificationsIDResponseData) GetThreadID() *string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetThreadID() *string {
+	if n == nil {
 		return nil
 	}
-	return g.ThreadID
+	return n.ThreadID
 }
 
-func (g *GetNotificationsIDResponseData) GetPostID() *string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetPostID() *string {
+	if n == nil {
 		return nil
 	}
-	return g.PostID
+	return n.PostID
 }
 
-func (g *GetNotificationsIDResponseData) GetPrivateMessageID() *string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetPrivateMessageID() *string {
+	if n == nil {
 		return nil
 	}
-	return g.PrivateMessageID
+	return n.PrivateMessageID
 }
 
-func (g *GetNotificationsIDResponseData) GetExtendedData() map[string]interface{} {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetExtendedData() map[string]interface{} {
+	if n == nil {
 		return nil
 	}
-	return g.ExtendedData
+	return n.ExtendedData
 }
 
-func (g *GetNotificationsIDResponseData) GetCreatedAt() string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetCreatedAt() string {
+	if n == nil {
 		return ""
 	}
-	return g.CreatedAt
+	return n.CreatedAt
 }
 
-func (g *GetNotificationsIDResponseData) GetUpdatedAt() string {
-	if g == nil {
+func (n *NotificationListResponseDataItemsItem) GetUpdatedAt() string {
+	if n == nil {
 		return ""
 	}
-	return g.UpdatedAt
+	return n.UpdatedAt
 }
 
-func (g *GetNotificationsIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (n *NotificationListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
 }
 
-func (g *GetNotificationsIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (n *NotificationListResponseDataItemsItem) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	n.explicitFields.Or(n.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetID(id string) {
-	g.ID = id
-	g.require(getNotificationsIDResponseDataFieldID)
+func (n *NotificationListResponseDataItemsItem) SetID(id string) {
+	n.ID = id
+	n.require(notificationListResponseDataItemsItemFieldID)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetUserID(userID string) {
-	g.UserID = userID
-	g.require(getNotificationsIDResponseDataFieldUserID)
+func (n *NotificationListResponseDataItemsItem) SetUserID(userID string) {
+	n.UserID = userID
+	n.require(notificationListResponseDataItemsItemFieldUserID)
 }
 
 // SetNotifierID sets the NotifierID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetNotifierID(notifierID string) {
-	g.NotifierID = notifierID
-	g.require(getNotificationsIDResponseDataFieldNotifierID)
+func (n *NotificationListResponseDataItemsItem) SetNotifierID(notifierID string) {
+	n.NotifierID = notifierID
+	n.require(notificationListResponseDataItemsItemFieldNotifierID)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetType(type_ *string) {
-	g.Type = type_
-	g.require(getNotificationsIDResponseDataFieldType)
+func (n *NotificationListResponseDataItemsItem) SetType(type_ *string) {
+	n.Type = type_
+	n.require(notificationListResponseDataItemsItemFieldType)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetDescription(description *string) {
-	g.Description = description
-	g.require(getNotificationsIDResponseDataFieldDescription)
+func (n *NotificationListResponseDataItemsItem) SetDescription(description *string) {
+	n.Description = description
+	n.require(notificationListResponseDataItemsItemFieldDescription)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetStatus(status *string) {
-	g.Status = status
-	g.require(getNotificationsIDResponseDataFieldStatus)
+func (n *NotificationListResponseDataItemsItem) SetStatus(status *string) {
+	n.Status = status
+	n.require(notificationListResponseDataItemsItemFieldStatus)
 }
 
 // SetThreadID sets the ThreadID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetThreadID(threadID *string) {
-	g.ThreadID = threadID
-	g.require(getNotificationsIDResponseDataFieldThreadID)
+func (n *NotificationListResponseDataItemsItem) SetThreadID(threadID *string) {
+	n.ThreadID = threadID
+	n.require(notificationListResponseDataItemsItemFieldThreadID)
 }
 
 // SetPostID sets the PostID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetPostID(postID *string) {
-	g.PostID = postID
-	g.require(getNotificationsIDResponseDataFieldPostID)
+func (n *NotificationListResponseDataItemsItem) SetPostID(postID *string) {
+	n.PostID = postID
+	n.require(notificationListResponseDataItemsItemFieldPostID)
 }
 
 // SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetPrivateMessageID(privateMessageID *string) {
-	g.PrivateMessageID = privateMessageID
-	g.require(getNotificationsIDResponseDataFieldPrivateMessageID)
+func (n *NotificationListResponseDataItemsItem) SetPrivateMessageID(privateMessageID *string) {
+	n.PrivateMessageID = privateMessageID
+	n.require(notificationListResponseDataItemsItemFieldPrivateMessageID)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	g.ExtendedData = extendedData
-	g.require(getNotificationsIDResponseDataFieldExtendedData)
+func (n *NotificationListResponseDataItemsItem) SetExtendedData(extendedData map[string]interface{}) {
+	n.ExtendedData = extendedData
+	n.require(notificationListResponseDataItemsItemFieldExtendedData)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getNotificationsIDResponseDataFieldCreatedAt)
+func (n *NotificationListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	n.CreatedAt = createdAt
+	n.require(notificationListResponseDataItemsItemFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsIDResponseData) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getNotificationsIDResponseDataFieldUpdatedAt)
+func (n *NotificationListResponseDataItemsItem) SetUpdatedAt(updatedAt string) {
+	n.UpdatedAt = updatedAt
+	n.require(notificationListResponseDataItemsItemFieldUpdatedAt)
 }
 
-func (g *GetNotificationsIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetNotificationsIDResponseData
+func (n *NotificationListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler NotificationListResponseDataItemsItem
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetNotificationsIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*n = NotificationListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetNotificationsIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetNotificationsIDResponseData
+func (n *NotificationListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed NotificationListResponseDataItemsItem
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*n),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetNotificationsIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (n *NotificationListResponseDataItemsItem) String() string {
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(n); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", n)
 }
 
 var (
-	getNotificationsResponseFieldData = big.NewInt(1 << 0)
-	getNotificationsResponseFieldMeta = big.NewInt(1 << 1)
+	notificationResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetNotificationsResponse struct {
-	Data []*GetNotificationsResponseDataItem `json:"data" url:"data"`
-	Meta *GetNotificationsResponseMeta       `json:"meta" url:"meta"`
+type NotificationResponse struct {
+	Data *NotificationResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -645,100 +692,86 @@ type GetNotificationsResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetNotificationsResponse) GetData() []*GetNotificationsResponseDataItem {
-	if g == nil {
+func (n *NotificationResponse) GetData() *NotificationResponseData {
+	if n == nil {
 		return nil
 	}
-	return g.Data
+	return n.Data
 }
 
-func (g *GetNotificationsResponse) GetMeta() *GetNotificationsResponseMeta {
-	if g == nil {
-		return nil
+func (n *NotificationResponse) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
+}
+
+func (n *NotificationResponse) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
 	}
-	return g.Meta
-}
-
-func (g *GetNotificationsResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetNotificationsResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
+	n.explicitFields.Or(n.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponse) SetData(data []*GetNotificationsResponseDataItem) {
-	g.Data = data
-	g.require(getNotificationsResponseFieldData)
+func (n *NotificationResponse) SetData(data *NotificationResponseData) {
+	n.Data = data
+	n.require(notificationResponseFieldData)
 }
 
-// SetMeta sets the Meta field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponse) SetMeta(meta *GetNotificationsResponseMeta) {
-	g.Meta = meta
-	g.require(getNotificationsResponseFieldMeta)
-}
-
-func (g *GetNotificationsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetNotificationsResponse
+func (n *NotificationResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler NotificationResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetNotificationsResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*n = NotificationResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetNotificationsResponse) MarshalJSON() ([]byte, error) {
-	type embed GetNotificationsResponse
+func (n *NotificationResponse) MarshalJSON() ([]byte, error) {
+	type embed NotificationResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*n),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetNotificationsResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (n *NotificationResponse) String() string {
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(n); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", n)
 }
 
 var (
-	getNotificationsResponseDataItemFieldID               = big.NewInt(1 << 0)
-	getNotificationsResponseDataItemFieldUserID           = big.NewInt(1 << 1)
-	getNotificationsResponseDataItemFieldNotifierID       = big.NewInt(1 << 2)
-	getNotificationsResponseDataItemFieldType             = big.NewInt(1 << 3)
-	getNotificationsResponseDataItemFieldDescription      = big.NewInt(1 << 4)
-	getNotificationsResponseDataItemFieldStatus           = big.NewInt(1 << 5)
-	getNotificationsResponseDataItemFieldThreadID         = big.NewInt(1 << 6)
-	getNotificationsResponseDataItemFieldPostID           = big.NewInt(1 << 7)
-	getNotificationsResponseDataItemFieldPrivateMessageID = big.NewInt(1 << 8)
-	getNotificationsResponseDataItemFieldExtendedData     = big.NewInt(1 << 9)
-	getNotificationsResponseDataItemFieldCreatedAt        = big.NewInt(1 << 10)
-	getNotificationsResponseDataItemFieldUpdatedAt        = big.NewInt(1 << 11)
+	notificationResponseDataFieldID               = big.NewInt(1 << 0)
+	notificationResponseDataFieldUserID           = big.NewInt(1 << 1)
+	notificationResponseDataFieldNotifierID       = big.NewInt(1 << 2)
+	notificationResponseDataFieldType             = big.NewInt(1 << 3)
+	notificationResponseDataFieldDescription      = big.NewInt(1 << 4)
+	notificationResponseDataFieldStatus           = big.NewInt(1 << 5)
+	notificationResponseDataFieldThreadID         = big.NewInt(1 << 6)
+	notificationResponseDataFieldPostID           = big.NewInt(1 << 7)
+	notificationResponseDataFieldPrivateMessageID = big.NewInt(1 << 8)
+	notificationResponseDataFieldExtendedData     = big.NewInt(1 << 9)
+	notificationResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
+	notificationResponseDataFieldUpdatedAt        = big.NewInt(1 << 11)
 )
 
-type GetNotificationsResponseDataItem struct {
+type NotificationResponseData struct {
 	ID string `json:"id" url:"id"`
 	// Recipient user ID
 	UserID string `json:"userId" url:"userId"`
@@ -770,741 +803,316 @@ type GetNotificationsResponseDataItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetNotificationsResponseDataItem) GetID() string {
-	if g == nil {
+func (n *NotificationResponseData) GetID() string {
+	if n == nil {
 		return ""
 	}
-	return g.ID
+	return n.ID
 }
 
-func (g *GetNotificationsResponseDataItem) GetUserID() string {
-	if g == nil {
+func (n *NotificationResponseData) GetUserID() string {
+	if n == nil {
 		return ""
 	}
-	return g.UserID
+	return n.UserID
 }
 
-func (g *GetNotificationsResponseDataItem) GetNotifierID() string {
-	if g == nil {
+func (n *NotificationResponseData) GetNotifierID() string {
+	if n == nil {
 		return ""
 	}
-	return g.NotifierID
+	return n.NotifierID
 }
 
-func (g *GetNotificationsResponseDataItem) GetType() *string {
-	if g == nil {
+func (n *NotificationResponseData) GetType() *string {
+	if n == nil {
 		return nil
 	}
-	return g.Type
+	return n.Type
 }
 
-func (g *GetNotificationsResponseDataItem) GetDescription() *string {
-	if g == nil {
+func (n *NotificationResponseData) GetDescription() *string {
+	if n == nil {
 		return nil
 	}
-	return g.Description
+	return n.Description
 }
 
-func (g *GetNotificationsResponseDataItem) GetStatus() *string {
-	if g == nil {
+func (n *NotificationResponseData) GetStatus() *string {
+	if n == nil {
 		return nil
 	}
-	return g.Status
+	return n.Status
 }
 
-func (g *GetNotificationsResponseDataItem) GetThreadID() *string {
-	if g == nil {
+func (n *NotificationResponseData) GetThreadID() *string {
+	if n == nil {
 		return nil
 	}
-	return g.ThreadID
+	return n.ThreadID
 }
 
-func (g *GetNotificationsResponseDataItem) GetPostID() *string {
-	if g == nil {
+func (n *NotificationResponseData) GetPostID() *string {
+	if n == nil {
 		return nil
 	}
-	return g.PostID
+	return n.PostID
 }
 
-func (g *GetNotificationsResponseDataItem) GetPrivateMessageID() *string {
-	if g == nil {
+func (n *NotificationResponseData) GetPrivateMessageID() *string {
+	if n == nil {
 		return nil
 	}
-	return g.PrivateMessageID
+	return n.PrivateMessageID
 }
 
-func (g *GetNotificationsResponseDataItem) GetExtendedData() map[string]interface{} {
-	if g == nil {
+func (n *NotificationResponseData) GetExtendedData() map[string]interface{} {
+	if n == nil {
 		return nil
 	}
-	return g.ExtendedData
+	return n.ExtendedData
 }
 
-func (g *GetNotificationsResponseDataItem) GetCreatedAt() string {
-	if g == nil {
+func (n *NotificationResponseData) GetCreatedAt() string {
+	if n == nil {
 		return ""
 	}
-	return g.CreatedAt
+	return n.CreatedAt
 }
 
-func (g *GetNotificationsResponseDataItem) GetUpdatedAt() string {
-	if g == nil {
+func (n *NotificationResponseData) GetUpdatedAt() string {
+	if n == nil {
 		return ""
 	}
-	return g.UpdatedAt
+	return n.UpdatedAt
 }
 
-func (g *GetNotificationsResponseDataItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (n *NotificationResponseData) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
 }
 
-func (g *GetNotificationsResponseDataItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (n *NotificationResponseData) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	n.explicitFields.Or(n.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetID(id string) {
-	g.ID = id
-	g.require(getNotificationsResponseDataItemFieldID)
+func (n *NotificationResponseData) SetID(id string) {
+	n.ID = id
+	n.require(notificationResponseDataFieldID)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetUserID(userID string) {
-	g.UserID = userID
-	g.require(getNotificationsResponseDataItemFieldUserID)
+func (n *NotificationResponseData) SetUserID(userID string) {
+	n.UserID = userID
+	n.require(notificationResponseDataFieldUserID)
 }
 
 // SetNotifierID sets the NotifierID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetNotifierID(notifierID string) {
-	g.NotifierID = notifierID
-	g.require(getNotificationsResponseDataItemFieldNotifierID)
+func (n *NotificationResponseData) SetNotifierID(notifierID string) {
+	n.NotifierID = notifierID
+	n.require(notificationResponseDataFieldNotifierID)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetType(type_ *string) {
-	g.Type = type_
-	g.require(getNotificationsResponseDataItemFieldType)
+func (n *NotificationResponseData) SetType(type_ *string) {
+	n.Type = type_
+	n.require(notificationResponseDataFieldType)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetDescription(description *string) {
-	g.Description = description
-	g.require(getNotificationsResponseDataItemFieldDescription)
+func (n *NotificationResponseData) SetDescription(description *string) {
+	n.Description = description
+	n.require(notificationResponseDataFieldDescription)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetStatus(status *string) {
-	g.Status = status
-	g.require(getNotificationsResponseDataItemFieldStatus)
+func (n *NotificationResponseData) SetStatus(status *string) {
+	n.Status = status
+	n.require(notificationResponseDataFieldStatus)
 }
 
 // SetThreadID sets the ThreadID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetThreadID(threadID *string) {
-	g.ThreadID = threadID
-	g.require(getNotificationsResponseDataItemFieldThreadID)
+func (n *NotificationResponseData) SetThreadID(threadID *string) {
+	n.ThreadID = threadID
+	n.require(notificationResponseDataFieldThreadID)
 }
 
 // SetPostID sets the PostID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetPostID(postID *string) {
-	g.PostID = postID
-	g.require(getNotificationsResponseDataItemFieldPostID)
+func (n *NotificationResponseData) SetPostID(postID *string) {
+	n.PostID = postID
+	n.require(notificationResponseDataFieldPostID)
 }
 
 // SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetPrivateMessageID(privateMessageID *string) {
-	g.PrivateMessageID = privateMessageID
-	g.require(getNotificationsResponseDataItemFieldPrivateMessageID)
+func (n *NotificationResponseData) SetPrivateMessageID(privateMessageID *string) {
+	n.PrivateMessageID = privateMessageID
+	n.require(notificationResponseDataFieldPrivateMessageID)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetExtendedData(extendedData map[string]interface{}) {
-	g.ExtendedData = extendedData
-	g.require(getNotificationsResponseDataItemFieldExtendedData)
+func (n *NotificationResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	n.ExtendedData = extendedData
+	n.require(notificationResponseDataFieldExtendedData)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getNotificationsResponseDataItemFieldCreatedAt)
+func (n *NotificationResponseData) SetCreatedAt(createdAt string) {
+	n.CreatedAt = createdAt
+	n.require(notificationResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseDataItem) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getNotificationsResponseDataItemFieldUpdatedAt)
+func (n *NotificationResponseData) SetUpdatedAt(updatedAt string) {
+	n.UpdatedAt = updatedAt
+	n.require(notificationResponseDataFieldUpdatedAt)
 }
 
-func (g *GetNotificationsResponseDataItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetNotificationsResponseDataItem
+func (n *NotificationResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler NotificationResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetNotificationsResponseDataItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*n = NotificationResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetNotificationsResponseDataItem) MarshalJSON() ([]byte, error) {
-	type embed GetNotificationsResponseDataItem
+func (n *NotificationResponseData) MarshalJSON() ([]byte, error) {
+	type embed NotificationResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*n),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetNotificationsResponseDataItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (n *NotificationResponseData) String() string {
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(n); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getNotificationsResponseMetaFieldTotal = big.NewInt(1 << 0)
-	getNotificationsResponseMetaFieldPage  = big.NewInt(1 << 1)
-	getNotificationsResponseMetaFieldLimit = big.NewInt(1 << 2)
-)
-
-type GetNotificationsResponseMeta struct {
-	Total int `json:"total" url:"total"`
-	Page  int `json:"page" url:"page"`
-	Limit int `json:"limit" url:"limit"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetNotificationsResponseMeta) GetTotal() int {
-	if g == nil {
-		return 0
-	}
-	return g.Total
-}
-
-func (g *GetNotificationsResponseMeta) GetPage() int {
-	if g == nil {
-		return 0
-	}
-	return g.Page
-}
-
-func (g *GetNotificationsResponseMeta) GetLimit() int {
-	if g == nil {
-		return 0
-	}
-	return g.Limit
-}
-
-func (g *GetNotificationsResponseMeta) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetNotificationsResponseMeta) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTotal sets the Total field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseMeta) SetTotal(total int) {
-	g.Total = total
-	g.require(getNotificationsResponseMetaFieldTotal)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseMeta) SetPage(page int) {
-	g.Page = page
-	g.require(getNotificationsResponseMetaFieldPage)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetNotificationsResponseMeta) SetLimit(limit int) {
-	g.Limit = limit
-	g.require(getNotificationsResponseMetaFieldLimit)
-}
-
-func (g *GetNotificationsResponseMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetNotificationsResponseMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetNotificationsResponseMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetNotificationsResponseMeta) MarshalJSON() ([]byte, error) {
-	type embed GetNotificationsResponseMeta
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetNotificationsResponseMeta) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-// Notification status
-type PatchNotificationsIDRequestStatus string
-
-const (
-	PatchNotificationsIDRequestStatusRead      PatchNotificationsIDRequestStatus = "read"
-	PatchNotificationsIDRequestStatusUnread    PatchNotificationsIDRequestStatus = "unread"
-	PatchNotificationsIDRequestStatusDismissed PatchNotificationsIDRequestStatus = "dismissed"
-	PatchNotificationsIDRequestStatusArchived  PatchNotificationsIDRequestStatus = "archived"
-)
-
-func NewPatchNotificationsIDRequestStatusFromString(s string) (PatchNotificationsIDRequestStatus, error) {
-	switch s {
-	case "read":
-		return PatchNotificationsIDRequestStatusRead, nil
-	case "unread":
-		return PatchNotificationsIDRequestStatusUnread, nil
-	case "dismissed":
-		return PatchNotificationsIDRequestStatusDismissed, nil
-	case "archived":
-		return PatchNotificationsIDRequestStatusArchived, nil
-	}
-	var t PatchNotificationsIDRequestStatus
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (p PatchNotificationsIDRequestStatus) Ptr() *PatchNotificationsIDRequestStatus {
-	return &p
-}
-
-var (
-	patchNotificationsIDResponseFieldData = big.NewInt(1 << 0)
-)
-
-type PatchNotificationsIDResponse struct {
-	Data *PatchNotificationsIDResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PatchNotificationsIDResponse) GetData() *PatchNotificationsIDResponseData {
-	if p == nil {
-		return nil
-	}
-	return p.Data
-}
-
-func (p *PatchNotificationsIDResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PatchNotificationsIDResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponse) SetData(data *PatchNotificationsIDResponseData) {
-	p.Data = data
-	p.require(patchNotificationsIDResponseFieldData)
-}
-
-func (p *PatchNotificationsIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchNotificationsIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PatchNotificationsIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PatchNotificationsIDResponse) MarshalJSON() ([]byte, error) {
-	type embed PatchNotificationsIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PatchNotificationsIDResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	patchNotificationsIDResponseDataFieldID               = big.NewInt(1 << 0)
-	patchNotificationsIDResponseDataFieldUserID           = big.NewInt(1 << 1)
-	patchNotificationsIDResponseDataFieldNotifierID       = big.NewInt(1 << 2)
-	patchNotificationsIDResponseDataFieldType             = big.NewInt(1 << 3)
-	patchNotificationsIDResponseDataFieldDescription      = big.NewInt(1 << 4)
-	patchNotificationsIDResponseDataFieldStatus           = big.NewInt(1 << 5)
-	patchNotificationsIDResponseDataFieldThreadID         = big.NewInt(1 << 6)
-	patchNotificationsIDResponseDataFieldPostID           = big.NewInt(1 << 7)
-	patchNotificationsIDResponseDataFieldPrivateMessageID = big.NewInt(1 << 8)
-	patchNotificationsIDResponseDataFieldExtendedData     = big.NewInt(1 << 9)
-	patchNotificationsIDResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
-	patchNotificationsIDResponseDataFieldUpdatedAt        = big.NewInt(1 << 11)
-)
-
-type PatchNotificationsIDResponseData struct {
-	ID string `json:"id" url:"id"`
-	// Recipient user ID
-	UserID string `json:"userId" url:"userId"`
-	// User ID who triggered the notification
-	NotifierID string `json:"notifierId" url:"notifierId"`
-	// Notification type
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
-	// Notification text content
-	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Notification status (read, unread, dismissed, archived)
-	Status *string `json:"status,omitempty" url:"status,omitempty"`
-	// Related thread ID
-	ThreadID *string `json:"threadId,omitempty" url:"threadId,omitempty"`
-	// Related post ID
-	PostID *string `json:"postId,omitempty" url:"postId,omitempty"`
-	// Related private message ID
-	PrivateMessageID *string `json:"privateMessageId,omitempty" url:"privateMessageId,omitempty"`
-	// Additional notification data
-	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
-	// Notification creation timestamp
-	CreatedAt string `json:"createdAt" url:"createdAt"`
-	// Notification last update timestamp
-	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PatchNotificationsIDResponseData) GetID() string {
-	if p == nil {
-		return ""
-	}
-	return p.ID
-}
-
-func (p *PatchNotificationsIDResponseData) GetUserID() string {
-	if p == nil {
-		return ""
-	}
-	return p.UserID
-}
-
-func (p *PatchNotificationsIDResponseData) GetNotifierID() string {
-	if p == nil {
-		return ""
-	}
-	return p.NotifierID
-}
-
-func (p *PatchNotificationsIDResponseData) GetType() *string {
-	if p == nil {
-		return nil
-	}
-	return p.Type
-}
-
-func (p *PatchNotificationsIDResponseData) GetDescription() *string {
-	if p == nil {
-		return nil
-	}
-	return p.Description
-}
-
-func (p *PatchNotificationsIDResponseData) GetStatus() *string {
-	if p == nil {
-		return nil
-	}
-	return p.Status
-}
-
-func (p *PatchNotificationsIDResponseData) GetThreadID() *string {
-	if p == nil {
-		return nil
-	}
-	return p.ThreadID
-}
-
-func (p *PatchNotificationsIDResponseData) GetPostID() *string {
-	if p == nil {
-		return nil
-	}
-	return p.PostID
-}
-
-func (p *PatchNotificationsIDResponseData) GetPrivateMessageID() *string {
-	if p == nil {
-		return nil
-	}
-	return p.PrivateMessageID
-}
-
-func (p *PatchNotificationsIDResponseData) GetExtendedData() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.ExtendedData
-}
-
-func (p *PatchNotificationsIDResponseData) GetCreatedAt() string {
-	if p == nil {
-		return ""
-	}
-	return p.CreatedAt
-}
-
-func (p *PatchNotificationsIDResponseData) GetUpdatedAt() string {
-	if p == nil {
-		return ""
-	}
-	return p.UpdatedAt
-}
-
-func (p *PatchNotificationsIDResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PatchNotificationsIDResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetID(id string) {
-	p.ID = id
-	p.require(patchNotificationsIDResponseDataFieldID)
-}
-
-// SetUserID sets the UserID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetUserID(userID string) {
-	p.UserID = userID
-	p.require(patchNotificationsIDResponseDataFieldUserID)
-}
-
-// SetNotifierID sets the NotifierID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetNotifierID(notifierID string) {
-	p.NotifierID = notifierID
-	p.require(patchNotificationsIDResponseDataFieldNotifierID)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetType(type_ *string) {
-	p.Type = type_
-	p.require(patchNotificationsIDResponseDataFieldType)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetDescription(description *string) {
-	p.Description = description
-	p.require(patchNotificationsIDResponseDataFieldDescription)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetStatus(status *string) {
-	p.Status = status
-	p.require(patchNotificationsIDResponseDataFieldStatus)
-}
-
-// SetThreadID sets the ThreadID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetThreadID(threadID *string) {
-	p.ThreadID = threadID
-	p.require(patchNotificationsIDResponseDataFieldThreadID)
-}
-
-// SetPostID sets the PostID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetPostID(postID *string) {
-	p.PostID = postID
-	p.require(patchNotificationsIDResponseDataFieldPostID)
-}
-
-// SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetPrivateMessageID(privateMessageID *string) {
-	p.PrivateMessageID = privateMessageID
-	p.require(patchNotificationsIDResponseDataFieldPrivateMessageID)
-}
-
-// SetExtendedData sets the ExtendedData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(patchNotificationsIDResponseDataFieldExtendedData)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(patchNotificationsIDResponseDataFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(patchNotificationsIDResponseDataFieldUpdatedAt)
-}
-
-func (p *PatchNotificationsIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchNotificationsIDResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PatchNotificationsIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PatchNotificationsIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed PatchNotificationsIDResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PatchNotificationsIDResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", n)
 }
 
 // Initial notification status
-type PostNotificationsRequestStatus string
+type CreateNotificationsRequestStatus string
 
 const (
-	PostNotificationsRequestStatusRead      PostNotificationsRequestStatus = "read"
-	PostNotificationsRequestStatusUnread    PostNotificationsRequestStatus = "unread"
-	PostNotificationsRequestStatusDismissed PostNotificationsRequestStatus = "dismissed"
-	PostNotificationsRequestStatusArchived  PostNotificationsRequestStatus = "archived"
+	CreateNotificationsRequestStatusRead      CreateNotificationsRequestStatus = "read"
+	CreateNotificationsRequestStatusUnread    CreateNotificationsRequestStatus = "unread"
+	CreateNotificationsRequestStatusDismissed CreateNotificationsRequestStatus = "dismissed"
+	CreateNotificationsRequestStatusArchived  CreateNotificationsRequestStatus = "archived"
 )
 
-func NewPostNotificationsRequestStatusFromString(s string) (PostNotificationsRequestStatus, error) {
+func NewCreateNotificationsRequestStatusFromString(s string) (CreateNotificationsRequestStatus, error) {
 	switch s {
 	case "read":
-		return PostNotificationsRequestStatusRead, nil
+		return CreateNotificationsRequestStatusRead, nil
 	case "unread":
-		return PostNotificationsRequestStatusUnread, nil
+		return CreateNotificationsRequestStatusUnread, nil
 	case "dismissed":
-		return PostNotificationsRequestStatusDismissed, nil
+		return CreateNotificationsRequestStatusDismissed, nil
 	case "archived":
-		return PostNotificationsRequestStatusArchived, nil
+		return CreateNotificationsRequestStatusArchived, nil
 	}
-	var t PostNotificationsRequestStatus
+	var t CreateNotificationsRequestStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (p PostNotificationsRequestStatus) Ptr() *PostNotificationsRequestStatus {
-	return &p
+func (c CreateNotificationsRequestStatus) Ptr() *CreateNotificationsRequestStatus {
+	return &c
+}
+
+type ListNotificationsRequestStatus string
+
+const (
+	ListNotificationsRequestStatusRead      ListNotificationsRequestStatus = "read"
+	ListNotificationsRequestStatusUnread    ListNotificationsRequestStatus = "unread"
+	ListNotificationsRequestStatusDismissed ListNotificationsRequestStatus = "dismissed"
+	ListNotificationsRequestStatusArchived  ListNotificationsRequestStatus = "archived"
+)
+
+func NewListNotificationsRequestStatusFromString(s string) (ListNotificationsRequestStatus, error) {
+	switch s {
+	case "read":
+		return ListNotificationsRequestStatusRead, nil
+	case "unread":
+		return ListNotificationsRequestStatusUnread, nil
+	case "dismissed":
+		return ListNotificationsRequestStatusDismissed, nil
+	case "archived":
+		return ListNotificationsRequestStatusArchived, nil
+	}
+	var t ListNotificationsRequestStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListNotificationsRequestStatus) Ptr() *ListNotificationsRequestStatus {
+	return &l
+}
+
+// Notification status
+type UpdateNotificationsRequestStatus string
+
+const (
+	UpdateNotificationsRequestStatusRead      UpdateNotificationsRequestStatus = "read"
+	UpdateNotificationsRequestStatusUnread    UpdateNotificationsRequestStatus = "unread"
+	UpdateNotificationsRequestStatusDismissed UpdateNotificationsRequestStatus = "dismissed"
+	UpdateNotificationsRequestStatusArchived  UpdateNotificationsRequestStatus = "archived"
+)
+
+func NewUpdateNotificationsRequestStatusFromString(s string) (UpdateNotificationsRequestStatus, error) {
+	switch s {
+	case "read":
+		return UpdateNotificationsRequestStatusRead, nil
+	case "unread":
+		return UpdateNotificationsRequestStatusUnread, nil
+	case "dismissed":
+		return UpdateNotificationsRequestStatusDismissed, nil
+	case "archived":
+		return UpdateNotificationsRequestStatusArchived, nil
+	}
+	var t UpdateNotificationsRequestStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateNotificationsRequestStatus) Ptr() *UpdateNotificationsRequestStatus {
+	return &u
 }
 
 var (
-	postNotificationsResponseFieldData = big.NewInt(1 << 0)
+	updateNotificationsResponseFieldData = big.NewInt(1 << 0)
 )
 
-type PostNotificationsResponse struct {
-	Data *PostNotificationsResponseData `json:"data,omitempty" url:"data,omitempty"`
+type UpdateNotificationsResponse struct {
+	Data *UpdateNotificationsResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1513,86 +1121,86 @@ type PostNotificationsResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostNotificationsResponse) GetData() *PostNotificationsResponseData {
-	if p == nil {
+func (u *UpdateNotificationsResponse) GetData() *UpdateNotificationsResponseData {
+	if u == nil {
 		return nil
 	}
-	return p.Data
+	return u.Data
 }
 
-func (p *PostNotificationsResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (u *UpdateNotificationsResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
 }
 
-func (p *PostNotificationsResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateNotificationsResponse) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponse) SetData(data *PostNotificationsResponseData) {
-	p.Data = data
-	p.require(postNotificationsResponseFieldData)
+func (u *UpdateNotificationsResponse) SetData(data *UpdateNotificationsResponseData) {
+	u.Data = data
+	u.require(updateNotificationsResponseFieldData)
 }
 
-func (p *PostNotificationsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostNotificationsResponse
+func (u *UpdateNotificationsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateNotificationsResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostNotificationsResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*u = UpdateNotificationsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostNotificationsResponse) MarshalJSON() ([]byte, error) {
-	type embed PostNotificationsResponse
+func (u *UpdateNotificationsResponse) MarshalJSON() ([]byte, error) {
+	type embed UpdateNotificationsResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostNotificationsResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (u *UpdateNotificationsResponse) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", u)
 }
 
 var (
-	postNotificationsResponseDataFieldID               = big.NewInt(1 << 0)
-	postNotificationsResponseDataFieldUserID           = big.NewInt(1 << 1)
-	postNotificationsResponseDataFieldNotifierID       = big.NewInt(1 << 2)
-	postNotificationsResponseDataFieldType             = big.NewInt(1 << 3)
-	postNotificationsResponseDataFieldDescription      = big.NewInt(1 << 4)
-	postNotificationsResponseDataFieldStatus           = big.NewInt(1 << 5)
-	postNotificationsResponseDataFieldThreadID         = big.NewInt(1 << 6)
-	postNotificationsResponseDataFieldPostID           = big.NewInt(1 << 7)
-	postNotificationsResponseDataFieldPrivateMessageID = big.NewInt(1 << 8)
-	postNotificationsResponseDataFieldExtendedData     = big.NewInt(1 << 9)
-	postNotificationsResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
-	postNotificationsResponseDataFieldUpdatedAt        = big.NewInt(1 << 11)
+	updateNotificationsResponseDataFieldID               = big.NewInt(1 << 0)
+	updateNotificationsResponseDataFieldUserID           = big.NewInt(1 << 1)
+	updateNotificationsResponseDataFieldNotifierID       = big.NewInt(1 << 2)
+	updateNotificationsResponseDataFieldType             = big.NewInt(1 << 3)
+	updateNotificationsResponseDataFieldDescription      = big.NewInt(1 << 4)
+	updateNotificationsResponseDataFieldStatus           = big.NewInt(1 << 5)
+	updateNotificationsResponseDataFieldThreadID         = big.NewInt(1 << 6)
+	updateNotificationsResponseDataFieldPostID           = big.NewInt(1 << 7)
+	updateNotificationsResponseDataFieldPrivateMessageID = big.NewInt(1 << 8)
+	updateNotificationsResponseDataFieldExtendedData     = big.NewInt(1 << 9)
+	updateNotificationsResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
+	updateNotificationsResponseDataFieldUpdatedAt        = big.NewInt(1 << 11)
 )
 
-type PostNotificationsResponseData struct {
+type UpdateNotificationsResponseData struct {
 	ID string `json:"id" url:"id"`
 	// Recipient user ID
 	UserID string `json:"userId" url:"userId"`
@@ -1624,234 +1232,235 @@ type PostNotificationsResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostNotificationsResponseData) GetID() string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetID() string {
+	if u == nil {
 		return ""
 	}
-	return p.ID
+	return u.ID
 }
 
-func (p *PostNotificationsResponseData) GetUserID() string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetUserID() string {
+	if u == nil {
 		return ""
 	}
-	return p.UserID
+	return u.UserID
 }
 
-func (p *PostNotificationsResponseData) GetNotifierID() string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetNotifierID() string {
+	if u == nil {
 		return ""
 	}
-	return p.NotifierID
+	return u.NotifierID
 }
 
-func (p *PostNotificationsResponseData) GetType() *string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetType() *string {
+	if u == nil {
 		return nil
 	}
-	return p.Type
+	return u.Type
 }
 
-func (p *PostNotificationsResponseData) GetDescription() *string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return p.Description
+	return u.Description
 }
 
-func (p *PostNotificationsResponseData) GetStatus() *string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetStatus() *string {
+	if u == nil {
 		return nil
 	}
-	return p.Status
+	return u.Status
 }
 
-func (p *PostNotificationsResponseData) GetThreadID() *string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetThreadID() *string {
+	if u == nil {
 		return nil
 	}
-	return p.ThreadID
+	return u.ThreadID
 }
 
-func (p *PostNotificationsResponseData) GetPostID() *string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetPostID() *string {
+	if u == nil {
 		return nil
 	}
-	return p.PostID
+	return u.PostID
 }
 
-func (p *PostNotificationsResponseData) GetPrivateMessageID() *string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetPrivateMessageID() *string {
+	if u == nil {
 		return nil
 	}
-	return p.PrivateMessageID
+	return u.PrivateMessageID
 }
 
-func (p *PostNotificationsResponseData) GetExtendedData() map[string]interface{} {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetExtendedData() map[string]interface{} {
+	if u == nil {
 		return nil
 	}
-	return p.ExtendedData
+	return u.ExtendedData
 }
 
-func (p *PostNotificationsResponseData) GetCreatedAt() string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetCreatedAt() string {
+	if u == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return u.CreatedAt
 }
 
-func (p *PostNotificationsResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (u *UpdateNotificationsResponseData) GetUpdatedAt() string {
+	if u == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return u.UpdatedAt
 }
 
-func (p *PostNotificationsResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (u *UpdateNotificationsResponseData) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
 }
 
-func (p *PostNotificationsResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateNotificationsResponseData) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetID(id string) {
-	p.ID = id
-	p.require(postNotificationsResponseDataFieldID)
+func (u *UpdateNotificationsResponseData) SetID(id string) {
+	u.ID = id
+	u.require(updateNotificationsResponseDataFieldID)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetUserID(userID string) {
-	p.UserID = userID
-	p.require(postNotificationsResponseDataFieldUserID)
+func (u *UpdateNotificationsResponseData) SetUserID(userID string) {
+	u.UserID = userID
+	u.require(updateNotificationsResponseDataFieldUserID)
 }
 
 // SetNotifierID sets the NotifierID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetNotifierID(notifierID string) {
-	p.NotifierID = notifierID
-	p.require(postNotificationsResponseDataFieldNotifierID)
+func (u *UpdateNotificationsResponseData) SetNotifierID(notifierID string) {
+	u.NotifierID = notifierID
+	u.require(updateNotificationsResponseDataFieldNotifierID)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetType(type_ *string) {
-	p.Type = type_
-	p.require(postNotificationsResponseDataFieldType)
+func (u *UpdateNotificationsResponseData) SetType(type_ *string) {
+	u.Type = type_
+	u.require(updateNotificationsResponseDataFieldType)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetDescription(description *string) {
-	p.Description = description
-	p.require(postNotificationsResponseDataFieldDescription)
+func (u *UpdateNotificationsResponseData) SetDescription(description *string) {
+	u.Description = description
+	u.require(updateNotificationsResponseDataFieldDescription)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetStatus(status *string) {
-	p.Status = status
-	p.require(postNotificationsResponseDataFieldStatus)
+func (u *UpdateNotificationsResponseData) SetStatus(status *string) {
+	u.Status = status
+	u.require(updateNotificationsResponseDataFieldStatus)
 }
 
 // SetThreadID sets the ThreadID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetThreadID(threadID *string) {
-	p.ThreadID = threadID
-	p.require(postNotificationsResponseDataFieldThreadID)
+func (u *UpdateNotificationsResponseData) SetThreadID(threadID *string) {
+	u.ThreadID = threadID
+	u.require(updateNotificationsResponseDataFieldThreadID)
 }
 
 // SetPostID sets the PostID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetPostID(postID *string) {
-	p.PostID = postID
-	p.require(postNotificationsResponseDataFieldPostID)
+func (u *UpdateNotificationsResponseData) SetPostID(postID *string) {
+	u.PostID = postID
+	u.require(updateNotificationsResponseDataFieldPostID)
 }
 
 // SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetPrivateMessageID(privateMessageID *string) {
-	p.PrivateMessageID = privateMessageID
-	p.require(postNotificationsResponseDataFieldPrivateMessageID)
+func (u *UpdateNotificationsResponseData) SetPrivateMessageID(privateMessageID *string) {
+	u.PrivateMessageID = privateMessageID
+	u.require(updateNotificationsResponseDataFieldPrivateMessageID)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(postNotificationsResponseDataFieldExtendedData)
+func (u *UpdateNotificationsResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateNotificationsResponseDataFieldExtendedData)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(postNotificationsResponseDataFieldCreatedAt)
+func (u *UpdateNotificationsResponseData) SetCreatedAt(createdAt string) {
+	u.CreatedAt = createdAt
+	u.require(updateNotificationsResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostNotificationsResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(postNotificationsResponseDataFieldUpdatedAt)
+func (u *UpdateNotificationsResponseData) SetUpdatedAt(updatedAt string) {
+	u.UpdatedAt = updatedAt
+	u.require(updateNotificationsResponseDataFieldUpdatedAt)
 }
 
-func (p *PostNotificationsResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostNotificationsResponseData
+func (u *UpdateNotificationsResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateNotificationsResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostNotificationsResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*u = UpdateNotificationsResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostNotificationsResponseData) MarshalJSON() ([]byte, error) {
-	type embed PostNotificationsResponseData
+func (u *UpdateNotificationsResponseData) MarshalJSON() ([]byte, error) {
+	type embed UpdateNotificationsResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostNotificationsResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (u *UpdateNotificationsResponseData) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", u)
 }
 
 var (
-	patchNotificationsIDRequestFieldID           = big.NewInt(1 << 0)
-	patchNotificationsIDRequestFieldStatus       = big.NewInt(1 << 1)
-	patchNotificationsIDRequestFieldExtendedData = big.NewInt(1 << 2)
+	updateNotificationsRequestFieldID           = big.NewInt(1 << 0)
+	updateNotificationsRequestFieldStatus       = big.NewInt(1 << 1)
+	updateNotificationsRequestFieldExtendedData = big.NewInt(1 << 2)
 )
 
-type PatchNotificationsIDRequest struct {
+type UpdateNotificationsRequest struct {
+	// Notification ID
 	ID string `json:"-" url:"-"`
 	// Notification status
-	Status *PatchNotificationsIDRequestStatus `json:"status,omitempty" url:"-"`
+	Status *UpdateNotificationsRequestStatus `json:"status,omitempty" url:"-"`
 	// Update extended data
 	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
 
@@ -1859,30 +1468,30 @@ type PatchNotificationsIDRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PatchNotificationsIDRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateNotificationsRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDRequest) SetID(id string) {
-	p.ID = id
-	p.require(patchNotificationsIDRequestFieldID)
+func (u *UpdateNotificationsRequest) SetID(id string) {
+	u.ID = id
+	u.require(updateNotificationsRequestFieldID)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDRequest) SetStatus(status *PatchNotificationsIDRequestStatus) {
-	p.Status = status
-	p.require(patchNotificationsIDRequestFieldStatus)
+func (u *UpdateNotificationsRequest) SetStatus(status *UpdateNotificationsRequestStatus) {
+	u.Status = status
+	u.require(updateNotificationsRequestFieldStatus)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchNotificationsIDRequest) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(patchNotificationsIDRequestFieldExtendedData)
+func (u *UpdateNotificationsRequest) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateNotificationsRequestFieldExtendedData)
 }

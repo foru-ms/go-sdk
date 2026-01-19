@@ -10,18 +10,22 @@ import (
 )
 
 var (
-	postReportsRequestFieldType             = big.NewInt(1 << 0)
-	postReportsRequestFieldDescription      = big.NewInt(1 << 1)
-	postReportsRequestFieldUserID           = big.NewInt(1 << 2)
-	postReportsRequestFieldReportedID       = big.NewInt(1 << 3)
-	postReportsRequestFieldThreadID         = big.NewInt(1 << 4)
-	postReportsRequestFieldPostID           = big.NewInt(1 << 5)
-	postReportsRequestFieldPrivateMessageID = big.NewInt(1 << 6)
+	createReportsRequestFieldType             = big.NewInt(1 << 0)
+	createReportsRequestFieldStatus           = big.NewInt(1 << 1)
+	createReportsRequestFieldDescription      = big.NewInt(1 << 2)
+	createReportsRequestFieldUserID           = big.NewInt(1 << 3)
+	createReportsRequestFieldReportedID       = big.NewInt(1 << 4)
+	createReportsRequestFieldThreadID         = big.NewInt(1 << 5)
+	createReportsRequestFieldPostID           = big.NewInt(1 << 6)
+	createReportsRequestFieldPrivateMessageID = big.NewInt(1 << 7)
+	createReportsRequestFieldExtendedData     = big.NewInt(1 << 8)
 )
 
-type PostReportsRequest struct {
+type CreateReportsRequest struct {
 	// Report type (e.g. spam, abuse)
 	Type string `json:"type" url:"-"`
+	// Report status (default: pending)
+	Status *string `json:"status,omitempty" url:"-"`
 	// Reason for reporting
 	Description *string `json:"description,omitempty" url:"-"`
 	// Reporter user ID (required for API key auth, ignored for JWT auth)
@@ -34,79 +38,96 @@ type PostReportsRequest struct {
 	PostID *string `json:"postId,omitempty" url:"-"`
 	// ID of private message being reported
 	PrivateMessageID *string `json:"privateMessageId,omitempty" url:"-"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PostReportsRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (c *CreateReportsRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsRequest) SetType(type_ string) {
-	p.Type = type_
-	p.require(postReportsRequestFieldType)
+func (c *CreateReportsRequest) SetType(type_ string) {
+	c.Type = type_
+	c.require(createReportsRequestFieldType)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateReportsRequest) SetStatus(status *string) {
+	c.Status = status
+	c.require(createReportsRequestFieldStatus)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsRequest) SetDescription(description *string) {
-	p.Description = description
-	p.require(postReportsRequestFieldDescription)
+func (c *CreateReportsRequest) SetDescription(description *string) {
+	c.Description = description
+	c.require(createReportsRequestFieldDescription)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsRequest) SetUserID(userID *string) {
-	p.UserID = userID
-	p.require(postReportsRequestFieldUserID)
+func (c *CreateReportsRequest) SetUserID(userID *string) {
+	c.UserID = userID
+	c.require(createReportsRequestFieldUserID)
 }
 
 // SetReportedID sets the ReportedID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsRequest) SetReportedID(reportedID *string) {
-	p.ReportedID = reportedID
-	p.require(postReportsRequestFieldReportedID)
+func (c *CreateReportsRequest) SetReportedID(reportedID *string) {
+	c.ReportedID = reportedID
+	c.require(createReportsRequestFieldReportedID)
 }
 
 // SetThreadID sets the ThreadID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsRequest) SetThreadID(threadID *string) {
-	p.ThreadID = threadID
-	p.require(postReportsRequestFieldThreadID)
+func (c *CreateReportsRequest) SetThreadID(threadID *string) {
+	c.ThreadID = threadID
+	c.require(createReportsRequestFieldThreadID)
 }
 
 // SetPostID sets the PostID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsRequest) SetPostID(postID *string) {
-	p.PostID = postID
-	p.require(postReportsRequestFieldPostID)
+func (c *CreateReportsRequest) SetPostID(postID *string) {
+	c.PostID = postID
+	c.require(createReportsRequestFieldPostID)
 }
 
 // SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsRequest) SetPrivateMessageID(privateMessageID *string) {
-	p.PrivateMessageID = privateMessageID
-	p.require(postReportsRequestFieldPrivateMessageID)
+func (c *CreateReportsRequest) SetPrivateMessageID(privateMessageID *string) {
+	c.PrivateMessageID = privateMessageID
+	c.require(createReportsRequestFieldPrivateMessageID)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateReportsRequest) SetExtendedData(extendedData map[string]interface{}) {
+	c.ExtendedData = extendedData
+	c.require(createReportsRequestFieldExtendedData)
 }
 
 var (
-	deleteReportsIDRequestFieldID = big.NewInt(1 << 0)
+	deleteReportsRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeleteReportsIDRequest struct {
+type DeleteReportsRequest struct {
+	// Report ID
 	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeleteReportsIDRequest) require(field *big.Int) {
+func (d *DeleteReportsRequest) require(field *big.Int) {
 	if d.explicitFields == nil {
 		d.explicitFields = big.NewInt(0)
 	}
@@ -115,85 +136,109 @@ func (d *DeleteReportsIDRequest) require(field *big.Int) {
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteReportsIDRequest) SetID(id string) {
+func (d *DeleteReportsRequest) SetID(id string) {
 	d.ID = id
-	d.require(deleteReportsIDRequestFieldID)
+	d.require(deleteReportsRequestFieldID)
 }
 
 var (
-	getReportsIDRequestFieldID = big.NewInt(1 << 0)
+	listReportsRequestFieldLimit      = big.NewInt(1 << 0)
+	listReportsRequestFieldCursor     = big.NewInt(1 << 1)
+	listReportsRequestFieldStatus     = big.NewInt(1 << 2)
+	listReportsRequestFieldReporterID = big.NewInt(1 << 3)
+	listReportsRequestFieldReportedID = big.NewInt(1 << 4)
 )
 
-type GetReportsIDRequest struct {
+type ListReportsRequest struct {
+	// Items per page (max 75)
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Cursor for pagination
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// Filter by status
+	Status *string `json:"-" url:"status,omitempty"`
+	// Filter by reporter ID
+	ReporterID *string `json:"-" url:"reporterId,omitempty"`
+	// Filter by reported user ID
+	ReportedID *string `json:"-" url:"reportedId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListReportsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListReportsRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listReportsRequestFieldLimit)
+}
+
+// SetCursor sets the Cursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListReportsRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listReportsRequestFieldCursor)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListReportsRequest) SetStatus(status *string) {
+	l.Status = status
+	l.require(listReportsRequestFieldStatus)
+}
+
+// SetReporterID sets the ReporterID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListReportsRequest) SetReporterID(reporterID *string) {
+	l.ReporterID = reporterID
+	l.require(listReportsRequestFieldReporterID)
+}
+
+// SetReportedID sets the ReportedID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListReportsRequest) SetReportedID(reportedID *string) {
+	l.ReportedID = reportedID
+	l.require(listReportsRequestFieldReportedID)
+}
+
+var (
+	retrieveReportsRequestFieldID = big.NewInt(1 << 0)
+)
+
+type RetrieveReportsRequest struct {
+	// Report ID
 	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetReportsIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (r *RetrieveReportsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getReportsIDRequestFieldID)
+func (r *RetrieveReportsRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveReportsRequestFieldID)
 }
 
 var (
-	getReportsRequestFieldPage   = big.NewInt(1 << 0)
-	getReportsRequestFieldLimit  = big.NewInt(1 << 1)
-	getReportsRequestFieldSearch = big.NewInt(1 << 2)
+	reportListResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetReportsRequest struct {
-	Page   *int    `json:"-" url:"page,omitempty"`
-	Limit  *int    `json:"-" url:"limit,omitempty"`
-	Search *string `json:"-" url:"search,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetReportsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getReportsRequestFieldPage)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getReportsRequestFieldLimit)
-}
-
-// SetSearch sets the Search field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsRequest) SetSearch(search *string) {
-	g.Search = search
-	g.require(getReportsRequestFieldSearch)
-}
-
-var (
-	deleteReportsIDResponseFieldSuccess = big.NewInt(1 << 0)
-)
-
-type DeleteReportsIDResponse struct {
-	Success bool `json:"success" url:"success"`
+type ReportListResponse struct {
+	Data *ReportListResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -202,165 +247,202 @@ type DeleteReportsIDResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (d *DeleteReportsIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
-	}
-	return d.Success
-}
-
-func (d *DeleteReportsIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeleteReportsIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteReportsIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deleteReportsIDResponseFieldSuccess)
-}
-
-func (d *DeleteReportsIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteReportsIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteReportsIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteReportsIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteReportsIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteReportsIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	getReportsIDResponseFieldData = big.NewInt(1 << 0)
-)
-
-type GetReportsIDResponse struct {
-	Data *GetReportsIDResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetReportsIDResponse) GetData() *GetReportsIDResponseData {
-	if g == nil {
+func (r *ReportListResponse) GetData() *ReportListResponseData {
+	if r == nil {
 		return nil
 	}
-	return g.Data
+	return r.Data
 }
 
-func (g *GetReportsIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (r *ReportListResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
-func (g *GetReportsIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (r *ReportListResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponse) SetData(data *GetReportsIDResponseData) {
-	g.Data = data
-	g.require(getReportsIDResponseFieldData)
+func (r *ReportListResponse) SetData(data *ReportListResponseData) {
+	r.Data = data
+	r.require(reportListResponseFieldData)
 }
 
-func (g *GetReportsIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetReportsIDResponse
+func (r *ReportListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReportListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetReportsIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*r = ReportListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetReportsIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetReportsIDResponse
+func (r *ReportListResponse) MarshalJSON() ([]byte, error) {
+	type embed ReportListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetReportsIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (r *ReportListResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	getReportsIDResponseDataFieldType             = big.NewInt(1 << 0)
-	getReportsIDResponseDataFieldDescription      = big.NewInt(1 << 1)
-	getReportsIDResponseDataFieldUserID           = big.NewInt(1 << 2)
-	getReportsIDResponseDataFieldReportedID       = big.NewInt(1 << 3)
-	getReportsIDResponseDataFieldThreadID         = big.NewInt(1 << 4)
-	getReportsIDResponseDataFieldPostID           = big.NewInt(1 << 5)
-	getReportsIDResponseDataFieldPrivateMessageID = big.NewInt(1 << 6)
-	getReportsIDResponseDataFieldID               = big.NewInt(1 << 7)
-	getReportsIDResponseDataFieldStatus           = big.NewInt(1 << 8)
-	getReportsIDResponseDataFieldCreatedAt        = big.NewInt(1 << 9)
-	getReportsIDResponseDataFieldUpdatedAt        = big.NewInt(1 << 10)
+	reportListResponseDataFieldItems      = big.NewInt(1 << 0)
+	reportListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	reportListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type GetReportsIDResponseData struct {
+type ReportListResponseData struct {
+	Items []*ReportListResponseDataItemsItem `json:"items" url:"items"`
+	// Cursor for next page
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	// Total count of items
+	Count int `json:"count" url:"count"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReportListResponseData) GetItems() []*ReportListResponseDataItemsItem {
+	if r == nil {
+		return nil
+	}
+	return r.Items
+}
+
+func (r *ReportListResponseData) GetNextCursor() *string {
+	if r == nil {
+		return nil
+	}
+	return r.NextCursor
+}
+
+func (r *ReportListResponseData) GetCount() int {
+	if r == nil {
+		return 0
+	}
+	return r.Count
+}
+
+func (r *ReportListResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ReportListResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseData) SetItems(items []*ReportListResponseDataItemsItem) {
+	r.Items = items
+	r.require(reportListResponseDataFieldItems)
+}
+
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseData) SetNextCursor(nextCursor *string) {
+	r.NextCursor = nextCursor
+	r.require(reportListResponseDataFieldNextCursor)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseData) SetCount(count int) {
+	r.Count = count
+	r.require(reportListResponseDataFieldCount)
+}
+
+func (r *ReportListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReportListResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ReportListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReportListResponseData) MarshalJSON() ([]byte, error) {
+	type embed ReportListResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReportListResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	reportListResponseDataItemsItemFieldType             = big.NewInt(1 << 0)
+	reportListResponseDataItemsItemFieldStatus           = big.NewInt(1 << 1)
+	reportListResponseDataItemsItemFieldDescription      = big.NewInt(1 << 2)
+	reportListResponseDataItemsItemFieldUserID           = big.NewInt(1 << 3)
+	reportListResponseDataItemsItemFieldReportedID       = big.NewInt(1 << 4)
+	reportListResponseDataItemsItemFieldThreadID         = big.NewInt(1 << 5)
+	reportListResponseDataItemsItemFieldPostID           = big.NewInt(1 << 6)
+	reportListResponseDataItemsItemFieldPrivateMessageID = big.NewInt(1 << 7)
+	reportListResponseDataItemsItemFieldExtendedData     = big.NewInt(1 << 8)
+	reportListResponseDataItemsItemFieldID               = big.NewInt(1 << 9)
+	reportListResponseDataItemsItemFieldCreatedAt        = big.NewInt(1 << 10)
+	reportListResponseDataItemsItemFieldUpdatedAt        = big.NewInt(1 << 11)
+)
+
+type ReportListResponseDataItemsItem struct {
 	// Report type (e.g. spam, abuse)
 	Type string `json:"type" url:"type"`
+	// Report status (pending, reviewed, resolved, dismissed)
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
 	// Reason for reporting
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 	// Reporter user ID (required for API key auth, ignored for JWT auth)
@@ -373,9 +455,9 @@ type GetReportsIDResponseData struct {
 	PostID *string `json:"postId,omitempty" url:"postId,omitempty"`
 	// ID of private message being reported
 	PrivateMessageID *string `json:"privateMessageId,omitempty" url:"privateMessageId,omitempty"`
-	ID               string  `json:"id" url:"id"`
-	// Report status (pending, reviewed, resolved, dismissed)
-	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
+	ID           string                 `json:"id" url:"id"`
 	// Report creation timestamp
 	CreatedAt string `json:"createdAt" url:"createdAt"`
 	// Report last update timestamp
@@ -388,218 +470,230 @@ type GetReportsIDResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetReportsIDResponseData) GetType() string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetType() string {
+	if r == nil {
 		return ""
 	}
-	return g.Type
+	return r.Type
 }
 
-func (g *GetReportsIDResponseData) GetDescription() *string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetStatus() *string {
+	if r == nil {
 		return nil
 	}
-	return g.Description
+	return r.Status
 }
 
-func (g *GetReportsIDResponseData) GetUserID() *string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return g.UserID
+	return r.Description
 }
 
-func (g *GetReportsIDResponseData) GetReportedID() *string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetUserID() *string {
+	if r == nil {
 		return nil
 	}
-	return g.ReportedID
+	return r.UserID
 }
 
-func (g *GetReportsIDResponseData) GetThreadID() *string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetReportedID() *string {
+	if r == nil {
 		return nil
 	}
-	return g.ThreadID
+	return r.ReportedID
 }
 
-func (g *GetReportsIDResponseData) GetPostID() *string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetThreadID() *string {
+	if r == nil {
 		return nil
 	}
-	return g.PostID
+	return r.ThreadID
 }
 
-func (g *GetReportsIDResponseData) GetPrivateMessageID() *string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetPostID() *string {
+	if r == nil {
 		return nil
 	}
-	return g.PrivateMessageID
+	return r.PostID
 }
 
-func (g *GetReportsIDResponseData) GetID() string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetPrivateMessageID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.PrivateMessageID
+}
+
+func (r *ReportListResponseDataItemsItem) GetExtendedData() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.ExtendedData
+}
+
+func (r *ReportListResponseDataItemsItem) GetID() string {
+	if r == nil {
 		return ""
 	}
-	return g.ID
+	return r.ID
 }
 
-func (g *GetReportsIDResponseData) GetStatus() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Status
-}
-
-func (g *GetReportsIDResponseData) GetCreatedAt() string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetCreatedAt() string {
+	if r == nil {
 		return ""
 	}
-	return g.CreatedAt
+	return r.CreatedAt
 }
 
-func (g *GetReportsIDResponseData) GetUpdatedAt() string {
-	if g == nil {
+func (r *ReportListResponseDataItemsItem) GetUpdatedAt() string {
+	if r == nil {
 		return ""
 	}
-	return g.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (g *GetReportsIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (r *ReportListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
-func (g *GetReportsIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (r *ReportListResponseDataItemsItem) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetType(type_ string) {
-	g.Type = type_
-	g.require(getReportsIDResponseDataFieldType)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetDescription(description *string) {
-	g.Description = description
-	g.require(getReportsIDResponseDataFieldDescription)
-}
-
-// SetUserID sets the UserID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetUserID(userID *string) {
-	g.UserID = userID
-	g.require(getReportsIDResponseDataFieldUserID)
-}
-
-// SetReportedID sets the ReportedID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetReportedID(reportedID *string) {
-	g.ReportedID = reportedID
-	g.require(getReportsIDResponseDataFieldReportedID)
-}
-
-// SetThreadID sets the ThreadID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetThreadID(threadID *string) {
-	g.ThreadID = threadID
-	g.require(getReportsIDResponseDataFieldThreadID)
-}
-
-// SetPostID sets the PostID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetPostID(postID *string) {
-	g.PostID = postID
-	g.require(getReportsIDResponseDataFieldPostID)
-}
-
-// SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetPrivateMessageID(privateMessageID *string) {
-	g.PrivateMessageID = privateMessageID
-	g.require(getReportsIDResponseDataFieldPrivateMessageID)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetID(id string) {
-	g.ID = id
-	g.require(getReportsIDResponseDataFieldID)
+func (r *ReportListResponseDataItemsItem) SetType(type_ string) {
+	r.Type = type_
+	r.require(reportListResponseDataItemsItemFieldType)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetStatus(status *string) {
-	g.Status = status
-	g.require(getReportsIDResponseDataFieldStatus)
+func (r *ReportListResponseDataItemsItem) SetStatus(status *string) {
+	r.Status = status
+	r.require(reportListResponseDataItemsItemFieldStatus)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseDataItemsItem) SetDescription(description *string) {
+	r.Description = description
+	r.require(reportListResponseDataItemsItemFieldDescription)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseDataItemsItem) SetUserID(userID *string) {
+	r.UserID = userID
+	r.require(reportListResponseDataItemsItemFieldUserID)
+}
+
+// SetReportedID sets the ReportedID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseDataItemsItem) SetReportedID(reportedID *string) {
+	r.ReportedID = reportedID
+	r.require(reportListResponseDataItemsItemFieldReportedID)
+}
+
+// SetThreadID sets the ThreadID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseDataItemsItem) SetThreadID(threadID *string) {
+	r.ThreadID = threadID
+	r.require(reportListResponseDataItemsItemFieldThreadID)
+}
+
+// SetPostID sets the PostID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseDataItemsItem) SetPostID(postID *string) {
+	r.PostID = postID
+	r.require(reportListResponseDataItemsItemFieldPostID)
+}
+
+// SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseDataItemsItem) SetPrivateMessageID(privateMessageID *string) {
+	r.PrivateMessageID = privateMessageID
+	r.require(reportListResponseDataItemsItemFieldPrivateMessageID)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseDataItemsItem) SetExtendedData(extendedData map[string]interface{}) {
+	r.ExtendedData = extendedData
+	r.require(reportListResponseDataItemsItemFieldExtendedData)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportListResponseDataItemsItem) SetID(id string) {
+	r.ID = id
+	r.require(reportListResponseDataItemsItemFieldID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getReportsIDResponseDataFieldCreatedAt)
+func (r *ReportListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	r.CreatedAt = createdAt
+	r.require(reportListResponseDataItemsItemFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsIDResponseData) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getReportsIDResponseDataFieldUpdatedAt)
+func (r *ReportListResponseDataItemsItem) SetUpdatedAt(updatedAt string) {
+	r.UpdatedAt = updatedAt
+	r.require(reportListResponseDataItemsItemFieldUpdatedAt)
 }
 
-func (g *GetReportsIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetReportsIDResponseData
+func (r *ReportListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReportListResponseDataItemsItem
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetReportsIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*r = ReportListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetReportsIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetReportsIDResponseData
+func (r *ReportListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed ReportListResponseDataItemsItem
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetReportsIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (r *ReportListResponseDataItemsItem) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	getReportsResponseFieldData = big.NewInt(1 << 0)
-	getReportsResponseFieldMeta = big.NewInt(1 << 1)
+	reportResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetReportsResponse struct {
-	Data []*GetReportsResponseDataItem `json:"data" url:"data"`
-	Meta *GetReportsResponseMeta       `json:"meta" url:"meta"`
+type ReportResponse struct {
+	Data *ReportResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -608,101 +702,90 @@ type GetReportsResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetReportsResponse) GetData() []*GetReportsResponseDataItem {
-	if g == nil {
+func (r *ReportResponse) GetData() *ReportResponseData {
+	if r == nil {
 		return nil
 	}
-	return g.Data
+	return r.Data
 }
 
-func (g *GetReportsResponse) GetMeta() *GetReportsResponseMeta {
-	if g == nil {
-		return nil
+func (r *ReportResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ReportResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return g.Meta
-}
-
-func (g *GetReportsResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetReportsResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponse) SetData(data []*GetReportsResponseDataItem) {
-	g.Data = data
-	g.require(getReportsResponseFieldData)
+func (r *ReportResponse) SetData(data *ReportResponseData) {
+	r.Data = data
+	r.require(reportResponseFieldData)
 }
 
-// SetMeta sets the Meta field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponse) SetMeta(meta *GetReportsResponseMeta) {
-	g.Meta = meta
-	g.require(getReportsResponseFieldMeta)
-}
-
-func (g *GetReportsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetReportsResponse
+func (r *ReportResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReportResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetReportsResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*r = ReportResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetReportsResponse) MarshalJSON() ([]byte, error) {
-	type embed GetReportsResponse
+func (r *ReportResponse) MarshalJSON() ([]byte, error) {
+	type embed ReportResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetReportsResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (r *ReportResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	getReportsResponseDataItemFieldType             = big.NewInt(1 << 0)
-	getReportsResponseDataItemFieldDescription      = big.NewInt(1 << 1)
-	getReportsResponseDataItemFieldUserID           = big.NewInt(1 << 2)
-	getReportsResponseDataItemFieldReportedID       = big.NewInt(1 << 3)
-	getReportsResponseDataItemFieldThreadID         = big.NewInt(1 << 4)
-	getReportsResponseDataItemFieldPostID           = big.NewInt(1 << 5)
-	getReportsResponseDataItemFieldPrivateMessageID = big.NewInt(1 << 6)
-	getReportsResponseDataItemFieldID               = big.NewInt(1 << 7)
-	getReportsResponseDataItemFieldStatus           = big.NewInt(1 << 8)
-	getReportsResponseDataItemFieldCreatedAt        = big.NewInt(1 << 9)
-	getReportsResponseDataItemFieldUpdatedAt        = big.NewInt(1 << 10)
+	reportResponseDataFieldType             = big.NewInt(1 << 0)
+	reportResponseDataFieldStatus           = big.NewInt(1 << 1)
+	reportResponseDataFieldDescription      = big.NewInt(1 << 2)
+	reportResponseDataFieldUserID           = big.NewInt(1 << 3)
+	reportResponseDataFieldReportedID       = big.NewInt(1 << 4)
+	reportResponseDataFieldThreadID         = big.NewInt(1 << 5)
+	reportResponseDataFieldPostID           = big.NewInt(1 << 6)
+	reportResponseDataFieldPrivateMessageID = big.NewInt(1 << 7)
+	reportResponseDataFieldExtendedData     = big.NewInt(1 << 8)
+	reportResponseDataFieldID               = big.NewInt(1 << 9)
+	reportResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
+	reportResponseDataFieldUpdatedAt        = big.NewInt(1 << 11)
 )
 
-type GetReportsResponseDataItem struct {
+type ReportResponseData struct {
 	// Report type (e.g. spam, abuse)
 	Type string `json:"type" url:"type"`
+	// Report status (pending, reviewed, resolved, dismissed)
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
 	// Reason for reporting
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 	// Reporter user ID (required for API key auth, ignored for JWT auth)
@@ -715,9 +798,9 @@ type GetReportsResponseDataItem struct {
 	PostID *string `json:"postId,omitempty" url:"postId,omitempty"`
 	// ID of private message being reported
 	PrivateMessageID *string `json:"privateMessageId,omitempty" url:"privateMessageId,omitempty"`
-	ID               string  `json:"id" url:"id"`
-	// Report status (pending, reviewed, resolved, dismissed)
-	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
+	ID           string                 `json:"id" url:"id"`
 	// Report creation timestamp
 	CreatedAt string `json:"createdAt" url:"createdAt"`
 	// Report last update timestamp
@@ -730,220 +813,230 @@ type GetReportsResponseDataItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetReportsResponseDataItem) GetType() string {
-	if g == nil {
+func (r *ReportResponseData) GetType() string {
+	if r == nil {
 		return ""
 	}
-	return g.Type
+	return r.Type
 }
 
-func (g *GetReportsResponseDataItem) GetDescription() *string {
-	if g == nil {
+func (r *ReportResponseData) GetStatus() *string {
+	if r == nil {
 		return nil
 	}
-	return g.Description
+	return r.Status
 }
 
-func (g *GetReportsResponseDataItem) GetUserID() *string {
-	if g == nil {
+func (r *ReportResponseData) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return g.UserID
+	return r.Description
 }
 
-func (g *GetReportsResponseDataItem) GetReportedID() *string {
-	if g == nil {
+func (r *ReportResponseData) GetUserID() *string {
+	if r == nil {
 		return nil
 	}
-	return g.ReportedID
+	return r.UserID
 }
 
-func (g *GetReportsResponseDataItem) GetThreadID() *string {
-	if g == nil {
+func (r *ReportResponseData) GetReportedID() *string {
+	if r == nil {
 		return nil
 	}
-	return g.ThreadID
+	return r.ReportedID
 }
 
-func (g *GetReportsResponseDataItem) GetPostID() *string {
-	if g == nil {
+func (r *ReportResponseData) GetThreadID() *string {
+	if r == nil {
 		return nil
 	}
-	return g.PostID
+	return r.ThreadID
 }
 
-func (g *GetReportsResponseDataItem) GetPrivateMessageID() *string {
-	if g == nil {
+func (r *ReportResponseData) GetPostID() *string {
+	if r == nil {
 		return nil
 	}
-	return g.PrivateMessageID
+	return r.PostID
 }
 
-func (g *GetReportsResponseDataItem) GetID() string {
-	if g == nil {
+func (r *ReportResponseData) GetPrivateMessageID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.PrivateMessageID
+}
+
+func (r *ReportResponseData) GetExtendedData() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.ExtendedData
+}
+
+func (r *ReportResponseData) GetID() string {
+	if r == nil {
 		return ""
 	}
-	return g.ID
+	return r.ID
 }
 
-func (g *GetReportsResponseDataItem) GetStatus() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Status
-}
-
-func (g *GetReportsResponseDataItem) GetCreatedAt() string {
-	if g == nil {
+func (r *ReportResponseData) GetCreatedAt() string {
+	if r == nil {
 		return ""
 	}
-	return g.CreatedAt
+	return r.CreatedAt
 }
 
-func (g *GetReportsResponseDataItem) GetUpdatedAt() string {
-	if g == nil {
+func (r *ReportResponseData) GetUpdatedAt() string {
+	if r == nil {
 		return ""
 	}
-	return g.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (g *GetReportsResponseDataItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (r *ReportResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
-func (g *GetReportsResponseDataItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (r *ReportResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetType(type_ string) {
-	g.Type = type_
-	g.require(getReportsResponseDataItemFieldType)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetDescription(description *string) {
-	g.Description = description
-	g.require(getReportsResponseDataItemFieldDescription)
-}
-
-// SetUserID sets the UserID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetUserID(userID *string) {
-	g.UserID = userID
-	g.require(getReportsResponseDataItemFieldUserID)
-}
-
-// SetReportedID sets the ReportedID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetReportedID(reportedID *string) {
-	g.ReportedID = reportedID
-	g.require(getReportsResponseDataItemFieldReportedID)
-}
-
-// SetThreadID sets the ThreadID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetThreadID(threadID *string) {
-	g.ThreadID = threadID
-	g.require(getReportsResponseDataItemFieldThreadID)
-}
-
-// SetPostID sets the PostID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetPostID(postID *string) {
-	g.PostID = postID
-	g.require(getReportsResponseDataItemFieldPostID)
-}
-
-// SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetPrivateMessageID(privateMessageID *string) {
-	g.PrivateMessageID = privateMessageID
-	g.require(getReportsResponseDataItemFieldPrivateMessageID)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetID(id string) {
-	g.ID = id
-	g.require(getReportsResponseDataItemFieldID)
+func (r *ReportResponseData) SetType(type_ string) {
+	r.Type = type_
+	r.require(reportResponseDataFieldType)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetStatus(status *string) {
-	g.Status = status
-	g.require(getReportsResponseDataItemFieldStatus)
+func (r *ReportResponseData) SetStatus(status *string) {
+	r.Status = status
+	r.require(reportResponseDataFieldStatus)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportResponseData) SetDescription(description *string) {
+	r.Description = description
+	r.require(reportResponseDataFieldDescription)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportResponseData) SetUserID(userID *string) {
+	r.UserID = userID
+	r.require(reportResponseDataFieldUserID)
+}
+
+// SetReportedID sets the ReportedID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportResponseData) SetReportedID(reportedID *string) {
+	r.ReportedID = reportedID
+	r.require(reportResponseDataFieldReportedID)
+}
+
+// SetThreadID sets the ThreadID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportResponseData) SetThreadID(threadID *string) {
+	r.ThreadID = threadID
+	r.require(reportResponseDataFieldThreadID)
+}
+
+// SetPostID sets the PostID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportResponseData) SetPostID(postID *string) {
+	r.PostID = postID
+	r.require(reportResponseDataFieldPostID)
+}
+
+// SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportResponseData) SetPrivateMessageID(privateMessageID *string) {
+	r.PrivateMessageID = privateMessageID
+	r.require(reportResponseDataFieldPrivateMessageID)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	r.ExtendedData = extendedData
+	r.require(reportResponseDataFieldExtendedData)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReportResponseData) SetID(id string) {
+	r.ID = id
+	r.require(reportResponseDataFieldID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getReportsResponseDataItemFieldCreatedAt)
+func (r *ReportResponseData) SetCreatedAt(createdAt string) {
+	r.CreatedAt = createdAt
+	r.require(reportResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseDataItem) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getReportsResponseDataItemFieldUpdatedAt)
+func (r *ReportResponseData) SetUpdatedAt(updatedAt string) {
+	r.UpdatedAt = updatedAt
+	r.require(reportResponseDataFieldUpdatedAt)
 }
 
-func (g *GetReportsResponseDataItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetReportsResponseDataItem
+func (r *ReportResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReportResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetReportsResponseDataItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*r = ReportResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetReportsResponseDataItem) MarshalJSON() ([]byte, error) {
-	type embed GetReportsResponseDataItem
+func (r *ReportResponseData) MarshalJSON() ([]byte, error) {
+	type embed ReportResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetReportsResponseDataItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (r *ReportResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	getReportsResponseMetaFieldTotal = big.NewInt(1 << 0)
-	getReportsResponseMetaFieldPage  = big.NewInt(1 << 1)
-	getReportsResponseMetaFieldLimit = big.NewInt(1 << 2)
+	updateReportsResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetReportsResponseMeta struct {
-	Total int `json:"total" url:"total"`
-	Page  int `json:"page" url:"page"`
-	Limit int `json:"limit" url:"limit"`
+type UpdateReportsResponse struct {
+	Data *UpdateReportsResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -952,193 +1045,90 @@ type GetReportsResponseMeta struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetReportsResponseMeta) GetTotal() int {
-	if g == nil {
-		return 0
-	}
-	return g.Total
-}
-
-func (g *GetReportsResponseMeta) GetPage() int {
-	if g == nil {
-		return 0
-	}
-	return g.Page
-}
-
-func (g *GetReportsResponseMeta) GetLimit() int {
-	if g == nil {
-		return 0
-	}
-	return g.Limit
-}
-
-func (g *GetReportsResponseMeta) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetReportsResponseMeta) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTotal sets the Total field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseMeta) SetTotal(total int) {
-	g.Total = total
-	g.require(getReportsResponseMetaFieldTotal)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseMeta) SetPage(page int) {
-	g.Page = page
-	g.require(getReportsResponseMetaFieldPage)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetReportsResponseMeta) SetLimit(limit int) {
-	g.Limit = limit
-	g.require(getReportsResponseMetaFieldLimit)
-}
-
-func (g *GetReportsResponseMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetReportsResponseMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetReportsResponseMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetReportsResponseMeta) MarshalJSON() ([]byte, error) {
-	type embed GetReportsResponseMeta
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetReportsResponseMeta) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	postReportsResponseFieldData = big.NewInt(1 << 0)
-)
-
-type PostReportsResponse struct {
-	Data *PostReportsResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PostReportsResponse) GetData() *PostReportsResponseData {
-	if p == nil {
+func (u *UpdateReportsResponse) GetData() *UpdateReportsResponseData {
+	if u == nil {
 		return nil
 	}
-	return p.Data
+	return u.Data
 }
 
-func (p *PostReportsResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (u *UpdateReportsResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
 }
 
-func (p *PostReportsResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateReportsResponse) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponse) SetData(data *PostReportsResponseData) {
-	p.Data = data
-	p.require(postReportsResponseFieldData)
+func (u *UpdateReportsResponse) SetData(data *UpdateReportsResponseData) {
+	u.Data = data
+	u.require(updateReportsResponseFieldData)
 }
 
-func (p *PostReportsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostReportsResponse
+func (u *UpdateReportsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateReportsResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostReportsResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*u = UpdateReportsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostReportsResponse) MarshalJSON() ([]byte, error) {
-	type embed PostReportsResponse
+func (u *UpdateReportsResponse) MarshalJSON() ([]byte, error) {
+	type embed UpdateReportsResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostReportsResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (u *UpdateReportsResponse) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", u)
 }
 
 var (
-	postReportsResponseDataFieldType             = big.NewInt(1 << 0)
-	postReportsResponseDataFieldDescription      = big.NewInt(1 << 1)
-	postReportsResponseDataFieldUserID           = big.NewInt(1 << 2)
-	postReportsResponseDataFieldReportedID       = big.NewInt(1 << 3)
-	postReportsResponseDataFieldThreadID         = big.NewInt(1 << 4)
-	postReportsResponseDataFieldPostID           = big.NewInt(1 << 5)
-	postReportsResponseDataFieldPrivateMessageID = big.NewInt(1 << 6)
-	postReportsResponseDataFieldID               = big.NewInt(1 << 7)
-	postReportsResponseDataFieldStatus           = big.NewInt(1 << 8)
-	postReportsResponseDataFieldCreatedAt        = big.NewInt(1 << 9)
-	postReportsResponseDataFieldUpdatedAt        = big.NewInt(1 << 10)
+	updateReportsResponseDataFieldType             = big.NewInt(1 << 0)
+	updateReportsResponseDataFieldStatus           = big.NewInt(1 << 1)
+	updateReportsResponseDataFieldDescription      = big.NewInt(1 << 2)
+	updateReportsResponseDataFieldUserID           = big.NewInt(1 << 3)
+	updateReportsResponseDataFieldReportedID       = big.NewInt(1 << 4)
+	updateReportsResponseDataFieldThreadID         = big.NewInt(1 << 5)
+	updateReportsResponseDataFieldPostID           = big.NewInt(1 << 6)
+	updateReportsResponseDataFieldPrivateMessageID = big.NewInt(1 << 7)
+	updateReportsResponseDataFieldExtendedData     = big.NewInt(1 << 8)
+	updateReportsResponseDataFieldID               = big.NewInt(1 << 9)
+	updateReportsResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
+	updateReportsResponseDataFieldUpdatedAt        = big.NewInt(1 << 11)
 )
 
-type PostReportsResponseData struct {
+type UpdateReportsResponseData struct {
 	// Report type (e.g. spam, abuse)
 	Type string `json:"type" url:"type"`
+	// Report status (pending, reviewed, resolved, dismissed)
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
 	// Reason for reporting
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 	// Reporter user ID (required for API key auth, ignored for JWT auth)
@@ -1151,9 +1141,9 @@ type PostReportsResponseData struct {
 	PostID *string `json:"postId,omitempty" url:"postId,omitempty"`
 	// ID of private message being reported
 	PrivateMessageID *string `json:"privateMessageId,omitempty" url:"privateMessageId,omitempty"`
-	ID               string  `json:"id" url:"id"`
-	// Report status (pending, reviewed, resolved, dismissed)
-	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
+	ID           string                 `json:"id" url:"id"`
 	// Report creation timestamp
 	CreatedAt string `json:"createdAt" url:"createdAt"`
 	// Report last update timestamp
@@ -1166,206 +1156,276 @@ type PostReportsResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostReportsResponseData) GetType() string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetType() string {
+	if u == nil {
 		return ""
 	}
-	return p.Type
+	return u.Type
 }
 
-func (p *PostReportsResponseData) GetDescription() *string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetStatus() *string {
+	if u == nil {
 		return nil
 	}
-	return p.Description
+	return u.Status
 }
 
-func (p *PostReportsResponseData) GetUserID() *string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return p.UserID
+	return u.Description
 }
 
-func (p *PostReportsResponseData) GetReportedID() *string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetUserID() *string {
+	if u == nil {
 		return nil
 	}
-	return p.ReportedID
+	return u.UserID
 }
 
-func (p *PostReportsResponseData) GetThreadID() *string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetReportedID() *string {
+	if u == nil {
 		return nil
 	}
-	return p.ThreadID
+	return u.ReportedID
 }
 
-func (p *PostReportsResponseData) GetPostID() *string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetThreadID() *string {
+	if u == nil {
 		return nil
 	}
-	return p.PostID
+	return u.ThreadID
 }
 
-func (p *PostReportsResponseData) GetPrivateMessageID() *string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetPostID() *string {
+	if u == nil {
 		return nil
 	}
-	return p.PrivateMessageID
+	return u.PostID
 }
 
-func (p *PostReportsResponseData) GetID() string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetPrivateMessageID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.PrivateMessageID
+}
+
+func (u *UpdateReportsResponseData) GetExtendedData() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
+	return u.ExtendedData
+}
+
+func (u *UpdateReportsResponseData) GetID() string {
+	if u == nil {
 		return ""
 	}
-	return p.ID
+	return u.ID
 }
 
-func (p *PostReportsResponseData) GetStatus() *string {
-	if p == nil {
-		return nil
-	}
-	return p.Status
-}
-
-func (p *PostReportsResponseData) GetCreatedAt() string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetCreatedAt() string {
+	if u == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return u.CreatedAt
 }
 
-func (p *PostReportsResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (u *UpdateReportsResponseData) GetUpdatedAt() string {
+	if u == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return u.UpdatedAt
 }
 
-func (p *PostReportsResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (u *UpdateReportsResponseData) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
 }
 
-func (p *PostReportsResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateReportsResponseData) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetType(type_ string) {
-	p.Type = type_
-	p.require(postReportsResponseDataFieldType)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetDescription(description *string) {
-	p.Description = description
-	p.require(postReportsResponseDataFieldDescription)
-}
-
-// SetUserID sets the UserID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetUserID(userID *string) {
-	p.UserID = userID
-	p.require(postReportsResponseDataFieldUserID)
-}
-
-// SetReportedID sets the ReportedID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetReportedID(reportedID *string) {
-	p.ReportedID = reportedID
-	p.require(postReportsResponseDataFieldReportedID)
-}
-
-// SetThreadID sets the ThreadID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetThreadID(threadID *string) {
-	p.ThreadID = threadID
-	p.require(postReportsResponseDataFieldThreadID)
-}
-
-// SetPostID sets the PostID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetPostID(postID *string) {
-	p.PostID = postID
-	p.require(postReportsResponseDataFieldPostID)
-}
-
-// SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetPrivateMessageID(privateMessageID *string) {
-	p.PrivateMessageID = privateMessageID
-	p.require(postReportsResponseDataFieldPrivateMessageID)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetID(id string) {
-	p.ID = id
-	p.require(postReportsResponseDataFieldID)
+func (u *UpdateReportsResponseData) SetType(type_ string) {
+	u.Type = type_
+	u.require(updateReportsResponseDataFieldType)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetStatus(status *string) {
-	p.Status = status
-	p.require(postReportsResponseDataFieldStatus)
+func (u *UpdateReportsResponseData) SetStatus(status *string) {
+	u.Status = status
+	u.require(updateReportsResponseDataFieldStatus)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsResponseData) SetDescription(description *string) {
+	u.Description = description
+	u.require(updateReportsResponseDataFieldDescription)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsResponseData) SetUserID(userID *string) {
+	u.UserID = userID
+	u.require(updateReportsResponseDataFieldUserID)
+}
+
+// SetReportedID sets the ReportedID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsResponseData) SetReportedID(reportedID *string) {
+	u.ReportedID = reportedID
+	u.require(updateReportsResponseDataFieldReportedID)
+}
+
+// SetThreadID sets the ThreadID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsResponseData) SetThreadID(threadID *string) {
+	u.ThreadID = threadID
+	u.require(updateReportsResponseDataFieldThreadID)
+}
+
+// SetPostID sets the PostID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsResponseData) SetPostID(postID *string) {
+	u.PostID = postID
+	u.require(updateReportsResponseDataFieldPostID)
+}
+
+// SetPrivateMessageID sets the PrivateMessageID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsResponseData) SetPrivateMessageID(privateMessageID *string) {
+	u.PrivateMessageID = privateMessageID
+	u.require(updateReportsResponseDataFieldPrivateMessageID)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateReportsResponseDataFieldExtendedData)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsResponseData) SetID(id string) {
+	u.ID = id
+	u.require(updateReportsResponseDataFieldID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(postReportsResponseDataFieldCreatedAt)
+func (u *UpdateReportsResponseData) SetCreatedAt(createdAt string) {
+	u.CreatedAt = createdAt
+	u.require(updateReportsResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostReportsResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(postReportsResponseDataFieldUpdatedAt)
+func (u *UpdateReportsResponseData) SetUpdatedAt(updatedAt string) {
+	u.UpdatedAt = updatedAt
+	u.require(updateReportsResponseDataFieldUpdatedAt)
 }
 
-func (p *PostReportsResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostReportsResponseData
+func (u *UpdateReportsResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateReportsResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostReportsResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*u = UpdateReportsResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostReportsResponseData) MarshalJSON() ([]byte, error) {
-	type embed PostReportsResponseData
+func (u *UpdateReportsResponseData) MarshalJSON() ([]byte, error) {
+	type embed UpdateReportsResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostReportsResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (u *UpdateReportsResponseData) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateReportsRequestFieldID           = big.NewInt(1 << 0)
+	updateReportsRequestFieldStatus       = big.NewInt(1 << 1)
+	updateReportsRequestFieldDescription  = big.NewInt(1 << 2)
+	updateReportsRequestFieldExtendedData = big.NewInt(1 << 3)
+)
+
+type UpdateReportsRequest struct {
+	// Report ID
+	ID string `json:"-" url:"-"`
+	// Report status (pending, reviewed, resolved, dismissed)
+	Status *string `json:"status,omitempty" url:"-"`
+	// Updated description or admin notes
+	Description *string `json:"description,omitempty" url:"-"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (u *UpdateReportsRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsRequest) SetID(id string) {
+	u.ID = id
+	u.require(updateReportsRequestFieldID)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsRequest) SetStatus(status *string) {
+	u.Status = status
+	u.require(updateReportsRequestFieldStatus)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsRequest) SetDescription(description *string) {
+	u.Description = description
+	u.require(updateReportsRequestFieldDescription)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateReportsRequest) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateReportsRequestFieldExtendedData)
 }

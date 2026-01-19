@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestIntegrationsListAllIntegrationsWithWireMock(
+func TestIntegrationsListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestIntegrationsListAllIntegrationsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetIntegrationsRequest{}
-	_, invocationErr := client.Integrations.ListAllIntegrations(
+	request := &foru_ms_sdk.ListIntegrationsRequest{}
+	_, invocationErr := client.Integrations.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestIntegrationsListAllIntegrationsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestIntegrationsListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestIntegrationsListAllIntegrationsWithWireMock", "GET", "/integrations", nil, 1)
+	VerifyRequestCount(t, "TestIntegrationsListWithWireMock", "GET", "/integrations", nil, 1)
 }
 
-func TestIntegrationsCreateAnIntegrationWithWireMock(
+func TestIntegrationsCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,25 +101,26 @@ func TestIntegrationsCreateAnIntegrationWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostIntegrationsRequest{
+	request := &foru_ms_sdk.CreateIntegrationsRequest{
 		Type: "type",
+		Name: "name",
 		Config: map[string]any{
 			"key": "value",
 		},
 	}
-	_, invocationErr := client.Integrations.CreateAnIntegration(
+	_, invocationErr := client.Integrations.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestIntegrationsCreateAnIntegrationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestIntegrationsCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestIntegrationsCreateAnIntegrationWithWireMock", "POST", "/integrations", nil, 1)
+	VerifyRequestCount(t, "TestIntegrationsCreateWithWireMock", "POST", "/integrations", nil, 1)
 }
 
-func TestIntegrationsGetAnIntegrationWithWireMock(
+func TestIntegrationsRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -132,22 +133,22 @@ func TestIntegrationsGetAnIntegrationWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetIntegrationsIDRequest{
+	request := &foru_ms_sdk.RetrieveIntegrationsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Integrations.GetAnIntegration(
+	_, invocationErr := client.Integrations.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestIntegrationsGetAnIntegrationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestIntegrationsRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestIntegrationsGetAnIntegrationWithWireMock", "GET", "/integrations/id", nil, 1)
+	VerifyRequestCount(t, "TestIntegrationsRetrieveWithWireMock", "GET", "/integrations/id", nil, 1)
 }
 
-func TestIntegrationsDeleteAnIntegrationWithWireMock(
+func TestIntegrationsDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -160,22 +161,22 @@ func TestIntegrationsDeleteAnIntegrationWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteIntegrationsIDRequest{
+	request := &foru_ms_sdk.DeleteIntegrationsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Integrations.DeleteAnIntegration(
+	_, invocationErr := client.Integrations.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestIntegrationsDeleteAnIntegrationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestIntegrationsDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestIntegrationsDeleteAnIntegrationWithWireMock", "DELETE", "/integrations/id", nil, 1)
+	VerifyRequestCount(t, "TestIntegrationsDeleteWithWireMock", "DELETE", "/integrations/id", nil, 1)
 }
 
-func TestIntegrationsUpdateAnIntegrationWithWireMock(
+func TestIntegrationsUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -188,17 +189,17 @@ func TestIntegrationsUpdateAnIntegrationWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PatchIntegrationsIDRequest{
+	request := &foru_ms_sdk.UpdateIntegrationsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Integrations.UpdateAnIntegration(
+	_, invocationErr := client.Integrations.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestIntegrationsUpdateAnIntegrationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestIntegrationsUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestIntegrationsUpdateAnIntegrationWithWireMock", "PATCH", "/integrations/id", nil, 1)
+	VerifyRequestCount(t, "TestIntegrationsUpdateWithWireMock", "PATCH", "/integrations/id", nil, 1)
 }

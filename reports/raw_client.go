@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllReports(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetReportsRequest,
+	request *foru_ms_sdk.ListReportsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetReportsResponse], error) {
+) (*core.Response[*foru_ms_sdk.ReportListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllReports(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetReportsResponse
+	var response *foru_ms_sdk.ReportListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllReports(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetReportsResponse]{
+	return &core.Response[*foru_ms_sdk.ReportListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateAReport(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostReportsRequest,
+	request *foru_ms_sdk.CreateReportsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostReportsResponse], error) {
+) (*core.Response[*foru_ms_sdk.ReportResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateAReport(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostReportsResponse
+	var response *foru_ms_sdk.ReportResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateAReport(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostReportsResponse]{
+	return &core.Response[*foru_ms_sdk.ReportResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAReport(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetReportsIDRequest,
+	request *foru_ms_sdk.RetrieveReportsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetReportsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.ReportResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetAReport(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetReportsIDResponse
+	var response *foru_ms_sdk.ReportResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetAReport(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetReportsIDResponse]{
+	return &core.Response[*foru_ms_sdk.ReportResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAReport(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteReportsIDRequest,
+	request *foru_ms_sdk.DeleteReportsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteReportsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteAReport(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteReportsIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,7 +202,53 @@ func (r *RawClient) DeleteAReport(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteReportsIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) Update(
+	ctx context.Context,
+	request *foru_ms_sdk.UpdateReportsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*foru_ms_sdk.UpdateReportsResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api.foru.ms/v2",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/reports/%v",
+		request.ID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *foru_ms_sdk.UpdateReportsResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPatch,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(foru_ms_sdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*foru_ms_sdk.UpdateReportsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

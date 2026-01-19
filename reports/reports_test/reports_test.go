@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestReportsListAllReportsWithWireMock(
+func TestReportsListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestReportsListAllReportsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetReportsRequest{}
-	_, invocationErr := client.Reports.ListAllReports(
+	request := &foru_ms_sdk.ListReportsRequest{}
+	_, invocationErr := client.Reports.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestReportsListAllReportsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestReportsListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestReportsListAllReportsWithWireMock", "GET", "/reports", nil, 1)
+	VerifyRequestCount(t, "TestReportsListWithWireMock", "GET", "/reports", nil, 1)
 }
 
-func TestReportsCreateAReportWithWireMock(
+func TestReportsCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,22 +101,22 @@ func TestReportsCreateAReportWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostReportsRequest{
+	request := &foru_ms_sdk.CreateReportsRequest{
 		Type: "type",
 	}
-	_, invocationErr := client.Reports.CreateAReport(
+	_, invocationErr := client.Reports.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestReportsCreateAReportWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestReportsCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestReportsCreateAReportWithWireMock", "POST", "/reports", nil, 1)
+	VerifyRequestCount(t, "TestReportsCreateWithWireMock", "POST", "/reports", nil, 1)
 }
 
-func TestReportsGetAReportWithWireMock(
+func TestReportsRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -129,22 +129,22 @@ func TestReportsGetAReportWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetReportsIDRequest{
+	request := &foru_ms_sdk.RetrieveReportsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Reports.GetAReport(
+	_, invocationErr := client.Reports.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestReportsGetAReportWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestReportsRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestReportsGetAReportWithWireMock", "GET", "/reports/id", nil, 1)
+	VerifyRequestCount(t, "TestReportsRetrieveWithWireMock", "GET", "/reports/id", nil, 1)
 }
 
-func TestReportsDeleteAReportWithWireMock(
+func TestReportsDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -157,17 +157,45 @@ func TestReportsDeleteAReportWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteReportsIDRequest{
+	request := &foru_ms_sdk.DeleteReportsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Reports.DeleteAReport(
+	_, invocationErr := client.Reports.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestReportsDeleteAReportWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestReportsDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestReportsDeleteAReportWithWireMock", "DELETE", "/reports/id", nil, 1)
+	VerifyRequestCount(t, "TestReportsDeleteWithWireMock", "DELETE", "/reports/id", nil, 1)
+}
+
+func TestReportsUpdateWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(
+			WireMockBaseURL,
+		),
+	)
+	request := &foru_ms_sdk.UpdateReportsRequest{
+		ID: "id",
+	}
+	_, invocationErr := client.Reports.Update(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestReportsUpdateWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestReportsUpdateWithWireMock", "PATCH", "/reports/id", nil, 1)
 }

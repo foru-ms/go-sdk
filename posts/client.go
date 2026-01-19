@@ -32,12 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllPosts(
+// Retrieve a paginated list of posts. Use cursor for pagination.
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsRequest,
+	request *foru_ms_sdk.ListPostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPostsResponse, error) {
-	response, err := c.WithRawResponse.ListAllPosts(
+) (*foru_ms_sdk.PostListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +49,13 @@ func (c *Client) ListAllPosts(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAPost(
+// Create a new post.
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostPostsRequest,
+	request *foru_ms_sdk.CreatePostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostPostsResponse, error) {
-	response, err := c.WithRawResponse.CreateAPost(
+) (*foru_ms_sdk.PostResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +66,13 @@ func (c *Client) CreateAPost(
 	return response.Body, nil
 }
 
-func (c *Client) GetAPost(
+// Retrieve a post by ID or slug (if supported).
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDRequest,
+	request *foru_ms_sdk.RetrievePostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPostsIDResponse, error) {
-	response, err := c.WithRawResponse.GetAPost(
+) (*foru_ms_sdk.PostResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +83,13 @@ func (c *Client) GetAPost(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAPost(
+// Permanently delete a post.
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePostsIDRequest,
+	request *foru_ms_sdk.DeletePostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeletePostsIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAPost(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +100,13 @@ func (c *Client) DeleteAPost(
 	return response.Body, nil
 }
 
-func (c *Client) UpdateAPost(
+// Update an existing post. Only provided fields will be modified.
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchPostsIDRequest,
+	request *foru_ms_sdk.UpdatePostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchPostsIDResponse, error) {
-	response, err := c.WithRawResponse.UpdateAPost(
+) (*foru_ms_sdk.UpdatePostsResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,
@@ -112,12 +117,13 @@ func (c *Client) UpdateAPost(
 	return response.Body, nil
 }
 
-func (c *Client) ListPostReactions(
+// Retrieve a paginated list of reactions for Post.
+func (c *Client) ListReactions(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDReactionsRequest,
+	request *foru_ms_sdk.ListReactionsPostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPostsIDReactionsResponse, error) {
-	response, err := c.WithRawResponse.ListPostReactions(
+) (*foru_ms_sdk.PostReactionListResponse, error) {
+	response, err := c.WithRawResponse.ListReactions(
 		ctx,
 		request,
 		opts...,
@@ -128,12 +134,13 @@ func (c *Client) ListPostReactions(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAReactionInPost(
+// Create a Reaction in Post.
+func (c *Client) CreateReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.PostPostsIDReactionsRequest,
+	request *foru_ms_sdk.CreateReactionPostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostPostsIDReactionsResponse, error) {
-	response, err := c.WithRawResponse.CreateAReactionInPost(
+) (*foru_ms_sdk.PostReactionResponse, error) {
+	response, err := c.WithRawResponse.CreateReaction(
 		ctx,
 		request,
 		opts...,
@@ -144,13 +151,12 @@ func (c *Client) CreateAReactionInPost(
 	return response.Body, nil
 }
 
-// Removes the authenticated user's reaction. No subId needed.
-func (c *Client) RemoveYourReactionFromPost(
+func (c *Client) DeleteReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePostsIDReactionsRequest,
+	request *foru_ms_sdk.DeleteReactionPostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeletePostsIDReactionsResponse, error) {
-	response, err := c.WithRawResponse.RemoveYourReactionFromPost(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeleteReaction(
 		ctx,
 		request,
 		opts...,
@@ -161,12 +167,12 @@ func (c *Client) RemoveYourReactionFromPost(
 	return response.Body, nil
 }
 
-func (c *Client) GetAReactionFromPost(
+func (c *Client) RetrieveReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDReactionsSubIDRequest,
+	request *foru_ms_sdk.RetrieveReactionPostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPostsIDReactionsSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetAReactionFromPost(
+) (*foru_ms_sdk.RetrieveReactionPostsResponse, error) {
+	response, err := c.WithRawResponse.RetrieveReaction(
 		ctx,
 		request,
 		opts...,
@@ -177,12 +183,13 @@ func (c *Client) GetAReactionFromPost(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAReactionFromPost(
+// Retrieve a paginated list of posts for Post.
+func (c *Client) ListPosts(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePostsIDReactionsSubIDRequest,
+	request *foru_ms_sdk.ListPostsPostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeletePostsIDReactionsSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAReactionFromPost(
+) (*foru_ms_sdk.PostPostListResponse, error) {
+	response, err := c.WithRawResponse.ListPosts(
 		ctx,
 		request,
 		opts...,
@@ -193,12 +200,12 @@ func (c *Client) DeleteAReactionFromPost(
 	return response.Body, nil
 }
 
-func (c *Client) ListPostPosts(
+func (c *Client) RetrievePost(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDPostsRequest,
+	request *foru_ms_sdk.RetrievePostPostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPostsIDPostsResponse, error) {
-	response, err := c.WithRawResponse.ListPostPosts(
+) (*foru_ms_sdk.RetrievePostPostsResponse, error) {
+	response, err := c.WithRawResponse.RetrievePost(
 		ctx,
 		request,
 		opts...,
@@ -209,28 +216,12 @@ func (c *Client) ListPostPosts(
 	return response.Body, nil
 }
 
-func (c *Client) GetAPostFromPost(
+func (c *Client) DeletePost(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDPostsSubIDRequest,
+	request *foru_ms_sdk.DeletePostPostsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPostsIDPostsSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetAPostFromPost(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-func (c *Client) DeleteAPostFromPost(
-	ctx context.Context,
-	request *foru_ms_sdk.DeletePostsIDPostsSubIDRequest,
-	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeletePostsIDPostsSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAPostFromPost(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeletePost(
 		ctx,
 		request,
 		opts...,

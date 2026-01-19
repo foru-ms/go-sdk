@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestTagsListAllTagsWithWireMock(
+func TestTagsListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestTagsListAllTagsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetTagsRequest{}
-	_, invocationErr := client.Tags.ListAllTags(
+	request := &foru_ms_sdk.ListTagsRequest{}
+	_, invocationErr := client.Tags.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTagsListAllTagsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestTagsListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTagsListAllTagsWithWireMock", "GET", "/tags", nil, 1)
+	VerifyRequestCount(t, "TestTagsListWithWireMock", "GET", "/tags", nil, 1)
 }
 
-func TestTagsCreateATagWithWireMock(
+func TestTagsCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,22 +101,22 @@ func TestTagsCreateATagWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostTagsRequest{
+	request := &foru_ms_sdk.CreateTagsRequest{
 		Name: "name",
 	}
-	_, invocationErr := client.Tags.CreateATag(
+	_, invocationErr := client.Tags.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTagsCreateATagWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestTagsCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTagsCreateATagWithWireMock", "POST", "/tags", nil, 1)
+	VerifyRequestCount(t, "TestTagsCreateWithWireMock", "POST", "/tags", nil, 1)
 }
 
-func TestTagsGetATagWithWireMock(
+func TestTagsRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -129,22 +129,22 @@ func TestTagsGetATagWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetTagsIDRequest{
+	request := &foru_ms_sdk.RetrieveTagsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Tags.GetATag(
+	_, invocationErr := client.Tags.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTagsGetATagWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestTagsRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTagsGetATagWithWireMock", "GET", "/tags/id", nil, 1)
+	VerifyRequestCount(t, "TestTagsRetrieveWithWireMock", "GET", "/tags/id", nil, 1)
 }
 
-func TestTagsDeleteATagWithWireMock(
+func TestTagsDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -157,22 +157,22 @@ func TestTagsDeleteATagWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteTagsIDRequest{
+	request := &foru_ms_sdk.DeleteTagsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Tags.DeleteATag(
+	_, invocationErr := client.Tags.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTagsDeleteATagWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestTagsDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTagsDeleteATagWithWireMock", "DELETE", "/tags/id", nil, 1)
+	VerifyRequestCount(t, "TestTagsDeleteWithWireMock", "DELETE", "/tags/id", nil, 1)
 }
 
-func TestTagsUpdateATagWithWireMock(
+func TestTagsUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -185,22 +185,22 @@ func TestTagsUpdateATagWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PatchTagsIDRequest{
+	request := &foru_ms_sdk.UpdateTagsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Tags.UpdateATag(
+	_, invocationErr := client.Tags.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTagsUpdateATagWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestTagsUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTagsUpdateATagWithWireMock", "PATCH", "/tags/id", nil, 1)
+	VerifyRequestCount(t, "TestTagsUpdateWithWireMock", "PATCH", "/tags/id", nil, 1)
 }
 
-func TestTagsListTagSubscribersWithWireMock(
+func TestTagsListSubscribersWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -213,22 +213,22 @@ func TestTagsListTagSubscribersWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetTagsIDSubscribersRequest{
+	request := &foru_ms_sdk.ListSubscribersTagsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Tags.ListTagSubscribers(
+	_, invocationErr := client.Tags.ListSubscribers(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTagsListTagSubscribersWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestTagsListSubscribersWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTagsListTagSubscribersWithWireMock", "GET", "/tags/id/subscribers", nil, 1)
+	VerifyRequestCount(t, "TestTagsListSubscribersWithWireMock", "GET", "/tags/id/subscribers", nil, 1)
 }
 
-func TestTagsGetASubscriberFromTagWithWireMock(
+func TestTagsRetrieveSubscriberWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -241,23 +241,23 @@ func TestTagsGetASubscriberFromTagWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetTagsIDSubscribersSubIDRequest{
+	request := &foru_ms_sdk.RetrieveSubscriberTagsRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Tags.GetASubscriberFromTag(
+	_, invocationErr := client.Tags.RetrieveSubscriber(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTagsGetASubscriberFromTagWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestTagsRetrieveSubscriberWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTagsGetASubscriberFromTagWithWireMock", "GET", "/tags/id/subscribers/subId", nil, 1)
+	VerifyRequestCount(t, "TestTagsRetrieveSubscriberWithWireMock", "GET", "/tags/id/subscribers/subId", nil, 1)
 }
 
-func TestTagsDeleteASubscriberFromTagWithWireMock(
+func TestTagsDeleteSubscriberWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -270,18 +270,18 @@ func TestTagsDeleteASubscriberFromTagWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteTagsIDSubscribersSubIDRequest{
+	request := &foru_ms_sdk.DeleteSubscriberTagsRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Tags.DeleteASubscriberFromTag(
+	_, invocationErr := client.Tags.DeleteSubscriber(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTagsDeleteASubscriberFromTagWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestTagsDeleteSubscriberWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTagsDeleteASubscriberFromTagWithWireMock", "DELETE", "/tags/id/subscribers/subId", nil, 1)
+	VerifyRequestCount(t, "TestTagsDeleteSubscriberWithWireMock", "DELETE", "/tags/id/subscribers/subId", nil, 1)
 }

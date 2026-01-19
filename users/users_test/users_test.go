@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestUsersListAllUsersWithWireMock(
+func TestUsersListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestUsersListAllUsersWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetUsersRequest{}
-	_, invocationErr := client.Users.ListAllUsers(
+	request := &foru_ms_sdk.ListUsersRequest{}
+	_, invocationErr := client.Users.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersListAllUsersWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersListAllUsersWithWireMock", "GET", "/users", nil, 1)
+	VerifyRequestCount(t, "TestUsersListWithWireMock", "GET", "/users", nil, 1)
 }
 
-func TestUsersGetAUserWithWireMock(
+func TestUsersCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,22 +101,50 @@ func TestUsersGetAUserWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetUsersIDRequest{
+	request := &foru_ms_sdk.CreateUsersRequest{
+		Username: "username",
+	}
+	_, invocationErr := client.Users.Create(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestUsersCreateWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestUsersCreateWithWireMock", "POST", "/users", nil, 1)
+}
+
+func TestUsersRetrieveWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(
+			WireMockBaseURL,
+		),
+	)
+	request := &foru_ms_sdk.RetrieveUsersRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Users.GetAUser(
+	_, invocationErr := client.Users.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersGetAUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersGetAUserWithWireMock", "GET", "/users/id", nil, 1)
+	VerifyRequestCount(t, "TestUsersRetrieveWithWireMock", "GET", "/users/id", nil, 1)
 }
 
-func TestUsersDeleteAUserWithWireMock(
+func TestUsersDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -129,22 +157,22 @@ func TestUsersDeleteAUserWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteUsersIDRequest{
+	request := &foru_ms_sdk.DeleteUsersRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Users.DeleteAUser(
+	_, invocationErr := client.Users.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersDeleteAUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersDeleteAUserWithWireMock", "DELETE", "/users/id", nil, 1)
+	VerifyRequestCount(t, "TestUsersDeleteWithWireMock", "DELETE", "/users/id", nil, 1)
 }
 
-func TestUsersUpdateAUserWithWireMock(
+func TestUsersUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -157,22 +185,22 @@ func TestUsersUpdateAUserWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PatchUsersIDRequest{
+	request := &foru_ms_sdk.UpdateUsersRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Users.UpdateAUser(
+	_, invocationErr := client.Users.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersUpdateAUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersUpdateAUserWithWireMock", "PATCH", "/users/id", nil, 1)
+	VerifyRequestCount(t, "TestUsersUpdateWithWireMock", "PATCH", "/users/id", nil, 1)
 }
 
-func TestUsersListUserFollowersWithWireMock(
+func TestUsersListFollowersWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -185,22 +213,22 @@ func TestUsersListUserFollowersWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetUsersIDFollowersRequest{
+	request := &foru_ms_sdk.ListFollowersUsersRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Users.ListUserFollowers(
+	_, invocationErr := client.Users.ListFollowers(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersListUserFollowersWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersListFollowersWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersListUserFollowersWithWireMock", "GET", "/users/id/followers", nil, 1)
+	VerifyRequestCount(t, "TestUsersListFollowersWithWireMock", "GET", "/users/id/followers", nil, 1)
 }
 
-func TestUsersGetAFollowerFromUserWithWireMock(
+func TestUsersRetrieveFollowerWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -213,23 +241,23 @@ func TestUsersGetAFollowerFromUserWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetUsersIDFollowersSubIDRequest{
+	request := &foru_ms_sdk.RetrieveFollowerUsersRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Users.GetAFollowerFromUser(
+	_, invocationErr := client.Users.RetrieveFollower(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersGetAFollowerFromUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersRetrieveFollowerWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersGetAFollowerFromUserWithWireMock", "GET", "/users/id/followers/subId", nil, 1)
+	VerifyRequestCount(t, "TestUsersRetrieveFollowerWithWireMock", "GET", "/users/id/followers/subId", nil, 1)
 }
 
-func TestUsersDeleteAFollowerFromUserWithWireMock(
+func TestUsersDeleteFollowerWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -242,23 +270,23 @@ func TestUsersDeleteAFollowerFromUserWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteUsersIDFollowersSubIDRequest{
+	request := &foru_ms_sdk.DeleteFollowerUsersRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Users.DeleteAFollowerFromUser(
+	_, invocationErr := client.Users.DeleteFollower(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersDeleteAFollowerFromUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersDeleteFollowerWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersDeleteAFollowerFromUserWithWireMock", "DELETE", "/users/id/followers/subId", nil, 1)
+	VerifyRequestCount(t, "TestUsersDeleteFollowerWithWireMock", "DELETE", "/users/id/followers/subId", nil, 1)
 }
 
-func TestUsersListUserFollowingWithWireMock(
+func TestUsersListFollowingWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -271,22 +299,22 @@ func TestUsersListUserFollowingWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetUsersIDFollowingRequest{
+	request := &foru_ms_sdk.ListFollowingUsersRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Users.ListUserFollowing(
+	_, invocationErr := client.Users.ListFollowing(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersListUserFollowingWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersListFollowingWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersListUserFollowingWithWireMock", "GET", "/users/id/following", nil, 1)
+	VerifyRequestCount(t, "TestUsersListFollowingWithWireMock", "GET", "/users/id/following", nil, 1)
 }
 
-func TestUsersGetAFollowingFromUserWithWireMock(
+func TestUsersRetrieveFollowingWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -299,23 +327,23 @@ func TestUsersGetAFollowingFromUserWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetUsersIDFollowingSubIDRequest{
+	request := &foru_ms_sdk.RetrieveFollowingUsersRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Users.GetAFollowingFromUser(
+	_, invocationErr := client.Users.RetrieveFollowing(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersGetAFollowingFromUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersRetrieveFollowingWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersGetAFollowingFromUserWithWireMock", "GET", "/users/id/following/subId", nil, 1)
+	VerifyRequestCount(t, "TestUsersRetrieveFollowingWithWireMock", "GET", "/users/id/following/subId", nil, 1)
 }
 
-func TestUsersDeleteAFollowingFromUserWithWireMock(
+func TestUsersDeleteFollowingWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -328,18 +356,18 @@ func TestUsersDeleteAFollowingFromUserWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteUsersIDFollowingSubIDRequest{
+	request := &foru_ms_sdk.DeleteFollowingUsersRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Users.DeleteAFollowingFromUser(
+	_, invocationErr := client.Users.DeleteFollowing(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestUsersDeleteAFollowingFromUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestUsersDeleteFollowingWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUsersDeleteAFollowingFromUserWithWireMock", "DELETE", "/users/id/following/subId", nil, 1)
+	VerifyRequestCount(t, "TestUsersDeleteFollowingWithWireMock", "DELETE", "/users/id/following/subId", nil, 1)
 }

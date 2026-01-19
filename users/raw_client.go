@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllUsers(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersRequest,
+	request *foru_ms_sdk.ListUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetUsersResponse], error) {
+) (*core.Response[*foru_ms_sdk.UserListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllUsers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetUsersResponse
+	var response *foru_ms_sdk.UserListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,61 @@ func (r *RawClient) ListAllUsers(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetUsersResponse]{
+	return &core.Response[*foru_ms_sdk.UserListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAUser(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDRequest,
+	request *foru_ms_sdk.CreateUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetUsersIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.UserResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api.foru.ms/v2",
+	)
+	endpointURL := baseURL + "/users"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *foru_ms_sdk.UserResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(foru_ms_sdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*foru_ms_sdk.UserResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) Retrieve(
+	ctx context.Context,
+	request *foru_ms_sdk.RetrieveUsersRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*foru_ms_sdk.UserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -97,7 +140,7 @@ func (r *RawClient) GetAUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetUsersIDResponse
+	var response *foru_ms_sdk.UserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -115,18 +158,18 @@ func (r *RawClient) GetAUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetUsersIDResponse]{
+	return &core.Response[*foru_ms_sdk.UserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAUser(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteUsersIDRequest,
+	request *foru_ms_sdk.DeleteUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteUsersIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -141,7 +184,7 @@ func (r *RawClient) DeleteAUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteUsersIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -159,18 +202,18 @@ func (r *RawClient) DeleteAUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteUsersIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdateAUser(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchUsersIDRequest,
+	request *foru_ms_sdk.UpdateUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PatchUsersIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdateUsersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -186,7 +229,7 @@ func (r *RawClient) UpdateAUser(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PatchUsersIDResponse
+	var response *foru_ms_sdk.UpdateUsersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -205,18 +248,18 @@ func (r *RawClient) UpdateAUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PatchUsersIDResponse]{
+	return &core.Response[*foru_ms_sdk.UpdateUsersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) ListUserFollowers(
+func (r *RawClient) ListFollowers(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDFollowersRequest,
+	request *foru_ms_sdk.ListFollowersUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetUsersIDFollowersResponse], error) {
+) (*core.Response[*foru_ms_sdk.UserFollowerListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -238,7 +281,7 @@ func (r *RawClient) ListUserFollowers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetUsersIDFollowersResponse
+	var response *foru_ms_sdk.UserFollowerListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -256,18 +299,18 @@ func (r *RawClient) ListUserFollowers(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetUsersIDFollowersResponse]{
+	return &core.Response[*foru_ms_sdk.UserFollowerListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAFollowerFromUser(
+func (r *RawClient) RetrieveFollower(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDFollowersSubIDRequest,
+	request *foru_ms_sdk.RetrieveFollowerUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetUsersIDFollowersSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.RetrieveFollowerUsersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -283,7 +326,7 @@ func (r *RawClient) GetAFollowerFromUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetUsersIDFollowersSubIDResponse
+	var response *foru_ms_sdk.RetrieveFollowerUsersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -301,18 +344,18 @@ func (r *RawClient) GetAFollowerFromUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetUsersIDFollowersSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.RetrieveFollowerUsersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAFollowerFromUser(
+func (r *RawClient) DeleteFollower(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteUsersIDFollowersSubIDRequest,
+	request *foru_ms_sdk.DeleteFollowerUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteUsersIDFollowersSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -328,7 +371,7 @@ func (r *RawClient) DeleteAFollowerFromUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteUsersIDFollowersSubIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -346,18 +389,18 @@ func (r *RawClient) DeleteAFollowerFromUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteUsersIDFollowersSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) ListUserFollowing(
+func (r *RawClient) ListFollowing(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDFollowingRequest,
+	request *foru_ms_sdk.ListFollowingUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetUsersIDFollowingResponse], error) {
+) (*core.Response[*foru_ms_sdk.UserFollowingListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -379,7 +422,7 @@ func (r *RawClient) ListUserFollowing(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetUsersIDFollowingResponse
+	var response *foru_ms_sdk.UserFollowingListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -397,18 +440,18 @@ func (r *RawClient) ListUserFollowing(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetUsersIDFollowingResponse]{
+	return &core.Response[*foru_ms_sdk.UserFollowingListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAFollowingFromUser(
+func (r *RawClient) RetrieveFollowing(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDFollowingSubIDRequest,
+	request *foru_ms_sdk.RetrieveFollowingUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetUsersIDFollowingSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.RetrieveFollowingUsersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -424,7 +467,7 @@ func (r *RawClient) GetAFollowingFromUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetUsersIDFollowingSubIDResponse
+	var response *foru_ms_sdk.RetrieveFollowingUsersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -442,18 +485,18 @@ func (r *RawClient) GetAFollowingFromUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetUsersIDFollowingSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.RetrieveFollowingUsersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAFollowingFromUser(
+func (r *RawClient) DeleteFollowing(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteUsersIDFollowingSubIDRequest,
+	request *foru_ms_sdk.DeleteFollowingUsersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteUsersIDFollowingSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -469,7 +512,7 @@ func (r *RawClient) DeleteAFollowingFromUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteUsersIDFollowingSubIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -487,7 +530,7 @@ func (r *RawClient) DeleteAFollowingFromUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteUsersIDFollowingSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

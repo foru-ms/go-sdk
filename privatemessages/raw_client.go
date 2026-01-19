@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllPrivateMessages(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPrivateMessagesRequest,
+	request *foru_ms_sdk.ListPrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPrivateMessagesResponse], error) {
+) (*core.Response[*foru_ms_sdk.PrivateMessageListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllPrivateMessages(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPrivateMessagesResponse
+	var response *foru_ms_sdk.PrivateMessageListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllPrivateMessages(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPrivateMessagesResponse]{
+	return &core.Response[*foru_ms_sdk.PrivateMessageListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateAPrivateMessage(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostPrivateMessagesRequest,
+	request *foru_ms_sdk.CreatePrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostPrivateMessagesResponse], error) {
+) (*core.Response[*foru_ms_sdk.PrivateMessageResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateAPrivateMessage(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostPrivateMessagesResponse
+	var response *foru_ms_sdk.PrivateMessageResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateAPrivateMessage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostPrivateMessagesResponse]{
+	return &core.Response[*foru_ms_sdk.PrivateMessageResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAPrivateMessage(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPrivateMessagesIDRequest,
+	request *foru_ms_sdk.RetrievePrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPrivateMessagesIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.PrivateMessageResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetAPrivateMessage(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPrivateMessagesIDResponse
+	var response *foru_ms_sdk.PrivateMessageResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetAPrivateMessage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPrivateMessagesIDResponse]{
+	return &core.Response[*foru_ms_sdk.PrivateMessageResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAPrivateMessage(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePrivateMessagesIDRequest,
+	request *foru_ms_sdk.DeletePrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeletePrivateMessagesIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteAPrivateMessage(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeletePrivateMessagesIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,18 +202,64 @@ func (r *RawClient) DeleteAPrivateMessage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeletePrivateMessagesIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) ListPrivateMessageReplies(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPrivateMessagesIDRepliesRequest,
+	request *foru_ms_sdk.UpdatePrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPrivateMessagesIDRepliesResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdatePrivateMessagesResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api.foru.ms/v2",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/private-messages/%v",
+		request.ID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *foru_ms_sdk.UpdatePrivateMessagesResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPatch,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(foru_ms_sdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*foru_ms_sdk.UpdatePrivateMessagesResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ListReplies(
+	ctx context.Context,
+	request *foru_ms_sdk.ListRepliesPrivateMessagesRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*foru_ms_sdk.PrivateMessageReplyListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -235,7 +281,7 @@ func (r *RawClient) ListPrivateMessageReplies(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPrivateMessagesIDRepliesResponse
+	var response *foru_ms_sdk.PrivateMessageReplyListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -253,18 +299,18 @@ func (r *RawClient) ListPrivateMessageReplies(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPrivateMessagesIDRepliesResponse]{
+	return &core.Response[*foru_ms_sdk.PrivateMessageReplyListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateAReplyInPrivateMessage(
+func (r *RawClient) CreateReply(
 	ctx context.Context,
-	request *foru_ms_sdk.PostPrivateMessagesIDRepliesRequest,
+	request *foru_ms_sdk.CreateReplyPrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostPrivateMessagesIDRepliesResponse], error) {
+) (*core.Response[*foru_ms_sdk.PrivateMessageReplyResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -280,7 +326,7 @@ func (r *RawClient) CreateAReplyInPrivateMessage(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostPrivateMessagesIDRepliesResponse
+	var response *foru_ms_sdk.PrivateMessageReplyResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -299,18 +345,18 @@ func (r *RawClient) CreateAReplyInPrivateMessage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostPrivateMessagesIDRepliesResponse]{
+	return &core.Response[*foru_ms_sdk.PrivateMessageReplyResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAReplyFromPrivateMessage(
+func (r *RawClient) RetrieveReply(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDRequest,
+	request *foru_ms_sdk.RetrieveReplyPrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.RetrieveReplyPrivateMessagesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -326,7 +372,7 @@ func (r *RawClient) GetAReplyFromPrivateMessage(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDResponse
+	var response *foru_ms_sdk.RetrieveReplyPrivateMessagesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -344,18 +390,18 @@ func (r *RawClient) GetAReplyFromPrivateMessage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.RetrieveReplyPrivateMessagesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAReplyFromPrivateMessage(
+func (r *RawClient) DeleteReply(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDRequest,
+	request *foru_ms_sdk.DeleteReplyPrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -371,7 +417,7 @@ func (r *RawClient) DeleteAReplyFromPrivateMessage(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -389,7 +435,7 @@ func (r *RawClient) DeleteAReplyFromPrivateMessage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -13,6 +13,11 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
+	401: func(apiError *core.APIError) error {
+		return &UnauthorizedError{
+			APIError: apiError,
+		}
+	},
 	402: func(apiError *core.APIError) error {
 		return &PaymentRequiredError{
 			APIError: apiError,
@@ -28,13 +33,18 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
-	401: func(apiError *core.APIError) error {
-		return &UnauthorizedError{
+	404: func(apiError *core.APIError) error {
+		return &NotFoundError{
 			APIError: apiError,
 		}
 	},
-	404: func(apiError *core.APIError) error {
-		return &NotFoundError{
+	403: func(apiError *core.APIError) error {
+		return &ForbiddenError{
+			APIError: apiError,
+		}
+	},
+	409: func(apiError *core.APIError) error {
+		return &ConflictError{
 			APIError: apiError,
 		}
 	},

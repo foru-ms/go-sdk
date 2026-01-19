@@ -32,12 +32,15 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllWebhooks(
+// Retrieve a paginated list of webhooks. Use cursor for pagination.
+//
+// **Requires feature: webhooks**
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetWebhooksRequest,
+	request *foru_ms_sdk.ListWebhooksRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetWebhooksResponse, error) {
-	response, err := c.WithRawResponse.ListAllWebhooks(
+) (*foru_ms_sdk.WebhookListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +51,15 @@ func (c *Client) ListAllWebhooks(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAWebhook(
+// Create a new webhook.
+//
+// **Requires feature: webhooks**
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostWebhooksRequest,
+	request *foru_ms_sdk.CreateWebhooksRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostWebhooksResponse, error) {
-	response, err := c.WithRawResponse.CreateAWebhook(
+) (*foru_ms_sdk.WebhookResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +70,15 @@ func (c *Client) CreateAWebhook(
 	return response.Body, nil
 }
 
-func (c *Client) GetAWebhook(
+// Retrieve a webhook by ID or slug (if supported).
+//
+// **Requires feature: webhooks**
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetWebhooksIDRequest,
+	request *foru_ms_sdk.RetrieveWebhooksRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetWebhooksIDResponse, error) {
-	response, err := c.WithRawResponse.GetAWebhook(
+) (*foru_ms_sdk.WebhookResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +89,15 @@ func (c *Client) GetAWebhook(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAWebhook(
+// Permanently delete a webhook.
+//
+// **Requires feature: webhooks**
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteWebhooksIDRequest,
+	request *foru_ms_sdk.DeleteWebhooksRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteWebhooksIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAWebhook(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +108,15 @@ func (c *Client) DeleteAWebhook(
 	return response.Body, nil
 }
 
-func (c *Client) ListWebhookDeliveries(
+// Update an existing webhook. Only provided fields will be modified.
+//
+// **Requires feature: webhooks**
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.GetWebhooksIDDeliveriesRequest,
+	request *foru_ms_sdk.UpdateWebhooksRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetWebhooksIDDeliveriesResponse, error) {
-	response, err := c.WithRawResponse.ListWebhookDeliveries(
+) (*foru_ms_sdk.UpdateWebhooksResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,
@@ -112,12 +127,15 @@ func (c *Client) ListWebhookDeliveries(
 	return response.Body, nil
 }
 
-func (c *Client) GetADeliveryFromWebhook(
+// Retrieve a paginated list of deliveries for Webhook.
+//
+// **Requires feature: webhooks**
+func (c *Client) ListDeliveries(
 	ctx context.Context,
-	request *foru_ms_sdk.GetWebhooksIDDeliveriesSubIDRequest,
+	request *foru_ms_sdk.ListDeliveriesWebhooksRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetWebhooksIDDeliveriesSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetADeliveryFromWebhook(
+) (*foru_ms_sdk.WebhookDeliveryListResponse, error) {
+	response, err := c.WithRawResponse.ListDeliveries(
 		ctx,
 		request,
 		opts...,
@@ -128,12 +146,28 @@ func (c *Client) GetADeliveryFromWebhook(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteADeliveryFromWebhook(
+func (c *Client) RetrieveDelivery(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDRequest,
+	request *foru_ms_sdk.RetrieveDeliveryWebhooksRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteADeliveryFromWebhook(
+) (*foru_ms_sdk.RetrieveDeliveryWebhooksResponse, error) {
+	response, err := c.WithRawResponse.RetrieveDelivery(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+func (c *Client) DeleteDelivery(
+	ctx context.Context,
+	request *foru_ms_sdk.DeleteDeliveryWebhooksRequest,
+	opts ...option.RequestOption,
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeleteDelivery(
 		ctx,
 		request,
 		opts...,

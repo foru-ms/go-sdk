@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllTags(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetTagsRequest,
+	request *foru_ms_sdk.ListTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetTagsResponse], error) {
+) (*core.Response[*foru_ms_sdk.TagListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllTags(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetTagsResponse
+	var response *foru_ms_sdk.TagListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllTags(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetTagsResponse]{
+	return &core.Response[*foru_ms_sdk.TagListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateATag(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostTagsRequest,
+	request *foru_ms_sdk.CreateTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostTagsResponse], error) {
+) (*core.Response[*foru_ms_sdk.TagResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateATag(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostTagsResponse
+	var response *foru_ms_sdk.TagResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateATag(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostTagsResponse]{
+	return &core.Response[*foru_ms_sdk.TagResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetATag(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetTagsIDRequest,
+	request *foru_ms_sdk.RetrieveTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetTagsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.TagResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetATag(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetTagsIDResponse
+	var response *foru_ms_sdk.TagResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetATag(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetTagsIDResponse]{
+	return &core.Response[*foru_ms_sdk.TagResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteATag(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteTagsIDRequest,
+	request *foru_ms_sdk.DeleteTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteTagsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteATag(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteTagsIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,18 +202,18 @@ func (r *RawClient) DeleteATag(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteTagsIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdateATag(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchTagsIDRequest,
+	request *foru_ms_sdk.UpdateTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PatchTagsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdateTagsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateATag(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PatchTagsIDResponse
+	var response *foru_ms_sdk.UpdateTagsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -248,18 +248,18 @@ func (r *RawClient) UpdateATag(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PatchTagsIDResponse]{
+	return &core.Response[*foru_ms_sdk.UpdateTagsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) ListTagSubscribers(
+func (r *RawClient) ListSubscribers(
 	ctx context.Context,
-	request *foru_ms_sdk.GetTagsIDSubscribersRequest,
+	request *foru_ms_sdk.ListSubscribersTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetTagsIDSubscribersResponse], error) {
+) (*core.Response[*foru_ms_sdk.TagSubscriberListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -281,7 +281,7 @@ func (r *RawClient) ListTagSubscribers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetTagsIDSubscribersResponse
+	var response *foru_ms_sdk.TagSubscriberListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -299,18 +299,18 @@ func (r *RawClient) ListTagSubscribers(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetTagsIDSubscribersResponse]{
+	return &core.Response[*foru_ms_sdk.TagSubscriberListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetASubscriberFromTag(
+func (r *RawClient) RetrieveSubscriber(
 	ctx context.Context,
-	request *foru_ms_sdk.GetTagsIDSubscribersSubIDRequest,
+	request *foru_ms_sdk.RetrieveSubscriberTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetTagsIDSubscribersSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.RetrieveSubscriberTagsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -326,7 +326,7 @@ func (r *RawClient) GetASubscriberFromTag(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetTagsIDSubscribersSubIDResponse
+	var response *foru_ms_sdk.RetrieveSubscriberTagsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -344,18 +344,18 @@ func (r *RawClient) GetASubscriberFromTag(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetTagsIDSubscribersSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.RetrieveSubscriberTagsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteASubscriberFromTag(
+func (r *RawClient) DeleteSubscriber(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteTagsIDSubscribersSubIDRequest,
+	request *foru_ms_sdk.DeleteSubscriberTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteTagsIDSubscribersSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -371,7 +371,7 @@ func (r *RawClient) DeleteASubscriberFromTag(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteTagsIDSubscribersSubIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -389,7 +389,7 @@ func (r *RawClient) DeleteASubscriberFromTag(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteTagsIDSubscribersSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

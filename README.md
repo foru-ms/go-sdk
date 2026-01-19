@@ -48,7 +48,7 @@ func do() {
             "<value>",
         ),
     )
-    request := &foru_ms_sdk.PostAuthRegisterRequest{
+    request := &foru_ms_sdk.RegisterAuthRequest{
         Username: "username",
         Email: "email",
         Password: "password",

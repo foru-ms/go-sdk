@@ -1,8 +1,22 @@
 # Reference
 ## Auth
-<details><summary><code>client.Auth.Register(request) -> *foru_ms_sdk.PostAuthRegisterResponse</code></summary>
+<details><summary><code>client.Auth.Register(request) -> *foru_ms_sdk.RegisterResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Register a new user in your forum instance. Requires API key for instance identification. Returns a JWT token for subsequent authenticated requests.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -13,7 +27,7 @@
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostAuthRegisterRequest{
+request := &foru_ms_sdk.RegisterAuthRequest{
         Username: "username",
         Email: "email",
         Password: "password",
@@ -97,9 +111,23 @@ client.Auth.Register(
 </dl>
 </details>
 
-<details><summary><code>client.Auth.Login(request) -> *foru_ms_sdk.PostAuthLoginResponse</code></summary>
+<details><summary><code>client.Auth.Login(request) -> *foru_ms_sdk.LoginResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Authenticate an existing user. Requires API key for instance identification. Returns a JWT token for subsequent authenticated requests.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -110,7 +138,7 @@ client.Auth.Register(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostAuthLoginRequest{
+request := &foru_ms_sdk.LoginAuthRequest{
         Login: "login",
         Password: "password",
     }
@@ -153,7 +181,7 @@ client.Auth.Login(
 </dl>
 </details>
 
-<details><summary><code>client.Auth.GetCurrentUser() -> *foru_ms_sdk.GetAuthMeResponse</code></summary>
+<details><summary><code>client.Auth.Me() -> *foru_ms_sdk.MeResponse</code></summary>
 <dl>
 <dd>
 
@@ -166,7 +194,7 @@ client.Auth.Login(
 <dd>
 
 ```go
-client.Auth.GetCurrentUser(
+client.Auth.Me(
         context.TODO(),
     )
 }
@@ -181,9 +209,23 @@ client.Auth.GetCurrentUser(
 </dl>
 </details>
 
-<details><summary><code>client.Auth.RequestPasswordReset(request) -> *foru_ms_sdk.PostAuthForgotPasswordResponse</code></summary>
+<details><summary><code>client.Auth.ForgotPassword(request) -> *foru_ms_sdk.ForgotPasswordResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Request a password reset email. Requires API key for instance identification.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -194,10 +236,10 @@ client.Auth.GetCurrentUser(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostAuthForgotPasswordRequest{
+request := &foru_ms_sdk.ForgotPasswordAuthRequest{
         Email: "email",
     }
-client.Auth.RequestPasswordReset(
+client.Auth.ForgotPassword(
         context.TODO(),
         request,
     )
@@ -228,9 +270,23 @@ client.Auth.RequestPasswordReset(
 </dl>
 </details>
 
-<details><summary><code>client.Auth.ResetPassword(request) -> *foru_ms_sdk.PostAuthResetPasswordResponse</code></summary>
+<details><summary><code>client.Auth.ResetPassword(request) -> *foru_ms_sdk.ResetPasswordResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Reset password using a reset token. Requires API key for instance identification.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -241,7 +297,7 @@ client.Auth.RequestPasswordReset(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostAuthResetPasswordRequest{
+request := &foru_ms_sdk.ResetPasswordAuthRequest{
         Password: "password",
     }
 client.Auth.ResetPassword(
@@ -299,8 +355,8 @@ client.Auth.ResetPassword(
 </dl>
 </details>
 
-## Tags
-<details><summary><code>client.Tags.ListAllTags() -> *foru_ms_sdk.GetTagsResponse</code></summary>
+## Search
+<details><summary><code>client.Search.Search() -> *foru_ms_sdk.SearchSearchResponse</code></summary>
 <dl>
 <dd>
 
@@ -313,8 +369,51 @@ client.Auth.ResetPassword(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetTagsRequest{}
-client.Tags.ListAllTags(
+client.Search.Search(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Tags
+<details><summary><code>client.Tags.List() -> *foru_ms_sdk.TagListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of tags. Use cursor for pagination.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.ListTagsRequest{}
+client.Tags.List(
         context.TODO(),
         request,
     )
@@ -333,7 +432,7 @@ client.Tags.ListAllTags(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -341,7 +440,7 @@ client.Tags.ListAllTags(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -349,7 +448,7 @@ client.Tags.ListAllTags(
 <dl>
 <dd>
 
-**search:** `*string` 
+**search:** `*string` — Search tags by name or description
     
 </dd>
 </dl>
@@ -361,9 +460,23 @@ client.Tags.ListAllTags(
 </dl>
 </details>
 
-<details><summary><code>client.Tags.CreateATag(request) -> *foru_ms_sdk.PostTagsResponse</code></summary>
+<details><summary><code>client.Tags.Create(request) -> *foru_ms_sdk.TagResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new tag.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -374,10 +487,10 @@ client.Tags.ListAllTags(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostTagsRequest{
+request := &foru_ms_sdk.CreateTagsRequest{
         Name: "name",
     }
-client.Tags.CreateATag(
+client.Tags.Create(
         context.TODO(),
         request,
     )
@@ -440,9 +553,23 @@ client.Tags.CreateATag(
 </dl>
 </details>
 
-<details><summary><code>client.Tags.GetATag(ID) -> *foru_ms_sdk.GetTagsIDResponse</code></summary>
+<details><summary><code>client.Tags.Retrieve(ID) -> *foru_ms_sdk.TagResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a tag by ID or slug (if supported).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -453,10 +580,10 @@ client.Tags.CreateATag(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetTagsIDRequest{
+request := &foru_ms_sdk.RetrieveTagsRequest{
         ID: "id",
     }
-client.Tags.GetATag(
+client.Tags.Retrieve(
         context.TODO(),
         request,
     )
@@ -475,7 +602,7 @@ client.Tags.GetATag(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Tag ID
     
 </dd>
 </dl>
@@ -487,9 +614,23 @@ client.Tags.GetATag(
 </dl>
 </details>
 
-<details><summary><code>client.Tags.DeleteATag(ID) -> *foru_ms_sdk.DeleteTagsIDResponse</code></summary>
+<details><summary><code>client.Tags.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a tag.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -500,10 +641,10 @@ client.Tags.GetATag(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteTagsIDRequest{
+request := &foru_ms_sdk.DeleteTagsRequest{
         ID: "id",
     }
-client.Tags.DeleteATag(
+client.Tags.Delete(
         context.TODO(),
         request,
     )
@@ -522,7 +663,7 @@ client.Tags.DeleteATag(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Tag ID
     
 </dd>
 </dl>
@@ -534,9 +675,23 @@ client.Tags.DeleteATag(
 </dl>
 </details>
 
-<details><summary><code>client.Tags.UpdateATag(ID, request) -> *foru_ms_sdk.PatchTagsIDResponse</code></summary>
+<details><summary><code>client.Tags.Update(ID, request) -> *foru_ms_sdk.UpdateTagsResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing tag. Only provided fields will be modified.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -547,10 +702,10 @@ client.Tags.DeleteATag(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchTagsIDRequest{
+request := &foru_ms_sdk.UpdateTagsRequest{
         ID: "id",
     }
-client.Tags.UpdateATag(
+client.Tags.Update(
         context.TODO(),
         request,
     )
@@ -569,7 +724,7 @@ client.Tags.UpdateATag(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Tag ID
     
 </dd>
 </dl>
@@ -621,9 +776,23 @@ client.Tags.UpdateATag(
 </dl>
 </details>
 
-<details><summary><code>client.Tags.ListTagSubscribers(ID) -> *foru_ms_sdk.GetTagsIDSubscribersResponse</code></summary>
+<details><summary><code>client.Tags.ListSubscribers(ID) -> *foru_ms_sdk.TagSubscriberListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of subscribers for Tag.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -634,10 +803,10 @@ client.Tags.UpdateATag(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetTagsIDSubscribersRequest{
+request := &foru_ms_sdk.ListSubscribersTagsRequest{
         ID: "id",
     }
-client.Tags.ListTagSubscribers(
+client.Tags.ListSubscribers(
         context.TODO(),
         request,
     )
@@ -664,7 +833,7 @@ client.Tags.ListTagSubscribers(
 <dl>
 <dd>
 
-**cursor:** `*string` — Pagination cursor
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -672,7 +841,7 @@ client.Tags.ListTagSubscribers(
 <dl>
 <dd>
 
-**limit:** `*int` — Items per page
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -684,7 +853,7 @@ client.Tags.ListTagSubscribers(
 </dl>
 </details>
 
-<details><summary><code>client.Tags.GetASubscriberFromTag(ID, SubID) -> *foru_ms_sdk.GetTagsIDSubscribersSubIDResponse</code></summary>
+<details><summary><code>client.Tags.RetrieveSubscriber(ID, SubID) -> *foru_ms_sdk.RetrieveSubscriberTagsResponse</code></summary>
 <dl>
 <dd>
 
@@ -697,11 +866,11 @@ client.Tags.ListTagSubscribers(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetTagsIDSubscribersSubIDRequest{
+request := &foru_ms_sdk.RetrieveSubscriberTagsRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Tags.GetASubscriberFromTag(
+client.Tags.RetrieveSubscriber(
         context.TODO(),
         request,
     )
@@ -740,7 +909,7 @@ client.Tags.GetASubscriberFromTag(
 </dl>
 </details>
 
-<details><summary><code>client.Tags.DeleteASubscriberFromTag(ID, SubID) -> *foru_ms_sdk.DeleteTagsIDSubscribersSubIDResponse</code></summary>
+<details><summary><code>client.Tags.DeleteSubscriber(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
 
@@ -753,11 +922,11 @@ client.Tags.GetASubscriberFromTag(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteTagsIDSubscribersSubIDRequest{
+request := &foru_ms_sdk.DeleteSubscriberTagsRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Tags.DeleteASubscriberFromTag(
+client.Tags.DeleteSubscriber(
         context.TODO(),
         request,
     )
@@ -797,9 +966,23 @@ client.Tags.DeleteASubscriberFromTag(
 </details>
 
 ## Threads
-<details><summary><code>client.Threads.ListAllThreads() -> *foru_ms_sdk.GetThreadsResponse</code></summary>
+<details><summary><code>client.Threads.List() -> *foru_ms_sdk.ThreadListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of threads. Use cursor for pagination.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -810,8 +993,8 @@ client.Tags.DeleteASubscriberFromTag(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetThreadsRequest{}
-client.Threads.ListAllThreads(
+request := &foru_ms_sdk.ListThreadsRequest{}
+client.Threads.List(
         context.TODO(),
         request,
     )
@@ -830,7 +1013,7 @@ client.Threads.ListAllThreads(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -838,7 +1021,7 @@ client.Threads.ListAllThreads(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -846,7 +1029,31 @@ client.Threads.ListAllThreads(
 <dl>
 <dd>
 
-**search:** `*string` 
+**search:** `*string` — Search term for title
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tagID:** `*string` — Filter by tag ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userID:** `*string` — Filter by author ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*foru_ms_sdk.ListThreadsRequestSort` — Sort criteria
     
 </dd>
 </dl>
@@ -858,9 +1065,23 @@ client.Threads.ListAllThreads(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.CreateAThread(request) -> *foru_ms_sdk.PostThreadsResponse</code></summary>
+<details><summary><code>client.Threads.Create(request) -> *foru_ms_sdk.ThreadResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new thread.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -871,11 +1092,11 @@ client.Threads.ListAllThreads(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostThreadsRequest{
+request := &foru_ms_sdk.CreateThreadsRequest{
         Title: "title",
         Body: "body",
     }
-client.Threads.CreateAThread(
+client.Threads.Create(
         context.TODO(),
         request,
     )
@@ -926,7 +1147,31 @@ client.Threads.CreateAThread(
 <dl>
 <dd>
 
-**poll:** `*foru_ms_sdk.PostThreadsRequestPoll` — Poll data
+**poll:** `*foru_ms_sdk.CreateThreadsRequestPoll` — Poll data
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**locked:** `*bool` — Lock thread on creation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pinned:** `*bool` — Pin thread on creation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Custom extended data
     
 </dd>
 </dl>
@@ -938,9 +1183,23 @@ client.Threads.CreateAThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.GetAThread(ID) -> *foru_ms_sdk.GetThreadsIDResponse</code></summary>
+<details><summary><code>client.Threads.Retrieve(ID) -> *foru_ms_sdk.ThreadResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a thread by ID or slug (if supported).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -951,10 +1210,10 @@ client.Threads.CreateAThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetThreadsIDRequest{
+request := &foru_ms_sdk.RetrieveThreadsRequest{
         ID: "id",
     }
-client.Threads.GetAThread(
+client.Threads.Retrieve(
         context.TODO(),
         request,
     )
@@ -973,7 +1232,7 @@ client.Threads.GetAThread(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Thread ID
     
 </dd>
 </dl>
@@ -985,9 +1244,23 @@ client.Threads.GetAThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.DeleteAThread(ID) -> *foru_ms_sdk.DeleteThreadsIDResponse</code></summary>
+<details><summary><code>client.Threads.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a thread.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -998,10 +1271,10 @@ client.Threads.GetAThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteThreadsIDRequest{
+request := &foru_ms_sdk.DeleteThreadsRequest{
         ID: "id",
     }
-client.Threads.DeleteAThread(
+client.Threads.Delete(
         context.TODO(),
         request,
     )
@@ -1020,7 +1293,7 @@ client.Threads.DeleteAThread(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Thread ID
     
 </dd>
 </dl>
@@ -1032,9 +1305,23 @@ client.Threads.DeleteAThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.UpdateAThread(ID, request) -> *foru_ms_sdk.PatchThreadsIDResponse</code></summary>
+<details><summary><code>client.Threads.Update(ID, request) -> *foru_ms_sdk.UpdateThreadsResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing thread. Only provided fields will be modified.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -1045,10 +1332,10 @@ client.Threads.DeleteAThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchThreadsIDRequest{
+request := &foru_ms_sdk.UpdateThreadsRequest{
         ID: "id",
     }
-client.Threads.UpdateAThread(
+client.Threads.Update(
         context.TODO(),
         request,
     )
@@ -1067,7 +1354,7 @@ client.Threads.UpdateAThread(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Thread ID
     
 </dd>
 </dl>
@@ -1127,9 +1414,23 @@ client.Threads.UpdateAThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.ListThreadPosts(ID) -> *foru_ms_sdk.GetThreadsIDPostsResponse</code></summary>
+<details><summary><code>client.Threads.ListPosts(ID) -> *foru_ms_sdk.ThreadPostListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of posts for Thread.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -1140,10 +1441,10 @@ client.Threads.UpdateAThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetThreadsIDPostsRequest{
+request := &foru_ms_sdk.ListPostsThreadsRequest{
         ID: "id",
     }
-client.Threads.ListThreadPosts(
+client.Threads.ListPosts(
         context.TODO(),
         request,
     )
@@ -1170,7 +1471,7 @@ client.Threads.ListThreadPosts(
 <dl>
 <dd>
 
-**cursor:** `*string` — Pagination cursor
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -1178,7 +1479,39 @@ client.Threads.ListThreadPosts(
 <dl>
 <dd>
 
-**limit:** `*int` — Items per page
+**cursor:** `*string` — Cursor for pagination
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userID:** `*string` — Filter posts by author ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*foru_ms_sdk.ListPostsThreadsRequestSort` — Sort posts by creation time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `*string` — Search within post body
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type_:** `*foru_ms_sdk.ListPostsThreadsRequestType` — Filter by interaction type
     
 </dd>
 </dl>
@@ -1190,7 +1523,7 @@ client.Threads.ListThreadPosts(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.GetAPostFromThread(ID, SubID) -> *foru_ms_sdk.GetThreadsIDPostsSubIDResponse</code></summary>
+<details><summary><code>client.Threads.RetrievePost(ID, SubID) -> *foru_ms_sdk.RetrievePostThreadsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1203,11 +1536,11 @@ client.Threads.ListThreadPosts(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetThreadsIDPostsSubIDRequest{
+request := &foru_ms_sdk.RetrievePostThreadsRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Threads.GetAPostFromThread(
+client.Threads.RetrievePost(
         context.TODO(),
         request,
     )
@@ -1246,7 +1579,7 @@ client.Threads.GetAPostFromThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.DeleteAPostFromThread(ID, SubID) -> *foru_ms_sdk.DeleteThreadsIDPostsSubIDResponse</code></summary>
+<details><summary><code>client.Threads.DeletePost(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
 
@@ -1259,11 +1592,11 @@ client.Threads.GetAPostFromThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteThreadsIDPostsSubIDRequest{
+request := &foru_ms_sdk.DeletePostThreadsRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Threads.DeleteAPostFromThread(
+client.Threads.DeletePost(
         context.TODO(),
         request,
     )
@@ -1302,9 +1635,23 @@ client.Threads.DeleteAPostFromThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.ListThreadReactions(ID) -> *foru_ms_sdk.GetThreadsIDReactionsResponse</code></summary>
+<details><summary><code>client.Threads.ListReactions(ID) -> *foru_ms_sdk.ThreadReactionListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of reactions for Thread.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -1315,10 +1662,10 @@ client.Threads.DeleteAPostFromThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetThreadsIDReactionsRequest{
+request := &foru_ms_sdk.ListReactionsThreadsRequest{
         ID: "id",
     }
-client.Threads.ListThreadReactions(
+client.Threads.ListReactions(
         context.TODO(),
         request,
     )
@@ -1345,7 +1692,7 @@ client.Threads.ListThreadReactions(
 <dl>
 <dd>
 
-**cursor:** `*string` — Pagination cursor
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -1353,7 +1700,15 @@ client.Threads.ListThreadReactions(
 <dl>
 <dd>
 
-**limit:** `*int` — Items per page
+**cursor:** `*string` — Cursor for pagination
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type_:** `*foru_ms_sdk.ListReactionsThreadsRequestType` — Filter by reaction type
     
 </dd>
 </dl>
@@ -1365,9 +1720,23 @@ client.Threads.ListThreadReactions(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.CreateAReactionInThread(ID, request) -> *foru_ms_sdk.PostThreadsIDReactionsResponse</code></summary>
+<details><summary><code>client.Threads.CreateReaction(ID, request) -> *foru_ms_sdk.ThreadReactionResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a Reaction in Thread.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -1378,11 +1747,11 @@ client.Threads.ListThreadReactions(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostThreadsIDReactionsRequest{
+request := &foru_ms_sdk.CreateReactionThreadsRequest{
         ID: "id",
-        Type: foru_ms_sdk.PostThreadsIDReactionsRequestTypeLike,
+        Type: foru_ms_sdk.CreateReactionThreadsRequestTypeLike,
     }
-client.Threads.CreateAReactionInThread(
+client.Threads.CreateReaction(
         context.TODO(),
         request,
     )
@@ -1409,7 +1778,7 @@ client.Threads.CreateAReactionInThread(
 <dl>
 <dd>
 
-**type_:** `*foru_ms_sdk.PostThreadsIDReactionsRequestType` — Type of reaction
+**type_:** `*foru_ms_sdk.CreateReactionThreadsRequestType` — Type of reaction
     
 </dd>
 </dl>
@@ -1437,7 +1806,119 @@ client.Threads.CreateAReactionInThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.RemoveYourReactionFromThread(ID) -> *foru_ms_sdk.DeleteThreadsIDReactionsResponse</code></summary>
+<details><summary><code>client.Threads.DeleteReaction(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.DeleteReactionThreadsRequest{
+        ID: "id",
+        SubID: "subId",
+    }
+client.Threads.DeleteReaction(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — Thread ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subID:** `string` — Reaction ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Threads.RetrieveReaction(ID, SubID) -> *foru_ms_sdk.RetrieveReactionThreadsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.RetrieveReactionThreadsRequest{
+        ID: "id",
+        SubID: "subId",
+    }
+client.Threads.RetrieveReaction(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — Thread ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subID:** `string` — Reaction ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Threads.ListSubscribers(ID) -> *foru_ms_sdk.ThreadSubscriberListResponse</code></summary>
 <dl>
 <dd>
 
@@ -1449,7 +1930,7 @@ client.Threads.CreateAReactionInThread(
 <dl>
 <dd>
 
-Removes the authenticated user's reaction. No subId needed.
+Retrieve a paginated list of subscribers for Thread.
 </dd>
 </dl>
 </dd>
@@ -1464,10 +1945,10 @@ Removes the authenticated user's reaction. No subId needed.
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteThreadsIDReactionsRequest{
+request := &foru_ms_sdk.ListSubscribersThreadsRequest{
         ID: "id",
     }
-client.Threads.RemoveYourReactionFromThread(
+client.Threads.ListSubscribers(
         context.TODO(),
         request,
     )
@@ -1490,6 +1971,22 @@ client.Threads.RemoveYourReactionFromThread(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` — Items per page (max 75)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` — Cursor for pagination
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -1498,7 +1995,7 @@ client.Threads.RemoveYourReactionFromThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.GetAReactionFromThread(ID, SubID) -> *foru_ms_sdk.GetThreadsIDReactionsSubIDResponse</code></summary>
+<details><summary><code>client.Threads.RetrieveSubscriber(ID, SubID) -> *foru_ms_sdk.RetrieveSubscriberThreadsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1511,186 +2008,11 @@ client.Threads.RemoveYourReactionFromThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetThreadsIDReactionsSubIDRequest{
+request := &foru_ms_sdk.RetrieveSubscriberThreadsRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Threads.GetAReactionFromThread(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` — Thread ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subID:** `string` — Reaction ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Threads.DeleteAReactionFromThread(ID, SubID) -> *foru_ms_sdk.DeleteThreadsIDReactionsSubIDResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &foru_ms_sdk.DeleteThreadsIDReactionsSubIDRequest{
-        ID: "id",
-        SubID: "subId",
-    }
-client.Threads.DeleteAReactionFromThread(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` — Thread ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subID:** `string` — Reaction ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Threads.ListThreadSubscribers(ID) -> *foru_ms_sdk.GetThreadsIDSubscribersResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &foru_ms_sdk.GetThreadsIDSubscribersRequest{
-        ID: "id",
-    }
-client.Threads.ListThreadSubscribers(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` — Thread ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cursor:** `*string` — Pagination cursor
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `*int` — Items per page
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Threads.GetASubscriberFromThread(ID, SubID) -> *foru_ms_sdk.GetThreadsIDSubscribersSubIDResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &foru_ms_sdk.GetThreadsIDSubscribersSubIDRequest{
-        ID: "id",
-        SubID: "subId",
-    }
-client.Threads.GetASubscriberFromThread(
+client.Threads.RetrieveSubscriber(
         context.TODO(),
         request,
     )
@@ -1729,7 +2051,7 @@ client.Threads.GetASubscriberFromThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.DeleteASubscriberFromThread(ID, SubID) -> *foru_ms_sdk.DeleteThreadsIDSubscribersSubIDResponse</code></summary>
+<details><summary><code>client.Threads.DeleteSubscriber(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
 
@@ -1742,11 +2064,11 @@ client.Threads.GetASubscriberFromThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteThreadsIDSubscribersSubIDRequest{
+request := &foru_ms_sdk.DeleteSubscriberThreadsRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Threads.DeleteASubscriberFromThread(
+client.Threads.DeleteSubscriber(
         context.TODO(),
         request,
     )
@@ -1785,7 +2107,7 @@ client.Threads.DeleteASubscriberFromThread(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.GetThreadPoll(ID) -> *foru_ms_sdk.GetThreadsIDPollResponse</code></summary>
+<details><summary><code>client.Threads.RetrievePoll(ID) -> *foru_ms_sdk.ThreadPollResponse</code></summary>
 <dl>
 <dd>
 
@@ -1798,10 +2120,10 @@ client.Threads.DeleteASubscriberFromThread(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetThreadsIDPollRequest{
+request := &foru_ms_sdk.RetrievePollThreadsRequest{
         ID: "id",
     }
-client.Threads.GetThreadPoll(
+client.Threads.RetrievePoll(
         context.TODO(),
         request,
     )
@@ -1832,7 +2154,7 @@ client.Threads.GetThreadPoll(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.CreateThreadPoll(ID, request) -> *foru_ms_sdk.PostThreadsIDPollResponse</code></summary>
+<details><summary><code>client.Threads.CreatePoll(ID, request) -> *foru_ms_sdk.ThreadPollResponse</code></summary>
 <dl>
 <dd>
 
@@ -1845,16 +2167,16 @@ client.Threads.GetThreadPoll(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostThreadsIDPollRequest{
+request := &foru_ms_sdk.CreatePollThreadsRequest{
         ID: "id",
         Title: "title",
-        Options: []*foru_ms_sdk.PostThreadsIDPollRequestOptionsItem{
-            &foru_ms_sdk.PostThreadsIDPollRequestOptionsItem{
+        Options: []*foru_ms_sdk.CreatePollThreadsRequestOptionsItem{
+            &foru_ms_sdk.CreatePollThreadsRequestOptionsItem{
                 Title: "title",
             },
         },
     }
-client.Threads.CreateThreadPoll(
+client.Threads.CreatePoll(
         context.TODO(),
         request,
     )
@@ -1889,7 +2211,7 @@ client.Threads.CreateThreadPoll(
 <dl>
 <dd>
 
-**options:** `[]*foru_ms_sdk.PostThreadsIDPollRequestOptionsItem` — Poll options (2-20)
+**options:** `[]*foru_ms_sdk.CreatePollThreadsRequestOptionsItem` — Poll options (2-20)
     
 </dd>
 </dl>
@@ -1917,7 +2239,7 @@ client.Threads.CreateThreadPoll(
 </dl>
 </details>
 
-<details><summary><code>client.Threads.UpdateThreadPoll(ID, request) -> *foru_ms_sdk.PatchThreadsIDPollResponse</code></summary>
+<details><summary><code>client.Threads.UpdatePoll(ID, request) -> *foru_ms_sdk.ThreadPollResponse</code></summary>
 <dl>
 <dd>
 
@@ -1930,10 +2252,10 @@ client.Threads.CreateThreadPoll(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchThreadsIDPollRequest{
+request := &foru_ms_sdk.UpdatePollThreadsRequest{
         ID: "id",
     }
-client.Threads.UpdateThreadPoll(
+client.Threads.UpdatePoll(
         context.TODO(),
         request,
     )
@@ -1997,9 +2319,23 @@ client.Threads.UpdateThreadPoll(
 </details>
 
 ## Posts
-<details><summary><code>client.Posts.ListAllPosts() -> *foru_ms_sdk.GetPostsResponse</code></summary>
+<details><summary><code>client.Posts.List() -> *foru_ms_sdk.PostListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of posts. Use cursor for pagination.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2010,8 +2346,8 @@ client.Threads.UpdateThreadPoll(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetPostsRequest{}
-client.Posts.ListAllPosts(
+request := &foru_ms_sdk.ListPostsRequest{}
+client.Posts.List(
         context.TODO(),
         request,
     )
@@ -2030,7 +2366,7 @@ client.Posts.ListAllPosts(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -2038,7 +2374,7 @@ client.Posts.ListAllPosts(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -2046,7 +2382,31 @@ client.Posts.ListAllPosts(
 <dl>
 <dd>
 
-**search:** `*string` 
+**userID:** `*string` — Filter posts by author ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*foru_ms_sdk.ListPostsRequestSort` — Sort posts by creation time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `*string` — Search within post body
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type_:** `*foru_ms_sdk.ListPostsRequestType` — Filter by interaction type
     
 </dd>
 </dl>
@@ -2058,9 +2418,23 @@ client.Posts.ListAllPosts(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.CreateAPost(request) -> *foru_ms_sdk.PostPostsResponse</code></summary>
+<details><summary><code>client.Posts.Create(request) -> *foru_ms_sdk.PostResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new post.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2071,11 +2445,11 @@ client.Posts.ListAllPosts(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostPostsRequest{
+request := &foru_ms_sdk.CreatePostsRequest{
         ThreadID: "threadId",
         Body: "body",
     }
-client.Posts.CreateAPost(
+client.Posts.Create(
         context.TODO(),
         request,
     )
@@ -2138,9 +2512,23 @@ client.Posts.CreateAPost(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.GetAPost(ID) -> *foru_ms_sdk.GetPostsIDResponse</code></summary>
+<details><summary><code>client.Posts.Retrieve(ID) -> *foru_ms_sdk.PostResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a post by ID or slug (if supported).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2151,10 +2539,10 @@ client.Posts.CreateAPost(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetPostsIDRequest{
+request := &foru_ms_sdk.RetrievePostsRequest{
         ID: "id",
     }
-client.Posts.GetAPost(
+client.Posts.Retrieve(
         context.TODO(),
         request,
     )
@@ -2173,7 +2561,7 @@ client.Posts.GetAPost(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Post ID
     
 </dd>
 </dl>
@@ -2185,9 +2573,23 @@ client.Posts.GetAPost(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.DeleteAPost(ID) -> *foru_ms_sdk.DeletePostsIDResponse</code></summary>
+<details><summary><code>client.Posts.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a post.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2198,10 +2600,10 @@ client.Posts.GetAPost(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeletePostsIDRequest{
+request := &foru_ms_sdk.DeletePostsRequest{
         ID: "id",
     }
-client.Posts.DeleteAPost(
+client.Posts.Delete(
         context.TODO(),
         request,
     )
@@ -2220,7 +2622,7 @@ client.Posts.DeleteAPost(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Post ID
     
 </dd>
 </dl>
@@ -2232,9 +2634,23 @@ client.Posts.DeleteAPost(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.UpdateAPost(ID, request) -> *foru_ms_sdk.PatchPostsIDResponse</code></summary>
+<details><summary><code>client.Posts.Update(ID, request) -> *foru_ms_sdk.UpdatePostsResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing post. Only provided fields will be modified.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2245,10 +2661,10 @@ client.Posts.DeleteAPost(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchPostsIDRequest{
+request := &foru_ms_sdk.UpdatePostsRequest{
         ID: "id",
     }
-client.Posts.UpdateAPost(
+client.Posts.Update(
         context.TODO(),
         request,
     )
@@ -2267,7 +2683,7 @@ client.Posts.UpdateAPost(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Post ID
     
 </dd>
 </dl>
@@ -2311,9 +2727,23 @@ client.Posts.UpdateAPost(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.ListPostReactions(ID) -> *foru_ms_sdk.GetPostsIDReactionsResponse</code></summary>
+<details><summary><code>client.Posts.ListReactions(ID) -> *foru_ms_sdk.PostReactionListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of reactions for Post.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2324,10 +2754,10 @@ client.Posts.UpdateAPost(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetPostsIDReactionsRequest{
+request := &foru_ms_sdk.ListReactionsPostsRequest{
         ID: "id",
     }
-client.Posts.ListPostReactions(
+client.Posts.ListReactions(
         context.TODO(),
         request,
     )
@@ -2354,7 +2784,7 @@ client.Posts.ListPostReactions(
 <dl>
 <dd>
 
-**cursor:** `*string` — Pagination cursor
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -2362,7 +2792,15 @@ client.Posts.ListPostReactions(
 <dl>
 <dd>
 
-**limit:** `*int` — Items per page
+**cursor:** `*string` — Cursor for pagination
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type_:** `*foru_ms_sdk.ListReactionsPostsRequestType` — Filter by reaction type
     
 </dd>
 </dl>
@@ -2374,9 +2812,23 @@ client.Posts.ListPostReactions(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.CreateAReactionInPost(ID, request) -> *foru_ms_sdk.PostPostsIDReactionsResponse</code></summary>
+<details><summary><code>client.Posts.CreateReaction(ID, request) -> *foru_ms_sdk.PostReactionResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a Reaction in Post.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2387,11 +2839,11 @@ client.Posts.ListPostReactions(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostPostsIDReactionsRequest{
+request := &foru_ms_sdk.CreateReactionPostsRequest{
         ID: "id",
-        Type: foru_ms_sdk.PostPostsIDReactionsRequestTypeLike,
+        Type: foru_ms_sdk.CreateReactionPostsRequestTypeLike,
     }
-client.Posts.CreateAReactionInPost(
+client.Posts.CreateReaction(
         context.TODO(),
         request,
     )
@@ -2418,7 +2870,7 @@ client.Posts.CreateAReactionInPost(
 <dl>
 <dd>
 
-**type_:** `*foru_ms_sdk.PostPostsIDReactionsRequestType` — Type of reaction
+**type_:** `*foru_ms_sdk.CreateReactionPostsRequestType` — Type of reaction
     
 </dd>
 </dl>
@@ -2446,7 +2898,119 @@ client.Posts.CreateAReactionInPost(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.RemoveYourReactionFromPost(ID) -> *foru_ms_sdk.DeletePostsIDReactionsResponse</code></summary>
+<details><summary><code>client.Posts.DeleteReaction(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.DeleteReactionPostsRequest{
+        ID: "id",
+        SubID: "subId",
+    }
+client.Posts.DeleteReaction(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — Post ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subID:** `string` — Reaction ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Posts.RetrieveReaction(ID, SubID) -> *foru_ms_sdk.RetrieveReactionPostsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.RetrieveReactionPostsRequest{
+        ID: "id",
+        SubID: "subId",
+    }
+client.Posts.RetrieveReaction(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — Post ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subID:** `string` — Reaction ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Posts.ListPosts(ID) -> *foru_ms_sdk.PostPostListResponse</code></summary>
 <dl>
 <dd>
 
@@ -2458,7 +3022,7 @@ client.Posts.CreateAReactionInPost(
 <dl>
 <dd>
 
-Removes the authenticated user's reaction. No subId needed.
+Retrieve a paginated list of posts for Post.
 </dd>
 </dl>
 </dd>
@@ -2473,10 +3037,10 @@ Removes the authenticated user's reaction. No subId needed.
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeletePostsIDReactionsRequest{
+request := &foru_ms_sdk.ListPostsPostsRequest{
         ID: "id",
     }
-client.Posts.RemoveYourReactionFromPost(
+client.Posts.ListPosts(
         context.TODO(),
         request,
     )
@@ -2499,6 +3063,54 @@ client.Posts.RemoveYourReactionFromPost(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` — Items per page (max 75)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` — Cursor for pagination
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userID:** `*string` — Filter posts by author ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*foru_ms_sdk.ListPostsPostsRequestSort` — Sort posts by creation time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `*string` — Search within post body
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type_:** `*foru_ms_sdk.ListPostsPostsRequestType` — Filter by interaction type
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -2507,7 +3119,7 @@ client.Posts.RemoveYourReactionFromPost(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.GetAReactionFromPost(ID, SubID) -> *foru_ms_sdk.GetPostsIDReactionsSubIDResponse</code></summary>
+<details><summary><code>client.Posts.RetrievePost(ID, SubID) -> *foru_ms_sdk.RetrievePostPostsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2520,186 +3132,11 @@ client.Posts.RemoveYourReactionFromPost(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetPostsIDReactionsSubIDRequest{
+request := &foru_ms_sdk.RetrievePostPostsRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Posts.GetAReactionFromPost(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` — Post ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subID:** `string` — Reaction ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Posts.DeleteAReactionFromPost(ID, SubID) -> *foru_ms_sdk.DeletePostsIDReactionsSubIDResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &foru_ms_sdk.DeletePostsIDReactionsSubIDRequest{
-        ID: "id",
-        SubID: "subId",
-    }
-client.Posts.DeleteAReactionFromPost(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` — Post ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subID:** `string` — Reaction ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Posts.ListPostPosts(ID) -> *foru_ms_sdk.GetPostsIDPostsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &foru_ms_sdk.GetPostsIDPostsRequest{
-        ID: "id",
-    }
-client.Posts.ListPostPosts(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` — Post ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cursor:** `*string` — Pagination cursor
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `*int` — Items per page
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Posts.GetAPostFromPost(ID, SubID) -> *foru_ms_sdk.GetPostsIDPostsSubIDResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &foru_ms_sdk.GetPostsIDPostsSubIDRequest{
-        ID: "id",
-        SubID: "subId",
-    }
-client.Posts.GetAPostFromPost(
+client.Posts.RetrievePost(
         context.TODO(),
         request,
     )
@@ -2738,7 +3175,7 @@ client.Posts.GetAPostFromPost(
 </dl>
 </details>
 
-<details><summary><code>client.Posts.DeleteAPostFromPost(ID, SubID) -> *foru_ms_sdk.DeletePostsIDPostsSubIDResponse</code></summary>
+<details><summary><code>client.Posts.DeletePost(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
 
@@ -2751,11 +3188,11 @@ client.Posts.GetAPostFromPost(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeletePostsIDPostsSubIDRequest{
+request := &foru_ms_sdk.DeletePostPostsRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Posts.DeleteAPostFromPost(
+client.Posts.DeletePost(
         context.TODO(),
         request,
     )
@@ -2794,10 +3231,24 @@ client.Posts.DeleteAPostFromPost(
 </dl>
 </details>
 
-## PrivateMessages
-<details><summary><code>client.PrivateMessages.ListAllPrivateMessages() -> *foru_ms_sdk.GetPrivateMessagesResponse</code></summary>
+## Private Messages
+<details><summary><code>client.PrivateMessages.List() -> *foru_ms_sdk.PrivateMessageListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of private messages. Use cursor for pagination.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2808,8 +3259,8 @@ client.Posts.DeleteAPostFromPost(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetPrivateMessagesRequest{}
-client.PrivateMessages.ListAllPrivateMessages(
+request := &foru_ms_sdk.ListPrivateMessagesRequest{}
+client.PrivateMessages.List(
         context.TODO(),
         request,
     )
@@ -2828,7 +3279,7 @@ client.PrivateMessages.ListAllPrivateMessages(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -2836,7 +3287,7 @@ client.PrivateMessages.ListAllPrivateMessages(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -2844,7 +3295,7 @@ client.PrivateMessages.ListAllPrivateMessages(
 <dl>
 <dd>
 
-**search:** `*string` 
+**query:** `*string` — Search query (title or body)
     
 </dd>
 </dl>
@@ -2856,9 +3307,23 @@ client.PrivateMessages.ListAllPrivateMessages(
 </dl>
 </details>
 
-<details><summary><code>client.PrivateMessages.CreateAPrivateMessage(request) -> *foru_ms_sdk.PostPrivateMessagesResponse</code></summary>
+<details><summary><code>client.PrivateMessages.Create(request) -> *foru_ms_sdk.PrivateMessageResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new private message.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2869,11 +3334,11 @@ client.PrivateMessages.ListAllPrivateMessages(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostPrivateMessagesRequest{
+request := &foru_ms_sdk.CreatePrivateMessagesRequest{
         RecipientID: "recipientId",
         Body: "body",
     }
-client.PrivateMessages.CreateAPrivateMessage(
+client.PrivateMessages.Create(
         context.TODO(),
         request,
     )
@@ -2944,9 +3409,23 @@ client.PrivateMessages.CreateAPrivateMessage(
 </dl>
 </details>
 
-<details><summary><code>client.PrivateMessages.GetAPrivateMessage(ID) -> *foru_ms_sdk.GetPrivateMessagesIDResponse</code></summary>
+<details><summary><code>client.PrivateMessages.Retrieve(ID) -> *foru_ms_sdk.PrivateMessageResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a private message by ID or slug (if supported).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2957,10 +3436,10 @@ client.PrivateMessages.CreateAPrivateMessage(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetPrivateMessagesIDRequest{
+request := &foru_ms_sdk.RetrievePrivateMessagesRequest{
         ID: "id",
     }
-client.PrivateMessages.GetAPrivateMessage(
+client.PrivateMessages.Retrieve(
         context.TODO(),
         request,
     )
@@ -2979,7 +3458,7 @@ client.PrivateMessages.GetAPrivateMessage(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Private Message ID
     
 </dd>
 </dl>
@@ -2991,9 +3470,23 @@ client.PrivateMessages.GetAPrivateMessage(
 </dl>
 </details>
 
-<details><summary><code>client.PrivateMessages.DeleteAPrivateMessage(ID) -> *foru_ms_sdk.DeletePrivateMessagesIDResponse</code></summary>
+<details><summary><code>client.PrivateMessages.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a private message.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3004,10 +3497,10 @@ client.PrivateMessages.GetAPrivateMessage(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeletePrivateMessagesIDRequest{
+request := &foru_ms_sdk.DeletePrivateMessagesRequest{
         ID: "id",
     }
-client.PrivateMessages.DeleteAPrivateMessage(
+client.PrivateMessages.Delete(
         context.TODO(),
         request,
     )
@@ -3026,7 +3519,7 @@ client.PrivateMessages.DeleteAPrivateMessage(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Private Message ID
     
 </dd>
 </dl>
@@ -3038,9 +3531,23 @@ client.PrivateMessages.DeleteAPrivateMessage(
 </dl>
 </details>
 
-<details><summary><code>client.PrivateMessages.ListPrivateMessageReplies(ID) -> *foru_ms_sdk.GetPrivateMessagesIDRepliesResponse</code></summary>
+<details><summary><code>client.PrivateMessages.Update(ID, request) -> *foru_ms_sdk.UpdatePrivateMessagesResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing private message. Only provided fields will be modified.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3051,10 +3558,95 @@ client.PrivateMessages.DeleteAPrivateMessage(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetPrivateMessagesIDRepliesRequest{
+request := &foru_ms_sdk.UpdatePrivateMessagesRequest{
         ID: "id",
     }
-client.PrivateMessages.ListPrivateMessageReplies(
+client.PrivateMessages.Update(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — Private Message ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**body:** `*string` — Message content
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*string` — Message status (read, unread, archived)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Extended data
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PrivateMessages.ListReplies(ID) -> *foru_ms_sdk.PrivateMessageReplyListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of replies for Private Message.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.ListRepliesPrivateMessagesRequest{
+        ID: "id",
+    }
+client.PrivateMessages.ListReplies(
         context.TODO(),
         request,
     )
@@ -3089,7 +3681,7 @@ client.PrivateMessages.ListPrivateMessageReplies(
 <dl>
 <dd>
 
-**limit:** `*int` — Items per page
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -3101,9 +3693,23 @@ client.PrivateMessages.ListPrivateMessageReplies(
 </dl>
 </details>
 
-<details><summary><code>client.PrivateMessages.CreateAReplyInPrivateMessage(ID, request) -> *foru_ms_sdk.PostPrivateMessagesIDRepliesResponse</code></summary>
+<details><summary><code>client.PrivateMessages.CreateReply(ID, request) -> *foru_ms_sdk.PrivateMessageReplyResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a Reply in Private Message.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3114,12 +3720,12 @@ client.PrivateMessages.ListPrivateMessageReplies(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostPrivateMessagesIDRepliesRequest{
+request := &foru_ms_sdk.CreateReplyPrivateMessagesRequest{
         ID: "id",
         RecipientID: "recipientId",
         Body: "body",
     }
-client.PrivateMessages.CreateAReplyInPrivateMessage(
+client.PrivateMessages.CreateReply(
         context.TODO(),
         request,
     )
@@ -3198,7 +3804,7 @@ client.PrivateMessages.CreateAReplyInPrivateMessage(
 </dl>
 </details>
 
-<details><summary><code>client.PrivateMessages.GetAReplyFromPrivateMessage(ID, SubID) -> *foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDResponse</code></summary>
+<details><summary><code>client.PrivateMessages.RetrieveReply(ID, SubID) -> *foru_ms_sdk.RetrieveReplyPrivateMessagesResponse</code></summary>
 <dl>
 <dd>
 
@@ -3211,11 +3817,11 @@ client.PrivateMessages.CreateAReplyInPrivateMessage(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDRequest{
+request := &foru_ms_sdk.RetrieveReplyPrivateMessagesRequest{
         ID: "id",
         SubID: "subId",
     }
-client.PrivateMessages.GetAReplyFromPrivateMessage(
+client.PrivateMessages.RetrieveReply(
         context.TODO(),
         request,
     )
@@ -3254,7 +3860,7 @@ client.PrivateMessages.GetAReplyFromPrivateMessage(
 </dl>
 </details>
 
-<details><summary><code>client.PrivateMessages.DeleteAReplyFromPrivateMessage(ID, SubID) -> *foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDResponse</code></summary>
+<details><summary><code>client.PrivateMessages.DeleteReply(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
 
@@ -3267,11 +3873,11 @@ client.PrivateMessages.GetAReplyFromPrivateMessage(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDRequest{
+request := &foru_ms_sdk.DeleteReplyPrivateMessagesRequest{
         ID: "id",
         SubID: "subId",
     }
-client.PrivateMessages.DeleteAReplyFromPrivateMessage(
+client.PrivateMessages.DeleteReply(
         context.TODO(),
         request,
     )
@@ -3311,9 +3917,23 @@ client.PrivateMessages.DeleteAReplyFromPrivateMessage(
 </details>
 
 ## Users
-<details><summary><code>client.Users.ListAllUsers() -> *foru_ms_sdk.GetUsersResponse</code></summary>
+<details><summary><code>client.Users.List() -> *foru_ms_sdk.UserListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of users. Use cursor for pagination.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3324,8 +3944,8 @@ client.PrivateMessages.DeleteAReplyFromPrivateMessage(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetUsersRequest{}
-client.Users.ListAllUsers(
+request := &foru_ms_sdk.ListUsersRequest{}
+client.Users.List(
         context.TODO(),
         request,
     )
@@ -3344,7 +3964,7 @@ client.Users.ListAllUsers(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -3352,7 +3972,7 @@ client.Users.ListAllUsers(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -3360,7 +3980,15 @@ client.Users.ListAllUsers(
 <dl>
 <dd>
 
-**search:** `*string` 
+**search:** `*string` — Search by username or display name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*foru_ms_sdk.ListUsersRequestSort` — Sort by creation date
     
 </dd>
 </dl>
@@ -3372,9 +4000,23 @@ client.Users.ListAllUsers(
 </dl>
 </details>
 
-<details><summary><code>client.Users.GetAUser(ID) -> *foru_ms_sdk.GetUsersIDResponse</code></summary>
+<details><summary><code>client.Users.Create(request) -> *foru_ms_sdk.UserResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new user.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3385,10 +4027,10 @@ client.Users.ListAllUsers(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetUsersIDRequest{
-        ID: "id",
+request := &foru_ms_sdk.CreateUsersRequest{
+        Username: "username",
     }
-client.Users.GetAUser(
+client.Users.Create(
         context.TODO(),
         request,
     )
@@ -3407,7 +4049,71 @@ client.Users.GetAUser(
 <dl>
 <dd>
 
-**id:** `string` 
+**username:** `string` — Username (letters, numbers, underscores, hyphens)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `*string` — Email address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `*string` — Password (min 8 chars)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**displayName:** `*string` — Display name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bio:** `*string` — User bio
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**signature:** `*string` — Forum signature
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**url:** `*string` — Website URL
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**roles:** `[]string` — Role slugs to assign
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Custom extended data
     
 </dd>
 </dl>
@@ -3419,9 +4125,23 @@ client.Users.GetAUser(
 </dl>
 </details>
 
-<details><summary><code>client.Users.DeleteAUser(ID) -> *foru_ms_sdk.DeleteUsersIDResponse</code></summary>
+<details><summary><code>client.Users.Retrieve(ID) -> *foru_ms_sdk.UserResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a user by ID or slug (if supported).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3432,10 +4152,10 @@ client.Users.GetAUser(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteUsersIDRequest{
+request := &foru_ms_sdk.RetrieveUsersRequest{
         ID: "id",
     }
-client.Users.DeleteAUser(
+client.Users.Retrieve(
         context.TODO(),
         request,
     )
@@ -3454,7 +4174,7 @@ client.Users.DeleteAUser(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — User ID
     
 </dd>
 </dl>
@@ -3466,9 +4186,23 @@ client.Users.DeleteAUser(
 </dl>
 </details>
 
-<details><summary><code>client.Users.UpdateAUser(ID, request) -> *foru_ms_sdk.PatchUsersIDResponse</code></summary>
+<details><summary><code>client.Users.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a user.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3479,10 +4213,10 @@ client.Users.DeleteAUser(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchUsersIDRequest{
+request := &foru_ms_sdk.DeleteUsersRequest{
         ID: "id",
     }
-client.Users.UpdateAUser(
+client.Users.Delete(
         context.TODO(),
         request,
     )
@@ -3501,7 +4235,68 @@ client.Users.UpdateAUser(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — User ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Users.Update(ID, request) -> *foru_ms_sdk.UpdateUsersResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing user. Only provided fields will be modified.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.UpdateUsersRequest{
+        ID: "id",
+    }
+client.Users.Update(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — User ID
     
 </dd>
 </dl>
@@ -3585,9 +4380,23 @@ client.Users.UpdateAUser(
 </dl>
 </details>
 
-<details><summary><code>client.Users.ListUserFollowers(ID) -> *foru_ms_sdk.GetUsersIDFollowersResponse</code></summary>
+<details><summary><code>client.Users.ListFollowers(ID) -> *foru_ms_sdk.UserFollowerListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of followers for User.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3598,10 +4407,10 @@ client.Users.UpdateAUser(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetUsersIDFollowersRequest{
+request := &foru_ms_sdk.ListFollowersUsersRequest{
         ID: "id",
     }
-client.Users.ListUserFollowers(
+client.Users.ListFollowers(
         context.TODO(),
         request,
     )
@@ -3628,7 +4437,7 @@ client.Users.ListUserFollowers(
 <dl>
 <dd>
 
-**cursor:** `*string` — Pagination cursor
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -3636,7 +4445,7 @@ client.Users.ListUserFollowers(
 <dl>
 <dd>
 
-**limit:** `*int` — Items per page
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -3648,7 +4457,7 @@ client.Users.ListUserFollowers(
 </dl>
 </details>
 
-<details><summary><code>client.Users.GetAFollowerFromUser(ID, SubID) -> *foru_ms_sdk.GetUsersIDFollowersSubIDResponse</code></summary>
+<details><summary><code>client.Users.RetrieveFollower(ID, SubID) -> *foru_ms_sdk.RetrieveFollowerUsersResponse</code></summary>
 <dl>
 <dd>
 
@@ -3661,11 +4470,11 @@ client.Users.ListUserFollowers(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetUsersIDFollowersSubIDRequest{
+request := &foru_ms_sdk.RetrieveFollowerUsersRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Users.GetAFollowerFromUser(
+client.Users.RetrieveFollower(
         context.TODO(),
         request,
     )
@@ -3704,7 +4513,7 @@ client.Users.GetAFollowerFromUser(
 </dl>
 </details>
 
-<details><summary><code>client.Users.DeleteAFollowerFromUser(ID, SubID) -> *foru_ms_sdk.DeleteUsersIDFollowersSubIDResponse</code></summary>
+<details><summary><code>client.Users.DeleteFollower(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
 
@@ -3717,11 +4526,11 @@ client.Users.GetAFollowerFromUser(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteUsersIDFollowersSubIDRequest{
+request := &foru_ms_sdk.DeleteFollowerUsersRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Users.DeleteAFollowerFromUser(
+client.Users.DeleteFollower(
         context.TODO(),
         request,
     )
@@ -3760,9 +4569,23 @@ client.Users.DeleteAFollowerFromUser(
 </dl>
 </details>
 
-<details><summary><code>client.Users.ListUserFollowing(ID) -> *foru_ms_sdk.GetUsersIDFollowingResponse</code></summary>
+<details><summary><code>client.Users.ListFollowing(ID) -> *foru_ms_sdk.UserFollowingListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of following for User.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3773,10 +4596,10 @@ client.Users.DeleteAFollowerFromUser(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetUsersIDFollowingRequest{
+request := &foru_ms_sdk.ListFollowingUsersRequest{
         ID: "id",
     }
-client.Users.ListUserFollowing(
+client.Users.ListFollowing(
         context.TODO(),
         request,
     )
@@ -3803,7 +4626,7 @@ client.Users.ListUserFollowing(
 <dl>
 <dd>
 
-**cursor:** `*string` — Pagination cursor
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -3811,7 +4634,7 @@ client.Users.ListUserFollowing(
 <dl>
 <dd>
 
-**limit:** `*int` — Items per page
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -3823,7 +4646,7 @@ client.Users.ListUserFollowing(
 </dl>
 </details>
 
-<details><summary><code>client.Users.GetAFollowingFromUser(ID, SubID) -> *foru_ms_sdk.GetUsersIDFollowingSubIDResponse</code></summary>
+<details><summary><code>client.Users.RetrieveFollowing(ID, SubID) -> *foru_ms_sdk.RetrieveFollowingUsersResponse</code></summary>
 <dl>
 <dd>
 
@@ -3836,11 +4659,11 @@ client.Users.ListUserFollowing(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetUsersIDFollowingSubIDRequest{
+request := &foru_ms_sdk.RetrieveFollowingUsersRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Users.GetAFollowingFromUser(
+client.Users.RetrieveFollowing(
         context.TODO(),
         request,
     )
@@ -3879,7 +4702,7 @@ client.Users.GetAFollowingFromUser(
 </dl>
 </details>
 
-<details><summary><code>client.Users.DeleteAFollowingFromUser(ID, SubID) -> *foru_ms_sdk.DeleteUsersIDFollowingSubIDResponse</code></summary>
+<details><summary><code>client.Users.DeleteFollowing(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
 
@@ -3892,11 +4715,11 @@ client.Users.GetAFollowingFromUser(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteUsersIDFollowingSubIDRequest{
+request := &foru_ms_sdk.DeleteFollowingUsersRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Users.DeleteAFollowingFromUser(
+client.Users.DeleteFollowing(
         context.TODO(),
         request,
     )
@@ -3936,9 +4759,23 @@ client.Users.DeleteAFollowingFromUser(
 </details>
 
 ## Roles
-<details><summary><code>client.Roles.ListAllRoles() -> *foru_ms_sdk.GetRolesResponse</code></summary>
+<details><summary><code>client.Roles.List() -> *foru_ms_sdk.RoleListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of roles. Use cursor for pagination.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3949,8 +4786,8 @@ client.Users.DeleteAFollowingFromUser(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetRolesRequest{}
-client.Roles.ListAllRoles(
+request := &foru_ms_sdk.ListRolesRequest{}
+client.Roles.List(
         context.TODO(),
         request,
     )
@@ -3969,7 +4806,7 @@ client.Roles.ListAllRoles(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -3977,7 +4814,7 @@ client.Roles.ListAllRoles(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -3985,7 +4822,15 @@ client.Roles.ListAllRoles(
 <dl>
 <dd>
 
-**search:** `*string` 
+**search:** `*string` — Search by name or slug
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*foru_ms_sdk.ListRolesRequestSort` — Sort order
     
 </dd>
 </dl>
@@ -3997,9 +4842,23 @@ client.Roles.ListAllRoles(
 </dl>
 </details>
 
-<details><summary><code>client.Roles.CreateARole(request) -> *foru_ms_sdk.PostRolesResponse</code></summary>
+<details><summary><code>client.Roles.Create(request) -> *foru_ms_sdk.RoleResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new role.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4010,10 +4869,10 @@ client.Roles.ListAllRoles(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostRolesRequest{
+request := &foru_ms_sdk.CreateRolesRequest{
         Name: "name",
     }
-client.Roles.CreateARole(
+client.Roles.Create(
         context.TODO(),
         request,
     )
@@ -4076,9 +4935,23 @@ client.Roles.CreateARole(
 </dl>
 </details>
 
-<details><summary><code>client.Roles.GetARole(ID) -> *foru_ms_sdk.GetRolesIDResponse</code></summary>
+<details><summary><code>client.Roles.Retrieve(ID) -> *foru_ms_sdk.RoleResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a role by ID or slug (if supported).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4089,10 +4962,10 @@ client.Roles.CreateARole(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetRolesIDRequest{
+request := &foru_ms_sdk.RetrieveRolesRequest{
         ID: "id",
     }
-client.Roles.GetARole(
+client.Roles.Retrieve(
         context.TODO(),
         request,
     )
@@ -4111,7 +4984,7 @@ client.Roles.GetARole(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Role ID
     
 </dd>
 </dl>
@@ -4123,9 +4996,23 @@ client.Roles.GetARole(
 </dl>
 </details>
 
-<details><summary><code>client.Roles.DeleteARole(ID) -> *foru_ms_sdk.DeleteRolesIDResponse</code></summary>
+<details><summary><code>client.Roles.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a role.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4136,10 +5023,10 @@ client.Roles.GetARole(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteRolesIDRequest{
+request := &foru_ms_sdk.DeleteRolesRequest{
         ID: "id",
     }
-client.Roles.DeleteARole(
+client.Roles.Delete(
         context.TODO(),
         request,
     )
@@ -4158,7 +5045,7 @@ client.Roles.DeleteARole(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Role ID
     
 </dd>
 </dl>
@@ -4170,9 +5057,23 @@ client.Roles.DeleteARole(
 </dl>
 </details>
 
-<details><summary><code>client.Roles.UpdateARole(ID, request) -> *foru_ms_sdk.PatchRolesIDResponse</code></summary>
+<details><summary><code>client.Roles.Update(ID, request) -> *foru_ms_sdk.UpdateRolesResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing role. Only provided fields will be modified.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4183,10 +5084,10 @@ client.Roles.DeleteARole(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchRolesIDRequest{
+request := &foru_ms_sdk.UpdateRolesRequest{
         ID: "id",
     }
-client.Roles.UpdateARole(
+client.Roles.Update(
         context.TODO(),
         request,
     )
@@ -4205,7 +5106,7 @@ client.Roles.UpdateARole(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Role ID
     
 </dd>
 </dl>
@@ -4258,9 +5159,23 @@ client.Roles.UpdateARole(
 </details>
 
 ## Reports
-<details><summary><code>client.Reports.ListAllReports() -> *foru_ms_sdk.GetReportsResponse</code></summary>
+<details><summary><code>client.Reports.List() -> *foru_ms_sdk.ReportListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of reports. Use cursor for pagination.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4271,8 +5186,8 @@ client.Roles.UpdateARole(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetReportsRequest{}
-client.Reports.ListAllReports(
+request := &foru_ms_sdk.ListReportsRequest{}
+client.Reports.List(
         context.TODO(),
         request,
     )
@@ -4291,7 +5206,7 @@ client.Reports.ListAllReports(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -4299,7 +5214,7 @@ client.Reports.ListAllReports(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -4307,7 +5222,23 @@ client.Reports.ListAllReports(
 <dl>
 <dd>
 
-**search:** `*string` 
+**status:** `*string` — Filter by status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reporterID:** `*string` — Filter by reporter ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reportedID:** `*string` — Filter by reported user ID
     
 </dd>
 </dl>
@@ -4319,9 +5250,23 @@ client.Reports.ListAllReports(
 </dl>
 </details>
 
-<details><summary><code>client.Reports.CreateAReport(request) -> *foru_ms_sdk.PostReportsResponse</code></summary>
+<details><summary><code>client.Reports.Create(request) -> *foru_ms_sdk.ReportResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new report.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4332,10 +5277,10 @@ client.Reports.ListAllReports(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostReportsRequest{
+request := &foru_ms_sdk.CreateReportsRequest{
         Type: "type",
     }
-client.Reports.CreateAReport(
+client.Reports.Create(
         context.TODO(),
         request,
     )
@@ -4355,6 +5300,14 @@ client.Reports.CreateAReport(
 <dd>
 
 **type_:** `string` — Report type (e.g. spam, abuse)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*string` — Report status (default: pending)
     
 </dd>
 </dl>
@@ -4406,50 +5359,11 @@ client.Reports.CreateAReport(
     
 </dd>
 </dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Reports.GetAReport(ID) -> *foru_ms_sdk.GetReportsIDResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
 
 <dl>
 <dd>
 
-<dl>
-<dd>
-
-```go
-request := &foru_ms_sdk.GetReportsIDRequest{
-        ID: "id",
-    }
-client.Reports.GetAReport(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` 
+**extendedData:** `map[string]any` — Custom extended data
     
 </dd>
 </dl>
@@ -4461,9 +5375,23 @@ client.Reports.GetAReport(
 </dl>
 </details>
 
-<details><summary><code>client.Reports.DeleteAReport(ID) -> *foru_ms_sdk.DeleteReportsIDResponse</code></summary>
+<details><summary><code>client.Reports.Retrieve(ID) -> *foru_ms_sdk.ReportResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a report by ID or slug (if supported).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4474,10 +5402,10 @@ client.Reports.GetAReport(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteReportsIDRequest{
+request := &foru_ms_sdk.RetrieveReportsRequest{
         ID: "id",
     }
-client.Reports.DeleteAReport(
+client.Reports.Retrieve(
         context.TODO(),
         request,
     )
@@ -4496,7 +5424,153 @@ client.Reports.DeleteAReport(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Report ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Reports.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a report.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.DeleteReportsRequest{
+        ID: "id",
+    }
+client.Reports.Delete(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — Report ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Reports.Update(ID, request) -> *foru_ms_sdk.UpdateReportsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing report. Only provided fields will be modified.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.UpdateReportsRequest{
+        ID: "id",
+    }
+client.Reports.Update(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — Report ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*string` — Report status (pending, reviewed, resolved, dismissed)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` — Updated description or admin notes
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Custom extended data
     
 </dd>
 </dl>
@@ -4509,9 +5583,23 @@ client.Reports.DeleteAReport(
 </details>
 
 ## Notifications
-<details><summary><code>client.Notifications.ListAllNotifications() -> *foru_ms_sdk.GetNotificationsResponse</code></summary>
+<details><summary><code>client.Notifications.List() -> *foru_ms_sdk.NotificationListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of notifications. Use cursor for pagination.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4522,8 +5610,8 @@ client.Reports.DeleteAReport(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetNotificationsRequest{}
-client.Notifications.ListAllNotifications(
+request := &foru_ms_sdk.ListNotificationsRequest{}
+client.Notifications.List(
         context.TODO(),
         request,
     )
@@ -4542,7 +5630,7 @@ client.Notifications.ListAllNotifications(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -4550,7 +5638,7 @@ client.Notifications.ListAllNotifications(
 <dl>
 <dd>
 
-**limit:** `*int` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -4558,7 +5646,15 @@ client.Notifications.ListAllNotifications(
 <dl>
 <dd>
 
-**search:** `*string` 
+**status:** `*foru_ms_sdk.ListNotificationsRequestStatus` — Filter by notification status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userID:** `*string` — Filter by recipient user ID (admin only)
     
 </dd>
 </dl>
@@ -4570,9 +5666,23 @@ client.Notifications.ListAllNotifications(
 </dl>
 </details>
 
-<details><summary><code>client.Notifications.CreateANotification(request) -> *foru_ms_sdk.PostNotificationsResponse</code></summary>
+<details><summary><code>client.Notifications.Create(request) -> *foru_ms_sdk.NotificationResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new notification.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4583,11 +5693,11 @@ client.Notifications.ListAllNotifications(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostNotificationsRequest{
+request := &foru_ms_sdk.CreateNotificationsRequest{
         UserID: "userId",
         Type: "type",
     }
-client.Notifications.CreateANotification(
+client.Notifications.Create(
         context.TODO(),
         request,
     )
@@ -4662,7 +5772,7 @@ client.Notifications.CreateANotification(
 <dl>
 <dd>
 
-**status:** `*foru_ms_sdk.PostNotificationsRequestStatus` — Initial notification status
+**status:** `*foru_ms_sdk.CreateNotificationsRequestStatus` — Initial notification status
     
 </dd>
 </dl>
@@ -4682,9 +5792,23 @@ client.Notifications.CreateANotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notifications.GetANotification(ID) -> *foru_ms_sdk.GetNotificationsIDResponse</code></summary>
+<details><summary><code>client.Notifications.Retrieve(ID) -> *foru_ms_sdk.NotificationResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a notification by ID or slug (if supported).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4695,10 +5819,10 @@ client.Notifications.CreateANotification(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetNotificationsIDRequest{
+request := &foru_ms_sdk.RetrieveNotificationsRequest{
         ID: "id",
     }
-client.Notifications.GetANotification(
+client.Notifications.Retrieve(
         context.TODO(),
         request,
     )
@@ -4717,7 +5841,7 @@ client.Notifications.GetANotification(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Notification ID
     
 </dd>
 </dl>
@@ -4729,9 +5853,23 @@ client.Notifications.GetANotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notifications.DeleteANotification(ID) -> *foru_ms_sdk.DeleteNotificationsIDResponse</code></summary>
+<details><summary><code>client.Notifications.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a notification.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4742,10 +5880,10 @@ client.Notifications.GetANotification(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteNotificationsIDRequest{
+request := &foru_ms_sdk.DeleteNotificationsRequest{
         ID: "id",
     }
-client.Notifications.DeleteANotification(
+client.Notifications.Delete(
         context.TODO(),
         request,
     )
@@ -4764,7 +5902,7 @@ client.Notifications.DeleteANotification(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Notification ID
     
 </dd>
 </dl>
@@ -4776,9 +5914,23 @@ client.Notifications.DeleteANotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notifications.UpdateANotification(ID, request) -> *foru_ms_sdk.PatchNotificationsIDResponse</code></summary>
+<details><summary><code>client.Notifications.Update(ID, request) -> *foru_ms_sdk.UpdateNotificationsResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing notification. Only provided fields will be modified.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4789,10 +5941,10 @@ client.Notifications.DeleteANotification(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchNotificationsIDRequest{
+request := &foru_ms_sdk.UpdateNotificationsRequest{
         ID: "id",
     }
-client.Notifications.UpdateANotification(
+client.Notifications.Update(
         context.TODO(),
         request,
     )
@@ -4811,7 +5963,7 @@ client.Notifications.UpdateANotification(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Notification ID
     
 </dd>
 </dl>
@@ -4819,7 +5971,7 @@ client.Notifications.UpdateANotification(
 <dl>
 <dd>
 
-**status:** `*foru_ms_sdk.PatchNotificationsIDRequestStatus` — Notification status
+**status:** `*foru_ms_sdk.UpdateNotificationsRequestStatus` — Notification status
     
 </dd>
 </dl>
@@ -4840,9 +5992,25 @@ client.Notifications.UpdateANotification(
 </details>
 
 ## Webhooks
-<details><summary><code>client.Webhooks.ListAllWebhooks() -> *foru_ms_sdk.GetWebhooksResponse</code></summary>
+<details><summary><code>client.Webhooks.List() -> *foru_ms_sdk.WebhookListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of webhooks. Use cursor for pagination.
+
+**Requires feature: webhooks**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4853,8 +6021,8 @@ client.Notifications.UpdateANotification(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetWebhooksRequest{}
-client.Webhooks.ListAllWebhooks(
+request := &foru_ms_sdk.ListWebhooksRequest{}
+client.Webhooks.List(
         context.TODO(),
         request,
     )
@@ -4873,7 +6041,7 @@ client.Webhooks.ListAllWebhooks(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -4881,15 +6049,7 @@ client.Webhooks.ListAllWebhooks(
 <dl>
 <dd>
 
-**limit:** `*int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**search:** `*string` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -4901,9 +6061,25 @@ client.Webhooks.ListAllWebhooks(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.CreateAWebhook(request) -> *foru_ms_sdk.PostWebhooksResponse</code></summary>
+<details><summary><code>client.Webhooks.Create(request) -> *foru_ms_sdk.WebhookResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new webhook.
+
+**Requires feature: webhooks**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4914,14 +6090,14 @@ client.Webhooks.ListAllWebhooks(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostWebhooksRequest{
+request := &foru_ms_sdk.CreateWebhooksRequest{
         Name: "name",
         URL: "url",
         Events: []string{
             "events",
         },
     }
-client.Webhooks.CreateAWebhook(
+client.Webhooks.Create(
         context.TODO(),
         request,
     )
@@ -4968,6 +6144,22 @@ client.Webhooks.CreateAWebhook(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**active:** `*bool` — Whether webhook is active
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Custom extended data
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -4976,9 +6168,25 @@ client.Webhooks.CreateAWebhook(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.GetAWebhook(ID) -> *foru_ms_sdk.GetWebhooksIDResponse</code></summary>
+<details><summary><code>client.Webhooks.Retrieve(ID) -> *foru_ms_sdk.WebhookResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a webhook by ID or slug (if supported).
+
+**Requires feature: webhooks**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4989,10 +6197,10 @@ client.Webhooks.CreateAWebhook(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetWebhooksIDRequest{
+request := &foru_ms_sdk.RetrieveWebhooksRequest{
         ID: "id",
     }
-client.Webhooks.GetAWebhook(
+client.Webhooks.Retrieve(
         context.TODO(),
         request,
     )
@@ -5011,7 +6219,7 @@ client.Webhooks.GetAWebhook(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Webhook ID
     
 </dd>
 </dl>
@@ -5023,9 +6231,25 @@ client.Webhooks.GetAWebhook(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.DeleteAWebhook(ID) -> *foru_ms_sdk.DeleteWebhooksIDResponse</code></summary>
+<details><summary><code>client.Webhooks.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete a webhook.
+
+**Requires feature: webhooks**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5036,10 +6260,10 @@ client.Webhooks.GetAWebhook(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteWebhooksIDRequest{
+request := &foru_ms_sdk.DeleteWebhooksRequest{
         ID: "id",
     }
-client.Webhooks.DeleteAWebhook(
+client.Webhooks.Delete(
         context.TODO(),
         request,
     )
@@ -5058,7 +6282,7 @@ client.Webhooks.DeleteAWebhook(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Webhook ID
     
 </dd>
 </dl>
@@ -5070,9 +6294,25 @@ client.Webhooks.DeleteAWebhook(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.ListWebhookDeliveries(ID) -> *foru_ms_sdk.GetWebhooksIDDeliveriesResponse</code></summary>
+<details><summary><code>client.Webhooks.Update(ID, request) -> *foru_ms_sdk.UpdateWebhooksResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing webhook. Only provided fields will be modified.
+
+**Requires feature: webhooks**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5083,10 +6323,121 @@ client.Webhooks.DeleteAWebhook(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetWebhooksIDDeliveriesRequest{
+request := &foru_ms_sdk.UpdateWebhooksRequest{
         ID: "id",
     }
-client.Webhooks.ListWebhookDeliveries(
+client.Webhooks.Update(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — Webhook ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` — Webhook name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**url:** `*string` — Target URL
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**events:** `[]string` — Event types to trigger on
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secret:** `*string` — New secret
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**active:** `*bool` — Enable/disable webhook
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Custom extended data
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Webhooks.ListDeliveries(ID) -> *foru_ms_sdk.WebhookDeliveryListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of deliveries for Webhook.
+
+**Requires feature: webhooks**
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.ListDeliveriesWebhooksRequest{
+        ID: "id",
+    }
+client.Webhooks.ListDeliveries(
         context.TODO(),
         request,
     )
@@ -5121,7 +6472,7 @@ client.Webhooks.ListWebhookDeliveries(
 <dl>
 <dd>
 
-**limit:** `*int` — Items per page
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -5133,7 +6484,7 @@ client.Webhooks.ListWebhookDeliveries(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.GetADeliveryFromWebhook(ID, SubID) -> *foru_ms_sdk.GetWebhooksIDDeliveriesSubIDResponse</code></summary>
+<details><summary><code>client.Webhooks.RetrieveDelivery(ID, SubID) -> *foru_ms_sdk.RetrieveDeliveryWebhooksResponse</code></summary>
 <dl>
 <dd>
 
@@ -5146,11 +6497,11 @@ client.Webhooks.ListWebhookDeliveries(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetWebhooksIDDeliveriesSubIDRequest{
+request := &foru_ms_sdk.RetrieveDeliveryWebhooksRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Webhooks.GetADeliveryFromWebhook(
+client.Webhooks.RetrieveDelivery(
         context.TODO(),
         request,
     )
@@ -5189,7 +6540,7 @@ client.Webhooks.GetADeliveryFromWebhook(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.DeleteADeliveryFromWebhook(ID, SubID) -> *foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDResponse</code></summary>
+<details><summary><code>client.Webhooks.DeleteDelivery(ID, SubID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
 
@@ -5202,11 +6553,11 @@ client.Webhooks.GetADeliveryFromWebhook(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDRequest{
+request := &foru_ms_sdk.DeleteDeliveryWebhooksRequest{
         ID: "id",
         SubID: "subId",
     }
-client.Webhooks.DeleteADeliveryFromWebhook(
+client.Webhooks.DeleteDelivery(
         context.TODO(),
         request,
     )
@@ -5246,9 +6597,25 @@ client.Webhooks.DeleteADeliveryFromWebhook(
 </details>
 
 ## Integrations
-<details><summary><code>client.Integrations.ListAllIntegrations() -> *foru_ms_sdk.GetIntegrationsResponse</code></summary>
+<details><summary><code>client.Integrations.List() -> *foru_ms_sdk.IntegrationListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of integrations. Use cursor for pagination.
+
+**Requires feature: integrations**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5259,8 +6626,8 @@ client.Webhooks.DeleteADeliveryFromWebhook(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetIntegrationsRequest{}
-client.Integrations.ListAllIntegrations(
+request := &foru_ms_sdk.ListIntegrationsRequest{}
+client.Integrations.List(
         context.TODO(),
         request,
     )
@@ -5279,7 +6646,7 @@ client.Integrations.ListAllIntegrations(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -5287,15 +6654,7 @@ client.Integrations.ListAllIntegrations(
 <dl>
 <dd>
 
-**limit:** `*int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**search:** `*string` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -5307,9 +6666,25 @@ client.Integrations.ListAllIntegrations(
 </dl>
 </details>
 
-<details><summary><code>client.Integrations.CreateAnIntegration(request) -> *foru_ms_sdk.PostIntegrationsResponse</code></summary>
+<details><summary><code>client.Integrations.Create(request) -> *foru_ms_sdk.IntegrationResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create an new integration.
+
+**Requires feature: integrations**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5320,13 +6695,14 @@ client.Integrations.ListAllIntegrations(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostIntegrationsRequest{
+request := &foru_ms_sdk.CreateIntegrationsRequest{
         Type: "type",
+        Name: "name",
         Config: map[string]any{
             "key": "value",
         },
     }
-client.Integrations.CreateAnIntegration(
+client.Integrations.Create(
         context.TODO(),
         request,
     )
@@ -5345,7 +6721,15 @@ client.Integrations.CreateAnIntegration(
 <dl>
 <dd>
 
-**type_:** `string` — Integration type (e.g. slack, discord)
+**type_:** `string` — Integration type (e.g. SLACK, DISCORD)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` — Integration name
     
 </dd>
 </dl>
@@ -5361,7 +6745,15 @@ client.Integrations.CreateAnIntegration(
 <dl>
 <dd>
 
-**enabled:** `*bool` 
+**active:** `*bool` — Whether integration is active
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Custom extended data
     
 </dd>
 </dl>
@@ -5373,9 +6765,25 @@ client.Integrations.CreateAnIntegration(
 </dl>
 </details>
 
-<details><summary><code>client.Integrations.GetAnIntegration(ID) -> *foru_ms_sdk.GetIntegrationsIDResponse</code></summary>
+<details><summary><code>client.Integrations.Retrieve(ID) -> *foru_ms_sdk.IntegrationResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve an integration by ID or slug (if supported).
+
+**Requires feature: integrations**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5386,10 +6794,10 @@ client.Integrations.CreateAnIntegration(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetIntegrationsIDRequest{
+request := &foru_ms_sdk.RetrieveIntegrationsRequest{
         ID: "id",
     }
-client.Integrations.GetAnIntegration(
+client.Integrations.Retrieve(
         context.TODO(),
         request,
     )
@@ -5408,7 +6816,7 @@ client.Integrations.GetAnIntegration(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Integration ID
     
 </dd>
 </dl>
@@ -5420,9 +6828,25 @@ client.Integrations.GetAnIntegration(
 </dl>
 </details>
 
-<details><summary><code>client.Integrations.DeleteAnIntegration(ID) -> *foru_ms_sdk.DeleteIntegrationsIDResponse</code></summary>
+<details><summary><code>client.Integrations.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete an integration.
+
+**Requires feature: integrations**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5433,10 +6857,10 @@ client.Integrations.GetAnIntegration(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteIntegrationsIDRequest{
+request := &foru_ms_sdk.DeleteIntegrationsRequest{
         ID: "id",
     }
-client.Integrations.DeleteAnIntegration(
+client.Integrations.Delete(
         context.TODO(),
         request,
     )
@@ -5455,7 +6879,7 @@ client.Integrations.DeleteAnIntegration(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Integration ID
     
 </dd>
 </dl>
@@ -5467,9 +6891,25 @@ client.Integrations.DeleteAnIntegration(
 </dl>
 </details>
 
-<details><summary><code>client.Integrations.UpdateAnIntegration(ID, request) -> *foru_ms_sdk.PatchIntegrationsIDResponse</code></summary>
+<details><summary><code>client.Integrations.Update(ID, request) -> *foru_ms_sdk.UpdateIntegrationsResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing integration. Only provided fields will be modified.
+
+**Requires feature: integrations**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5480,10 +6920,10 @@ client.Integrations.DeleteAnIntegration(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchIntegrationsIDRequest{
+request := &foru_ms_sdk.UpdateIntegrationsRequest{
         ID: "id",
     }
-client.Integrations.UpdateAnIntegration(
+client.Integrations.Update(
         context.TODO(),
         request,
     )
@@ -5502,7 +6942,7 @@ client.Integrations.UpdateAnIntegration(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — Integration ID
     
 </dd>
 </dl>
@@ -5530,6 +6970,14 @@ client.Integrations.UpdateAnIntegration(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Custom extended data
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -5538,10 +6986,26 @@ client.Integrations.UpdateAnIntegration(
 </dl>
 </details>
 
-## SsOs
-<details><summary><code>client.SsOs.ListAllSsOs() -> *foru_ms_sdk.GetSSOResponse</code></summary>
+## SSOs
+<details><summary><code>client.SsOs.List() -> *foru_ms_sdk.SSOListResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a paginated list of ssos. Use cursor for pagination.
+
+**Requires feature: sso**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5552,8 +7016,8 @@ client.Integrations.UpdateAnIntegration(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetSSORequest{}
-client.SsOs.ListAllSsOs(
+request := &foru_ms_sdk.ListSsOsRequest{}
+client.SsOs.List(
         context.TODO(),
         request,
     )
@@ -5572,7 +7036,7 @@ client.SsOs.ListAllSsOs(
 <dl>
 <dd>
 
-**page:** `*int` 
+**limit:** `*int` — Items per page (max 75)
     
 </dd>
 </dl>
@@ -5580,15 +7044,7 @@ client.SsOs.ListAllSsOs(
 <dl>
 <dd>
 
-**limit:** `*int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**search:** `*string` 
+**cursor:** `*string` — Cursor for pagination
     
 </dd>
 </dl>
@@ -5600,9 +7056,25 @@ client.SsOs.ListAllSsOs(
 </dl>
 </details>
 
-<details><summary><code>client.SsOs.CreateAnSSO(request) -> *foru_ms_sdk.PostSSOResponse</code></summary>
+<details><summary><code>client.SsOs.Create(request) -> *foru_ms_sdk.SSOResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create an new sso.
+
+**Requires feature: sso**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5613,16 +7085,14 @@ client.SsOs.ListAllSsOs(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PostSSORequest{
-        Name: "name",
-        ClientID: "clientId",
-        ClientSecret: "clientSecret",
-        Issuer: "issuer",
-        AuthorizationEndpoint: "authorizationEndpoint",
-        TokenEndpoint: "tokenEndpoint",
-        UserInfoEndpoint: "userInfoEndpoint",
+request := &foru_ms_sdk.CreateSsOsRequest{
+        Provider: foru_ms_sdk.CreateSsOsRequestProviderOkta,
+        Domain: "domain",
+        Config: map[string]any{
+            "key": "value",
+        },
     }
-client.SsOs.CreateAnSSO(
+client.SsOs.Create(
         context.TODO(),
         request,
     )
@@ -5641,7 +7111,7 @@ client.SsOs.CreateAnSSO(
 <dl>
 <dd>
 
-**name:** `string` — Provider name (e.g. Google)
+**provider:** `*foru_ms_sdk.CreateSsOsRequestProvider` — SSO provider type
     
 </dd>
 </dl>
@@ -5649,7 +7119,7 @@ client.SsOs.CreateAnSSO(
 <dl>
 <dd>
 
-**clientID:** `string` 
+**domain:** `string` — Email domain to match (e.g. 'acme.com')
     
 </dd>
 </dl>
@@ -5657,7 +7127,7 @@ client.SsOs.CreateAnSSO(
 <dl>
 <dd>
 
-**clientSecret:** `string` 
+**config:** `map[string]any` — Provider configuration (clientId, issuer, etc.)
     
 </dd>
 </dl>
@@ -5665,7 +7135,7 @@ client.SsOs.CreateAnSSO(
 <dl>
 <dd>
 
-**issuer:** `string` 
+**active:** `*bool` — Whether SSO is active
     
 </dd>
 </dl>
@@ -5673,23 +7143,7 @@ client.SsOs.CreateAnSSO(
 <dl>
 <dd>
 
-**authorizationEndpoint:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tokenEndpoint:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**userInfoEndpoint:** `string` 
+**extendedData:** `map[string]any` — Custom extended data
     
 </dd>
 </dl>
@@ -5701,9 +7155,25 @@ client.SsOs.CreateAnSSO(
 </dl>
 </details>
 
-<details><summary><code>client.SsOs.GetAnSSO(ID) -> *foru_ms_sdk.GetSsoIdResponse</code></summary>
+<details><summary><code>client.SsOs.Retrieve(ID) -> *foru_ms_sdk.SSOResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve an sso by ID or slug (if supported).
+
+**Requires feature: sso**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5714,10 +7184,10 @@ client.SsOs.CreateAnSSO(
 <dd>
 
 ```go
-request := &foru_ms_sdk.GetSsoIdRequest{
+request := &foru_ms_sdk.RetrieveSsOsRequest{
         ID: "id",
     }
-client.SsOs.GetAnSSO(
+client.SsOs.Retrieve(
         context.TODO(),
         request,
     )
@@ -5736,7 +7206,7 @@ client.SsOs.GetAnSSO(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — SSO ID
     
 </dd>
 </dl>
@@ -5748,9 +7218,25 @@ client.SsOs.GetAnSSO(
 </dl>
 </details>
 
-<details><summary><code>client.SsOs.DeleteAnSSO(ID) -> *foru_ms_sdk.DeleteSsoIdResponse</code></summary>
+<details><summary><code>client.SsOs.Delete(ID) -> *foru_ms_sdk.SuccessResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete an sso.
+
+**Requires feature: sso**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5761,10 +7247,10 @@ client.SsOs.GetAnSSO(
 <dd>
 
 ```go
-request := &foru_ms_sdk.DeleteSsoIdRequest{
+request := &foru_ms_sdk.DeleteSsOsRequest{
         ID: "id",
     }
-client.SsOs.DeleteAnSSO(
+client.SsOs.Delete(
         context.TODO(),
         request,
     )
@@ -5783,7 +7269,7 @@ client.SsOs.DeleteAnSSO(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — SSO ID
     
 </dd>
 </dl>
@@ -5795,9 +7281,25 @@ client.SsOs.DeleteAnSSO(
 </dl>
 </details>
 
-<details><summary><code>client.SsOs.UpdateAnSSO(ID, request) -> *foru_ms_sdk.PatchSsoIdResponse</code></summary>
+<details><summary><code>client.SsOs.Update(ID, request) -> *foru_ms_sdk.UpdateSsOsResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing sso. Only provided fields will be modified.
+
+**Requires feature: sso**
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -5808,10 +7310,10 @@ client.SsOs.DeleteAnSSO(
 <dd>
 
 ```go
-request := &foru_ms_sdk.PatchSsoIdRequest{
+request := &foru_ms_sdk.UpdateSsOsRequest{
         ID: "id",
     }
-client.SsOs.UpdateAnSSO(
+client.SsOs.Update(
         context.TODO(),
         request,
     )
@@ -5830,7 +7332,7 @@ client.SsOs.UpdateAnSSO(
 <dl>
 <dd>
 
-**id:** `string` 
+**id:** `string` — SSO ID
     
 </dd>
 </dl>
@@ -5838,7 +7340,7 @@ client.SsOs.UpdateAnSSO(
 <dl>
 <dd>
 
-**name:** `*string` — Provider name
+**provider:** `*foru_ms_sdk.UpdateSsOsRequestProvider` — SSO provider type
     
 </dd>
 </dl>
@@ -5854,47 +7356,7 @@ client.SsOs.UpdateAnSSO(
 <dl>
 <dd>
 
-**clientID:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**clientSecret:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**issuer:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**authorizationEndpoint:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tokenEndpoint:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**userInfoEndpoint:** `*string` 
+**config:** `map[string]any` — Provider configuration
     
 </dd>
 </dl>
@@ -5903,6 +7365,1825 @@ client.SsOs.UpdateAnSSO(
 <dd>
 
 **active:** `*bool` — Enable/disable provider
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**extendedData:** `map[string]any` — Custom extended data
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Provisioning
+<details><summary><code>client.Provisioning.List() -> *foru_ms_sdk.ListProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve all instances owned by the authenticated user. Use the `handle` query parameter to get a single instance with its API key.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.ListProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+    }
+client.Provisioning.List(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**handle:** `*string` — Optional handle to get a single instance
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.Create(request) -> *foru_ms_sdk.CreateProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new forum instance. Returns the instance details including the API key for accessing the forum API.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.CreateInstance{
+        ProvisioningKey: "x-provisioning-key",
+        Name: "name",
+        Handle: "handle",
+    }
+client.Provisioning.Create(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` — Display name for the instance
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` — URL-friendly identifier (slug)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.Update(request) -> *foru_ms_sdk.UpdateProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an instance's name or handle. The `handle` field identifies which instance to update.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.UpdateInstance{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+    }
+client.Provisioning.Update(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` — Current handle to identify the instance
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` — New display name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**newHandle:** `*string` — New URL-friendly identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.Delete(request) -> *foru_ms_sdk.DeleteProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently delete an instance. This action cannot be undone.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.DeleteInstance{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+    }
+client.Provisioning.Delete(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` — Handle of the instance to delete
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.GetBilling() -> *foru_ms_sdk.GetBillingProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve billing and subscription information for an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.GetBillingProvisioningRequest{
+        Handle: "handle",
+        ProvisioningKey: "x-provisioning-key",
+    }
+client.Provisioning.GetBilling(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**handle:** `string` — Instance handle
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.ChangePlan(request) -> *foru_ms_sdk.ChangePlanProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Change an instance's subscription plan. Returns a checkout URL for upgrades or a billing portal URL for downgrades.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.UpgradeInstance{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        Plan: foru_ms_sdk.UpgradeInstancePlanFree,
+    }
+client.Provisioning.ChangePlan(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` — Instance handle
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan:** `*foru_ms_sdk.UpgradeInstancePlan` — Target plan
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isAnnual:** `*bool` — Use annual billing (default: true)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**returnURL:** `*string` — URL to return to after checkout/portal
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.RegenerateAPIKey(request) -> *foru_ms_sdk.RegenerateAPIKeyProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generate a new API key for the instance. The old key will be invalidated.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.RegenerateAPIKeyProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+    }
+client.Provisioning.RegenerateAPIKey(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.GetUsage() -> *foru_ms_sdk.GetUsageProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve usage statistics for an instance including API requests, storage, and content counts.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.GetUsageProvisioningRequest{
+        Handle: "handle",
+        ProvisioningKey: "x-provisioning-key",
+    }
+client.Provisioning.GetUsage(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**handle:** `string` — Instance handle
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.ListTeam() -> *foru_ms_sdk.ListTeamProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve all team members for an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.ListTeamProvisioningRequest{
+        Handle: "handle",
+        ProvisioningKey: "x-provisioning-key",
+    }
+client.Provisioning.ListTeam(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**handle:** `string` — Instance handle
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.InviteTeam(request) -> *foru_ms_sdk.InviteTeamProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Invite new team members to an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.InviteTeamProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        Members: []*foru_ms_sdk.InviteTeamProvisioningRequestMembersItem{
+            &foru_ms_sdk.InviteTeamProvisioningRequestMembersItem{
+                Email: "email",
+            },
+        },
+    }
+client.Provisioning.InviteTeam(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**members:** `[]*foru_ms_sdk.InviteTeamProvisioningRequestMembersItem` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.RemoveTeamMember(request) -> *foru_ms_sdk.RemoveTeamMemberProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Remove a team member from an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.RemoveTeamMemberProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        Email: "email",
+    }
+client.Provisioning.RemoveTeamMember(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.ListDomains() -> *foru_ms_sdk.ListDomainsProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve all custom domains for an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.ListDomainsProvisioningRequest{
+        Handle: "handle",
+        ProvisioningKey: "x-provisioning-key",
+    }
+client.Provisioning.ListDomains(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**handle:** `string` — Instance handle
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.AddDomain(request) -> *foru_ms_sdk.AddDomainProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Add a custom domain to an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.AddDomainProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        Name: "name",
+    }
+client.Provisioning.AddDomain(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` — Domain name (e.g., forum.example.com)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.RemoveDomain(request) -> *foru_ms_sdk.RemoveDomainProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Remove a custom domain from an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.RemoveDomainProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        Name: "name",
+    }
+client.Provisioning.RemoveDomain(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.ExportData(request) -> *foru_ms_sdk.ExportDataProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Export all data from an instance including threads, posts, users, tags, etc.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.ExportDataProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+    }
+client.Provisioning.ExportData(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.ListWebhooks() -> *foru_ms_sdk.ListWebhooksProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve all webhooks configured for an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.ListWebhooksProvisioningRequest{
+        Handle: "handle",
+        ProvisioningKey: "x-provisioning-key",
+    }
+client.Provisioning.ListWebhooks(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**handle:** `string` — Instance handle
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.CreateWebhook(request) -> *foru_ms_sdk.CreateWebhookProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new webhook for an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.CreateWebhookProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        URL: "url",
+        Events: []string{
+            "events",
+        },
+    }
+client.Provisioning.CreateWebhook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**url:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**events:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secret:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**active:** `*bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.UpdateWebhook(request) -> *foru_ms_sdk.UpdateWebhookProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update an existing webhook.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.UpdateWebhookProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        WebhookID: "webhookId",
+    }
+client.Provisioning.UpdateWebhook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**webhookID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**url:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**events:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secret:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**active:** `*bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.DeleteWebhook(request) -> *foru_ms_sdk.DeleteWebhookProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a webhook from an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.DeleteWebhookProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        WebhookID: "webhookId",
+    }
+client.Provisioning.DeleteWebhook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**webhookID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.GetOwnership() -> *foru_ms_sdk.GetOwnershipProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve owner and creator information for an instance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.GetOwnershipProvisioningRequest{
+        Handle: "handle",
+        ProvisioningKey: "x-provisioning-key",
+    }
+client.Provisioning.GetOwnership(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**handle:** `string` — Instance handle
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.TransferOwnership(request) -> *foru_ms_sdk.TransferOwnershipProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Transfer instance ownership to another user. Only the current owner can transfer ownership.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.TransferOwnershipProvisioningRequest{
+        ProvisioningKey: "x-provisioning-key",
+        Handle: "handle",
+        NewOwnerEmail: "newOwnerEmail",
+    }
+client.Provisioning.TransferOwnership(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provisioningKey:** `string` — User provisioning key for platform-level instance management
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handle:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**newOwnerEmail:** `string` — Email of the new owner
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.Register(request) -> *foru_ms_sdk.RegisterProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new account and receive a provisioning key for API access. Use this key to create and manage instances.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.RegisterProvisioningRequest{
+        Email: "email",
+        Password: "password",
+    }
+client.Provisioning.Register(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**email:** `string` — Email address for the account
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `string` — Password (minimum 8 characters)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` — Display name (optional)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Provisioning.Login(request) -> *foru_ms_sdk.LoginProvisioningResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Login with email and password to retrieve your provisioning key.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &foru_ms_sdk.LoginProvisioningRequest{
+        Email: "email",
+        Password: "password",
+    }
+client.Provisioning.Login(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**email:** `string` — Account email
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `string` — Account password
     
 </dd>
 </dl>

@@ -32,12 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllReports(
+// Retrieve a paginated list of reports. Use cursor for pagination.
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetReportsRequest,
+	request *foru_ms_sdk.ListReportsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetReportsResponse, error) {
-	response, err := c.WithRawResponse.ListAllReports(
+) (*foru_ms_sdk.ReportListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +49,13 @@ func (c *Client) ListAllReports(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAReport(
+// Create a new report.
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostReportsRequest,
+	request *foru_ms_sdk.CreateReportsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostReportsResponse, error) {
-	response, err := c.WithRawResponse.CreateAReport(
+) (*foru_ms_sdk.ReportResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +66,13 @@ func (c *Client) CreateAReport(
 	return response.Body, nil
 }
 
-func (c *Client) GetAReport(
+// Retrieve a report by ID or slug (if supported).
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetReportsIDRequest,
+	request *foru_ms_sdk.RetrieveReportsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetReportsIDResponse, error) {
-	response, err := c.WithRawResponse.GetAReport(
+) (*foru_ms_sdk.ReportResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +83,30 @@ func (c *Client) GetAReport(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAReport(
+// Permanently delete a report.
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteReportsIDRequest,
+	request *foru_ms_sdk.DeleteReportsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteReportsIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAReport(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Update an existing report. Only provided fields will be modified.
+func (c *Client) Update(
+	ctx context.Context,
+	request *foru_ms_sdk.UpdateReportsRequest,
+	opts ...option.RequestOption,
+) (*foru_ms_sdk.UpdateReportsResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,

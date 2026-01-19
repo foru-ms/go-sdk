@@ -32,12 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllPrivateMessages(
+// Retrieve a paginated list of private messages. Use cursor for pagination.
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPrivateMessagesRequest,
+	request *foru_ms_sdk.ListPrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPrivateMessagesResponse, error) {
-	response, err := c.WithRawResponse.ListAllPrivateMessages(
+) (*foru_ms_sdk.PrivateMessageListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +49,13 @@ func (c *Client) ListAllPrivateMessages(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAPrivateMessage(
+// Create a new private message.
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostPrivateMessagesRequest,
+	request *foru_ms_sdk.CreatePrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostPrivateMessagesResponse, error) {
-	response, err := c.WithRawResponse.CreateAPrivateMessage(
+) (*foru_ms_sdk.PrivateMessageResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +66,13 @@ func (c *Client) CreateAPrivateMessage(
 	return response.Body, nil
 }
 
-func (c *Client) GetAPrivateMessage(
+// Retrieve a private message by ID or slug (if supported).
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPrivateMessagesIDRequest,
+	request *foru_ms_sdk.RetrievePrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPrivateMessagesIDResponse, error) {
-	response, err := c.WithRawResponse.GetAPrivateMessage(
+) (*foru_ms_sdk.PrivateMessageResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +83,13 @@ func (c *Client) GetAPrivateMessage(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAPrivateMessage(
+// Permanently delete a private message.
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePrivateMessagesIDRequest,
+	request *foru_ms_sdk.DeletePrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeletePrivateMessagesIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAPrivateMessage(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +100,13 @@ func (c *Client) DeleteAPrivateMessage(
 	return response.Body, nil
 }
 
-func (c *Client) ListPrivateMessageReplies(
+// Update an existing private message. Only provided fields will be modified.
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPrivateMessagesIDRepliesRequest,
+	request *foru_ms_sdk.UpdatePrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPrivateMessagesIDRepliesResponse, error) {
-	response, err := c.WithRawResponse.ListPrivateMessageReplies(
+) (*foru_ms_sdk.UpdatePrivateMessagesResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,
@@ -112,12 +117,13 @@ func (c *Client) ListPrivateMessageReplies(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAReplyInPrivateMessage(
+// Retrieve a paginated list of replies for Private Message.
+func (c *Client) ListReplies(
 	ctx context.Context,
-	request *foru_ms_sdk.PostPrivateMessagesIDRepliesRequest,
+	request *foru_ms_sdk.ListRepliesPrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostPrivateMessagesIDRepliesResponse, error) {
-	response, err := c.WithRawResponse.CreateAReplyInPrivateMessage(
+) (*foru_ms_sdk.PrivateMessageReplyListResponse, error) {
+	response, err := c.WithRawResponse.ListReplies(
 		ctx,
 		request,
 		opts...,
@@ -128,12 +134,13 @@ func (c *Client) CreateAReplyInPrivateMessage(
 	return response.Body, nil
 }
 
-func (c *Client) GetAReplyFromPrivateMessage(
+// Create a Reply in Private Message.
+func (c *Client) CreateReply(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDRequest,
+	request *foru_ms_sdk.CreateReplyPrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetAReplyFromPrivateMessage(
+) (*foru_ms_sdk.PrivateMessageReplyResponse, error) {
+	response, err := c.WithRawResponse.CreateReply(
 		ctx,
 		request,
 		opts...,
@@ -144,12 +151,28 @@ func (c *Client) GetAReplyFromPrivateMessage(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAReplyFromPrivateMessage(
+func (c *Client) RetrieveReply(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDRequest,
+	request *foru_ms_sdk.RetrieveReplyPrivateMessagesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAReplyFromPrivateMessage(
+) (*foru_ms_sdk.RetrieveReplyPrivateMessagesResponse, error) {
+	response, err := c.WithRawResponse.RetrieveReply(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+func (c *Client) DeleteReply(
+	ctx context.Context,
+	request *foru_ms_sdk.DeleteReplyPrivateMessagesRequest,
+	opts ...option.RequestOption,
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeleteReply(
 		ctx,
 		request,
 		opts...,

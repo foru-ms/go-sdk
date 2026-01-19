@@ -32,11 +32,12 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+// Register a new user in your forum instance. Requires API key for instance identification. Returns a JWT token for subsequent authenticated requests.
 func (c *Client) Register(
 	ctx context.Context,
-	request *foru_ms_sdk.PostAuthRegisterRequest,
+	request *foru_ms_sdk.RegisterAuthRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostAuthRegisterResponse, error) {
+) (*foru_ms_sdk.RegisterResponse, error) {
 	response, err := c.WithRawResponse.Register(
 		ctx,
 		request,
@@ -48,11 +49,12 @@ func (c *Client) Register(
 	return response.Body, nil
 }
 
+// Authenticate an existing user. Requires API key for instance identification. Returns a JWT token for subsequent authenticated requests.
 func (c *Client) Login(
 	ctx context.Context,
-	request *foru_ms_sdk.PostAuthLoginRequest,
+	request *foru_ms_sdk.LoginAuthRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostAuthLoginResponse, error) {
+) (*foru_ms_sdk.LoginResponse, error) {
 	response, err := c.WithRawResponse.Login(
 		ctx,
 		request,
@@ -64,11 +66,11 @@ func (c *Client) Login(
 	return response.Body, nil
 }
 
-func (c *Client) GetCurrentUser(
+func (c *Client) Me(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetAuthMeResponse, error) {
-	response, err := c.WithRawResponse.GetCurrentUser(
+) (*foru_ms_sdk.MeResponse, error) {
+	response, err := c.WithRawResponse.Me(
 		ctx,
 		opts...,
 	)
@@ -78,12 +80,13 @@ func (c *Client) GetCurrentUser(
 	return response.Body, nil
 }
 
-func (c *Client) RequestPasswordReset(
+// Request a password reset email. Requires API key for instance identification.
+func (c *Client) ForgotPassword(
 	ctx context.Context,
-	request *foru_ms_sdk.PostAuthForgotPasswordRequest,
+	request *foru_ms_sdk.ForgotPasswordAuthRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostAuthForgotPasswordResponse, error) {
-	response, err := c.WithRawResponse.RequestPasswordReset(
+) (*foru_ms_sdk.ForgotPasswordResponse, error) {
+	response, err := c.WithRawResponse.ForgotPassword(
 		ctx,
 		request,
 		opts...,
@@ -94,11 +97,12 @@ func (c *Client) RequestPasswordReset(
 	return response.Body, nil
 }
 
+// Reset password using a reset token. Requires API key for instance identification.
 func (c *Client) ResetPassword(
 	ctx context.Context,
-	request *foru_ms_sdk.PostAuthResetPasswordRequest,
+	request *foru_ms_sdk.ResetPasswordAuthRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostAuthResetPasswordResponse, error) {
+) (*foru_ms_sdk.ResetPasswordResponse, error) {
 	response, err := c.WithRawResponse.ResetPassword(
 		ctx,
 		request,

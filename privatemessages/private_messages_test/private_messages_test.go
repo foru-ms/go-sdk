@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestPrivateMessagesListAllPrivateMessagesWithWireMock(
+func TestPrivateMessagesListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestPrivateMessagesListAllPrivateMessagesWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetPrivateMessagesRequest{}
-	_, invocationErr := client.PrivateMessages.ListAllPrivateMessages(
+	request := &foru_ms_sdk.ListPrivateMessagesRequest{}
+	_, invocationErr := client.PrivateMessages.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPrivateMessagesListAllPrivateMessagesWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPrivateMessagesListAllPrivateMessagesWithWireMock", "GET", "/private-messages", nil, 1)
+	VerifyRequestCount(t, "TestPrivateMessagesListWithWireMock", "GET", "/private-messages", nil, 1)
 }
 
-func TestPrivateMessagesCreateAPrivateMessageWithWireMock(
+func TestPrivateMessagesCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,23 +101,23 @@ func TestPrivateMessagesCreateAPrivateMessageWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostPrivateMessagesRequest{
+	request := &foru_ms_sdk.CreatePrivateMessagesRequest{
 		RecipientID: "recipientId",
 		Body:        "body",
 	}
-	_, invocationErr := client.PrivateMessages.CreateAPrivateMessage(
+	_, invocationErr := client.PrivateMessages.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPrivateMessagesCreateAPrivateMessageWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPrivateMessagesCreateAPrivateMessageWithWireMock", "POST", "/private-messages", nil, 1)
+	VerifyRequestCount(t, "TestPrivateMessagesCreateWithWireMock", "POST", "/private-messages", nil, 1)
 }
 
-func TestPrivateMessagesGetAPrivateMessageWithWireMock(
+func TestPrivateMessagesRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -130,22 +130,22 @@ func TestPrivateMessagesGetAPrivateMessageWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetPrivateMessagesIDRequest{
+	request := &foru_ms_sdk.RetrievePrivateMessagesRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.PrivateMessages.GetAPrivateMessage(
+	_, invocationErr := client.PrivateMessages.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPrivateMessagesGetAPrivateMessageWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPrivateMessagesGetAPrivateMessageWithWireMock", "GET", "/private-messages/id", nil, 1)
+	VerifyRequestCount(t, "TestPrivateMessagesRetrieveWithWireMock", "GET", "/private-messages/id", nil, 1)
 }
 
-func TestPrivateMessagesDeleteAPrivateMessageWithWireMock(
+func TestPrivateMessagesDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -158,22 +158,22 @@ func TestPrivateMessagesDeleteAPrivateMessageWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeletePrivateMessagesIDRequest{
+	request := &foru_ms_sdk.DeletePrivateMessagesRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.PrivateMessages.DeleteAPrivateMessage(
+	_, invocationErr := client.PrivateMessages.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPrivateMessagesDeleteAPrivateMessageWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPrivateMessagesDeleteAPrivateMessageWithWireMock", "DELETE", "/private-messages/id", nil, 1)
+	VerifyRequestCount(t, "TestPrivateMessagesDeleteWithWireMock", "DELETE", "/private-messages/id", nil, 1)
 }
 
-func TestPrivateMessagesListPrivateMessageRepliesWithWireMock(
+func TestPrivateMessagesUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -186,22 +186,22 @@ func TestPrivateMessagesListPrivateMessageRepliesWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetPrivateMessagesIDRepliesRequest{
+	request := &foru_ms_sdk.UpdatePrivateMessagesRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.PrivateMessages.ListPrivateMessageReplies(
+	_, invocationErr := client.PrivateMessages.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPrivateMessagesListPrivateMessageRepliesWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPrivateMessagesListPrivateMessageRepliesWithWireMock", "GET", "/private-messages/id/replies", nil, 1)
+	VerifyRequestCount(t, "TestPrivateMessagesUpdateWithWireMock", "PATCH", "/private-messages/id", nil, 1)
 }
 
-func TestPrivateMessagesCreateAReplyInPrivateMessageWithWireMock(
+func TestPrivateMessagesListRepliesWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -214,24 +214,52 @@ func TestPrivateMessagesCreateAReplyInPrivateMessageWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostPrivateMessagesIDRepliesRequest{
+	request := &foru_ms_sdk.ListRepliesPrivateMessagesRequest{
+		ID: "id",
+	}
+	_, invocationErr := client.PrivateMessages.ListReplies(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesListRepliesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPrivateMessagesListRepliesWithWireMock", "GET", "/private-messages/id/replies", nil, 1)
+}
+
+func TestPrivateMessagesCreateReplyWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(
+			WireMockBaseURL,
+		),
+	)
+	request := &foru_ms_sdk.CreateReplyPrivateMessagesRequest{
 		ID:          "id",
 		RecipientID: "recipientId",
 		Body:        "body",
 	}
-	_, invocationErr := client.PrivateMessages.CreateAReplyInPrivateMessage(
+	_, invocationErr := client.PrivateMessages.CreateReply(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPrivateMessagesCreateAReplyInPrivateMessageWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesCreateReplyWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPrivateMessagesCreateAReplyInPrivateMessageWithWireMock", "POST", "/private-messages/id/replies", nil, 1)
+	VerifyRequestCount(t, "TestPrivateMessagesCreateReplyWithWireMock", "POST", "/private-messages/id/replies", nil, 1)
 }
 
-func TestPrivateMessagesGetAReplyFromPrivateMessageWithWireMock(
+func TestPrivateMessagesRetrieveReplyWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -244,23 +272,23 @@ func TestPrivateMessagesGetAReplyFromPrivateMessageWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetPrivateMessagesIDRepliesSubIDRequest{
+	request := &foru_ms_sdk.RetrieveReplyPrivateMessagesRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.PrivateMessages.GetAReplyFromPrivateMessage(
+	_, invocationErr := client.PrivateMessages.RetrieveReply(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPrivateMessagesGetAReplyFromPrivateMessageWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesRetrieveReplyWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPrivateMessagesGetAReplyFromPrivateMessageWithWireMock", "GET", "/private-messages/id/replies/subId", nil, 1)
+	VerifyRequestCount(t, "TestPrivateMessagesRetrieveReplyWithWireMock", "GET", "/private-messages/id/replies/subId", nil, 1)
 }
 
-func TestPrivateMessagesDeleteAReplyFromPrivateMessageWithWireMock(
+func TestPrivateMessagesDeleteReplyWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -273,18 +301,18 @@ func TestPrivateMessagesDeleteAReplyFromPrivateMessageWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeletePrivateMessagesIDRepliesSubIDRequest{
+	request := &foru_ms_sdk.DeleteReplyPrivateMessagesRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.PrivateMessages.DeleteAReplyFromPrivateMessage(
+	_, invocationErr := client.PrivateMessages.DeleteReply(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPrivateMessagesDeleteAReplyFromPrivateMessageWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPrivateMessagesDeleteReplyWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPrivateMessagesDeleteAReplyFromPrivateMessageWithWireMock", "DELETE", "/private-messages/id/replies/subId", nil, 1)
+	VerifyRequestCount(t, "TestPrivateMessagesDeleteReplyWithWireMock", "DELETE", "/private-messages/id/replies/subId", nil, 1)
 }

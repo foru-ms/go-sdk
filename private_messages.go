@@ -10,15 +10,15 @@ import (
 )
 
 var (
-	postPrivateMessagesRequestFieldRecipientID  = big.NewInt(1 << 0)
-	postPrivateMessagesRequestFieldSenderID     = big.NewInt(1 << 1)
-	postPrivateMessagesRequestFieldTitle        = big.NewInt(1 << 2)
-	postPrivateMessagesRequestFieldBody         = big.NewInt(1 << 3)
-	postPrivateMessagesRequestFieldParentID     = big.NewInt(1 << 4)
-	postPrivateMessagesRequestFieldExtendedData = big.NewInt(1 << 5)
+	createPrivateMessagesRequestFieldRecipientID  = big.NewInt(1 << 0)
+	createPrivateMessagesRequestFieldSenderID     = big.NewInt(1 << 1)
+	createPrivateMessagesRequestFieldTitle        = big.NewInt(1 << 2)
+	createPrivateMessagesRequestFieldBody         = big.NewInt(1 << 3)
+	createPrivateMessagesRequestFieldParentID     = big.NewInt(1 << 4)
+	createPrivateMessagesRequestFieldExtendedData = big.NewInt(1 << 5)
 )
 
-type PostPrivateMessagesRequest struct {
+type CreatePrivateMessagesRequest struct {
 	// Recipient User ID
 	RecipientID string `json:"recipientId" url:"-"`
 	// Sender user ID (required for API key auth, ignored for JWT auth)
@@ -36,66 +36,66 @@ type PostPrivateMessagesRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PostPrivateMessagesRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (c *CreatePrivateMessagesRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetRecipientID sets the RecipientID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesRequest) SetRecipientID(recipientID string) {
-	p.RecipientID = recipientID
-	p.require(postPrivateMessagesRequestFieldRecipientID)
+func (c *CreatePrivateMessagesRequest) SetRecipientID(recipientID string) {
+	c.RecipientID = recipientID
+	c.require(createPrivateMessagesRequestFieldRecipientID)
 }
 
 // SetSenderID sets the SenderID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesRequest) SetSenderID(senderID *string) {
-	p.SenderID = senderID
-	p.require(postPrivateMessagesRequestFieldSenderID)
+func (c *CreatePrivateMessagesRequest) SetSenderID(senderID *string) {
+	c.SenderID = senderID
+	c.require(createPrivateMessagesRequestFieldSenderID)
 }
 
 // SetTitle sets the Title field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesRequest) SetTitle(title *string) {
-	p.Title = title
-	p.require(postPrivateMessagesRequestFieldTitle)
+func (c *CreatePrivateMessagesRequest) SetTitle(title *string) {
+	c.Title = title
+	c.require(createPrivateMessagesRequestFieldTitle)
 }
 
 // SetBody sets the Body field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesRequest) SetBody(body string) {
-	p.Body = body
-	p.require(postPrivateMessagesRequestFieldBody)
+func (c *CreatePrivateMessagesRequest) SetBody(body string) {
+	c.Body = body
+	c.require(createPrivateMessagesRequestFieldBody)
 }
 
 // SetParentID sets the ParentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesRequest) SetParentID(parentID *string) {
-	p.ParentID = parentID
-	p.require(postPrivateMessagesRequestFieldParentID)
+func (c *CreatePrivateMessagesRequest) SetParentID(parentID *string) {
+	c.ParentID = parentID
+	c.require(createPrivateMessagesRequestFieldParentID)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesRequest) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(postPrivateMessagesRequestFieldExtendedData)
+func (c *CreatePrivateMessagesRequest) SetExtendedData(extendedData map[string]interface{}) {
+	c.ExtendedData = extendedData
+	c.require(createPrivateMessagesRequestFieldExtendedData)
 }
 
 var (
-	postPrivateMessagesIDRepliesRequestFieldID           = big.NewInt(1 << 0)
-	postPrivateMessagesIDRepliesRequestFieldRecipientID  = big.NewInt(1 << 1)
-	postPrivateMessagesIDRepliesRequestFieldSenderID     = big.NewInt(1 << 2)
-	postPrivateMessagesIDRepliesRequestFieldTitle        = big.NewInt(1 << 3)
-	postPrivateMessagesIDRepliesRequestFieldBody         = big.NewInt(1 << 4)
-	postPrivateMessagesIDRepliesRequestFieldParentID     = big.NewInt(1 << 5)
-	postPrivateMessagesIDRepliesRequestFieldExtendedData = big.NewInt(1 << 6)
+	createReplyPrivateMessagesRequestFieldID           = big.NewInt(1 << 0)
+	createReplyPrivateMessagesRequestFieldRecipientID  = big.NewInt(1 << 1)
+	createReplyPrivateMessagesRequestFieldSenderID     = big.NewInt(1 << 2)
+	createReplyPrivateMessagesRequestFieldTitle        = big.NewInt(1 << 3)
+	createReplyPrivateMessagesRequestFieldBody         = big.NewInt(1 << 4)
+	createReplyPrivateMessagesRequestFieldParentID     = big.NewInt(1 << 5)
+	createReplyPrivateMessagesRequestFieldExtendedData = big.NewInt(1 << 6)
 )
 
-type PostPrivateMessagesIDRepliesRequest struct {
+type CreateReplyPrivateMessagesRequest struct {
 	// Private Message ID
 	ID string `json:"-" url:"-"`
 	// Recipient User ID
@@ -115,74 +115,75 @@ type PostPrivateMessagesIDRepliesRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PostPrivateMessagesIDRepliesRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (c *CreateReplyPrivateMessagesRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesIDRepliesRequest) SetID(id string) {
-	p.ID = id
-	p.require(postPrivateMessagesIDRepliesRequestFieldID)
+func (c *CreateReplyPrivateMessagesRequest) SetID(id string) {
+	c.ID = id
+	c.require(createReplyPrivateMessagesRequestFieldID)
 }
 
 // SetRecipientID sets the RecipientID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesIDRepliesRequest) SetRecipientID(recipientID string) {
-	p.RecipientID = recipientID
-	p.require(postPrivateMessagesIDRepliesRequestFieldRecipientID)
+func (c *CreateReplyPrivateMessagesRequest) SetRecipientID(recipientID string) {
+	c.RecipientID = recipientID
+	c.require(createReplyPrivateMessagesRequestFieldRecipientID)
 }
 
 // SetSenderID sets the SenderID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesIDRepliesRequest) SetSenderID(senderID *string) {
-	p.SenderID = senderID
-	p.require(postPrivateMessagesIDRepliesRequestFieldSenderID)
+func (c *CreateReplyPrivateMessagesRequest) SetSenderID(senderID *string) {
+	c.SenderID = senderID
+	c.require(createReplyPrivateMessagesRequestFieldSenderID)
 }
 
 // SetTitle sets the Title field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesIDRepliesRequest) SetTitle(title *string) {
-	p.Title = title
-	p.require(postPrivateMessagesIDRepliesRequestFieldTitle)
+func (c *CreateReplyPrivateMessagesRequest) SetTitle(title *string) {
+	c.Title = title
+	c.require(createReplyPrivateMessagesRequestFieldTitle)
 }
 
 // SetBody sets the Body field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesIDRepliesRequest) SetBody(body string) {
-	p.Body = body
-	p.require(postPrivateMessagesIDRepliesRequestFieldBody)
+func (c *CreateReplyPrivateMessagesRequest) SetBody(body string) {
+	c.Body = body
+	c.require(createReplyPrivateMessagesRequestFieldBody)
 }
 
 // SetParentID sets the ParentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesIDRepliesRequest) SetParentID(parentID *string) {
-	p.ParentID = parentID
-	p.require(postPrivateMessagesIDRepliesRequestFieldParentID)
+func (c *CreateReplyPrivateMessagesRequest) SetParentID(parentID *string) {
+	c.ParentID = parentID
+	c.require(createReplyPrivateMessagesRequestFieldParentID)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesIDRepliesRequest) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(postPrivateMessagesIDRepliesRequestFieldExtendedData)
+func (c *CreateReplyPrivateMessagesRequest) SetExtendedData(extendedData map[string]interface{}) {
+	c.ExtendedData = extendedData
+	c.require(createReplyPrivateMessagesRequestFieldExtendedData)
 }
 
 var (
-	deletePrivateMessagesIDRequestFieldID = big.NewInt(1 << 0)
+	deletePrivateMessagesRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeletePrivateMessagesIDRequest struct {
+type DeletePrivateMessagesRequest struct {
+	// Private Message ID
 	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeletePrivateMessagesIDRequest) require(field *big.Int) {
+func (d *DeletePrivateMessagesRequest) require(field *big.Int) {
 	if d.explicitFields == nil {
 		d.explicitFields = big.NewInt(0)
 	}
@@ -191,17 +192,17 @@ func (d *DeletePrivateMessagesIDRequest) require(field *big.Int) {
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePrivateMessagesIDRequest) SetID(id string) {
+func (d *DeletePrivateMessagesRequest) SetID(id string) {
 	d.ID = id
-	d.require(deletePrivateMessagesIDRequestFieldID)
+	d.require(deletePrivateMessagesRequestFieldID)
 }
 
 var (
-	deletePrivateMessagesIDRepliesSubIDRequestFieldID    = big.NewInt(1 << 0)
-	deletePrivateMessagesIDRepliesSubIDRequestFieldSubID = big.NewInt(1 << 1)
+	deleteReplyPrivateMessagesRequestFieldID    = big.NewInt(1 << 0)
+	deleteReplyPrivateMessagesRequestFieldSubID = big.NewInt(1 << 1)
 )
 
-type DeletePrivateMessagesIDRepliesSubIDRequest struct {
+type DeleteReplyPrivateMessagesRequest struct {
 	// Private Message ID
 	ID string `json:"-" url:"-"`
 	// Reply ID
@@ -211,7 +212,7 @@ type DeletePrivateMessagesIDRepliesSubIDRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeletePrivateMessagesIDRepliesSubIDRequest) require(field *big.Int) {
+func (d *DeleteReplyPrivateMessagesRequest) require(field *big.Int) {
 	if d.explicitFields == nil {
 		d.explicitFields = big.NewInt(0)
 	}
@@ -220,330 +221,178 @@ func (d *DeletePrivateMessagesIDRepliesSubIDRequest) require(field *big.Int) {
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePrivateMessagesIDRepliesSubIDRequest) SetID(id string) {
+func (d *DeleteReplyPrivateMessagesRequest) SetID(id string) {
 	d.ID = id
-	d.require(deletePrivateMessagesIDRepliesSubIDRequestFieldID)
+	d.require(deleteReplyPrivateMessagesRequestFieldID)
 }
 
 // SetSubID sets the SubID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePrivateMessagesIDRepliesSubIDRequest) SetSubID(subID string) {
+func (d *DeleteReplyPrivateMessagesRequest) SetSubID(subID string) {
 	d.SubID = subID
-	d.require(deletePrivateMessagesIDRepliesSubIDRequestFieldSubID)
+	d.require(deleteReplyPrivateMessagesRequestFieldSubID)
 }
 
 var (
-	getPrivateMessagesIDRequestFieldID = big.NewInt(1 << 0)
+	listPrivateMessagesRequestFieldLimit  = big.NewInt(1 << 0)
+	listPrivateMessagesRequestFieldCursor = big.NewInt(1 << 1)
+	listPrivateMessagesRequestFieldQuery  = big.NewInt(1 << 2)
 )
 
-type GetPrivateMessagesIDRequest struct {
-	ID string `json:"-" url:"-"`
+type ListPrivateMessagesRequest struct {
+	// Items per page (max 75)
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Cursor for pagination
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// Search query (title or body)
+	Query *string `json:"-" url:"query,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetPrivateMessagesIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *ListPrivateMessagesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getPrivateMessagesIDRequestFieldID)
-}
-
-var (
-	getPrivateMessagesIDRepliesSubIDRequestFieldID    = big.NewInt(1 << 0)
-	getPrivateMessagesIDRepliesSubIDRequestFieldSubID = big.NewInt(1 << 1)
-)
-
-type GetPrivateMessagesIDRepliesSubIDRequest struct {
-	// Private Message ID
-	ID string `json:"-" url:"-"`
-	// Reply ID
-	SubID string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesSubIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getPrivateMessagesIDRepliesSubIDRequestFieldID)
-}
-
-// SetSubID sets the SubID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesSubIDRequest) SetSubID(subID string) {
-	g.SubID = subID
-	g.require(getPrivateMessagesIDRepliesSubIDRequestFieldSubID)
-}
-
-var (
-	getPrivateMessagesRequestFieldPage   = big.NewInt(1 << 0)
-	getPrivateMessagesRequestFieldLimit  = big.NewInt(1 << 1)
-	getPrivateMessagesRequestFieldSearch = big.NewInt(1 << 2)
-)
-
-type GetPrivateMessagesRequest struct {
-	Page   *int    `json:"-" url:"page,omitempty"`
-	Limit  *int    `json:"-" url:"limit,omitempty"`
-	Search *string `json:"-" url:"search,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetPrivateMessagesRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getPrivateMessagesRequestFieldPage)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getPrivateMessagesRequestFieldLimit)
+func (l *ListPrivateMessagesRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listPrivateMessagesRequestFieldLimit)
 }
 
-// SetSearch sets the Search field and marks it as non-optional;
+// SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesRequest) SetSearch(search *string) {
-	g.Search = search
-	g.require(getPrivateMessagesRequestFieldSearch)
+func (l *ListPrivateMessagesRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listPrivateMessagesRequestFieldCursor)
+}
+
+// SetQuery sets the Query field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPrivateMessagesRequest) SetQuery(query *string) {
+	l.Query = query
+	l.require(listPrivateMessagesRequestFieldQuery)
 }
 
 var (
-	getPrivateMessagesIDRepliesRequestFieldID     = big.NewInt(1 << 0)
-	getPrivateMessagesIDRepliesRequestFieldCursor = big.NewInt(1 << 1)
-	getPrivateMessagesIDRepliesRequestFieldLimit  = big.NewInt(1 << 2)
+	listRepliesPrivateMessagesRequestFieldID     = big.NewInt(1 << 0)
+	listRepliesPrivateMessagesRequestFieldCursor = big.NewInt(1 << 1)
+	listRepliesPrivateMessagesRequestFieldLimit  = big.NewInt(1 << 2)
 )
 
-type GetPrivateMessagesIDRepliesRequest struct {
+type ListRepliesPrivateMessagesRequest struct {
 	// Private Message ID
 	ID string `json:"-" url:"-"`
 	// Pagination cursor
 	Cursor *string `json:"-" url:"cursor,omitempty"`
-	// Items per page
+	// Items per page (max 75)
 	Limit *int `json:"-" url:"limit,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetPrivateMessagesIDRepliesRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *ListRepliesPrivateMessagesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesRequest) SetID(id string) {
-	g.ID = id
-	g.require(getPrivateMessagesIDRepliesRequestFieldID)
+func (l *ListRepliesPrivateMessagesRequest) SetID(id string) {
+	l.ID = id
+	l.require(listRepliesPrivateMessagesRequestFieldID)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesRequest) SetCursor(cursor *string) {
-	g.Cursor = cursor
-	g.require(getPrivateMessagesIDRepliesRequestFieldCursor)
+func (l *ListRepliesPrivateMessagesRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listRepliesPrivateMessagesRequestFieldCursor)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getPrivateMessagesIDRepliesRequestFieldLimit)
+func (l *ListRepliesPrivateMessagesRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listRepliesPrivateMessagesRequestFieldLimit)
 }
 
 var (
-	deletePrivateMessagesIDRepliesSubIDResponseFieldSuccess = big.NewInt(1 << 0)
+	retrievePrivateMessagesRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeletePrivateMessagesIDRepliesSubIDResponse struct {
-	Success bool `json:"success" url:"success"`
+type RetrievePrivateMessagesRequest struct {
+	// Private Message ID
+	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
 }
 
-func (d *DeletePrivateMessagesIDRepliesSubIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
+func (r *RetrievePrivateMessagesRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return d.Success
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
-func (d *DeletePrivateMessagesIDRepliesSubIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeletePrivateMessagesIDRepliesSubIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePrivateMessagesIDRepliesSubIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deletePrivateMessagesIDRepliesSubIDResponseFieldSuccess)
-}
-
-func (d *DeletePrivateMessagesIDRepliesSubIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeletePrivateMessagesIDRepliesSubIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeletePrivateMessagesIDRepliesSubIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeletePrivateMessagesIDRepliesSubIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeletePrivateMessagesIDRepliesSubIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeletePrivateMessagesIDRepliesSubIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
+func (r *RetrievePrivateMessagesRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrievePrivateMessagesRequestFieldID)
 }
 
 var (
-	deletePrivateMessagesIDResponseFieldSuccess = big.NewInt(1 << 0)
+	retrieveReplyPrivateMessagesRequestFieldID    = big.NewInt(1 << 0)
+	retrieveReplyPrivateMessagesRequestFieldSubID = big.NewInt(1 << 1)
 )
 
-type DeletePrivateMessagesIDResponse struct {
-	Success bool `json:"success" url:"success"`
+type RetrieveReplyPrivateMessagesRequest struct {
+	// Private Message ID
+	ID string `json:"-" url:"-"`
+	// Reply ID
+	SubID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
 }
 
-func (d *DeletePrivateMessagesIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
+func (r *RetrieveReplyPrivateMessagesRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return d.Success
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
-func (d *DeletePrivateMessagesIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeletePrivateMessagesIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePrivateMessagesIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deletePrivateMessagesIDResponseFieldSuccess)
+func (r *RetrieveReplyPrivateMessagesRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveReplyPrivateMessagesRequestFieldID)
 }
 
-func (d *DeletePrivateMessagesIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeletePrivateMessagesIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeletePrivateMessagesIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeletePrivateMessagesIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeletePrivateMessagesIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeletePrivateMessagesIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
+// SetSubID sets the SubID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesRequest) SetSubID(subID string) {
+	r.SubID = subID
+	r.require(retrieveReplyPrivateMessagesRequestFieldSubID)
 }
 
 var (
-	getPrivateMessagesIDRepliesResponseFieldData = big.NewInt(1 << 0)
+	privateMessageListResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetPrivateMessagesIDRepliesResponse struct {
-	Data *GetPrivateMessagesIDRepliesResponseData `json:"data" url:"data"`
+type PrivateMessageListResponse struct {
+	Data *PrivateMessageListResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -552,80 +401,82 @@ type GetPrivateMessagesIDRepliesResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetPrivateMessagesIDRepliesResponse) GetData() *GetPrivateMessagesIDRepliesResponseData {
-	if g == nil {
+func (p *PrivateMessageListResponse) GetData() *PrivateMessageListResponseData {
+	if p == nil {
 		return nil
 	}
-	return g.Data
+	return p.Data
 }
 
-func (g *GetPrivateMessagesIDRepliesResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (p *PrivateMessageListResponse) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
 }
 
-func (g *GetPrivateMessagesIDRepliesResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (p *PrivateMessageListResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	p.explicitFields.Or(p.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesResponse) SetData(data *GetPrivateMessagesIDRepliesResponseData) {
-	g.Data = data
-	g.require(getPrivateMessagesIDRepliesResponseFieldData)
+func (p *PrivateMessageListResponse) SetData(data *PrivateMessageListResponseData) {
+	p.Data = data
+	p.require(privateMessageListResponseFieldData)
 }
 
-func (g *GetPrivateMessagesIDRepliesResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesIDRepliesResponse
+func (p *PrivateMessageListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetPrivateMessagesIDRepliesResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*p = PrivateMessageListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetPrivateMessagesIDRepliesResponse) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesIDRepliesResponse
+func (p *PrivateMessageListResponse) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*p),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetPrivateMessagesIDRepliesResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (p *PrivateMessageListResponse) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(p); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", p)
 }
 
 var (
-	getPrivateMessagesIDRepliesResponseDataFieldItems      = big.NewInt(1 << 0)
-	getPrivateMessagesIDRepliesResponseDataFieldNextCursor = big.NewInt(1 << 1)
-	getPrivateMessagesIDRepliesResponseDataFieldCount      = big.NewInt(1 << 2)
+	privateMessageListResponseDataFieldItems      = big.NewInt(1 << 0)
+	privateMessageListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	privateMessageListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type GetPrivateMessagesIDRepliesResponseData struct {
-	Items      []*GetPrivateMessagesIDRepliesResponseDataItemsItem `json:"items" url:"items"`
-	NextCursor *string                                             `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
-	Count      int                                                 `json:"count" url:"count"`
+type PrivateMessageListResponseData struct {
+	Items []*PrivateMessageListResponseDataItemsItem `json:"items" url:"items"`
+	// Cursor for next page
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	// Total count of items
+	Count int `json:"count" url:"count"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -634,386 +485,112 @@ type GetPrivateMessagesIDRepliesResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetPrivateMessagesIDRepliesResponseData) GetItems() []*GetPrivateMessagesIDRepliesResponseDataItemsItem {
-	if g == nil {
+func (p *PrivateMessageListResponseData) GetItems() []*PrivateMessageListResponseDataItemsItem {
+	if p == nil {
 		return nil
 	}
-	return g.Items
+	return p.Items
 }
 
-func (g *GetPrivateMessagesIDRepliesResponseData) GetNextCursor() *string {
-	if g == nil {
+func (p *PrivateMessageListResponseData) GetNextCursor() *string {
+	if p == nil {
 		return nil
 	}
-	return g.NextCursor
+	return p.NextCursor
 }
 
-func (g *GetPrivateMessagesIDRepliesResponseData) GetCount() int {
-	if g == nil {
+func (p *PrivateMessageListResponseData) GetCount() int {
+	if p == nil {
 		return 0
 	}
-	return g.Count
+	return p.Count
 }
 
-func (g *GetPrivateMessagesIDRepliesResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (p *PrivateMessageListResponseData) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
 }
 
-func (g *GetPrivateMessagesIDRepliesResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (p *PrivateMessageListResponseData) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	p.explicitFields.Or(p.explicitFields, field)
 }
 
 // SetItems sets the Items field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesResponseData) SetItems(items []*GetPrivateMessagesIDRepliesResponseDataItemsItem) {
-	g.Items = items
-	g.require(getPrivateMessagesIDRepliesResponseDataFieldItems)
+func (p *PrivateMessageListResponseData) SetItems(items []*PrivateMessageListResponseDataItemsItem) {
+	p.Items = items
+	p.require(privateMessageListResponseDataFieldItems)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesResponseData) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(getPrivateMessagesIDRepliesResponseDataFieldNextCursor)
+func (p *PrivateMessageListResponseData) SetNextCursor(nextCursor *string) {
+	p.NextCursor = nextCursor
+	p.require(privateMessageListResponseDataFieldNextCursor)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesResponseData) SetCount(count int) {
-	g.Count = count
-	g.require(getPrivateMessagesIDRepliesResponseDataFieldCount)
+func (p *PrivateMessageListResponseData) SetCount(count int) {
+	p.Count = count
+	p.require(privateMessageListResponseDataFieldCount)
 }
 
-func (g *GetPrivateMessagesIDRepliesResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesIDRepliesResponseData
+func (p *PrivateMessageListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageListResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetPrivateMessagesIDRepliesResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*p = PrivateMessageListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetPrivateMessagesIDRepliesResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesIDRepliesResponseData
+func (p *PrivateMessageListResponseData) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageListResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*p),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetPrivateMessagesIDRepliesResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (p *PrivateMessageListResponseData) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(p); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
-}
-
-type GetPrivateMessagesIDRepliesResponseDataItemsItem struct {
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPrivateMessagesIDRepliesResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetPrivateMessagesIDRepliesResponseDataItemsItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-func (g *GetPrivateMessagesIDRepliesResponseDataItemsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesIDRepliesResponseDataItemsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPrivateMessagesIDRepliesResponseDataItemsItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPrivateMessagesIDRepliesResponseDataItemsItem) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesIDRepliesResponseDataItemsItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPrivateMessagesIDRepliesResponseDataItemsItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", p)
 }
 
 var (
-	getPrivateMessagesIDRepliesSubIDResponseFieldData = big.NewInt(1 << 0)
+	privateMessageListResponseDataItemsItemFieldRecipientID  = big.NewInt(1 << 0)
+	privateMessageListResponseDataItemsItemFieldSenderID     = big.NewInt(1 << 1)
+	privateMessageListResponseDataItemsItemFieldTitle        = big.NewInt(1 << 2)
+	privateMessageListResponseDataItemsItemFieldBody         = big.NewInt(1 << 3)
+	privateMessageListResponseDataItemsItemFieldParentID     = big.NewInt(1 << 4)
+	privateMessageListResponseDataItemsItemFieldExtendedData = big.NewInt(1 << 5)
+	privateMessageListResponseDataItemsItemFieldID           = big.NewInt(1 << 6)
+	privateMessageListResponseDataItemsItemFieldStatus       = big.NewInt(1 << 7)
+	privateMessageListResponseDataItemsItemFieldCreatedAt    = big.NewInt(1 << 8)
+	privateMessageListResponseDataItemsItemFieldUpdatedAt    = big.NewInt(1 << 9)
 )
 
-type GetPrivateMessagesIDRepliesSubIDResponse struct {
-	Data *GetPrivateMessagesIDRepliesSubIDResponseData `json:"data" url:"data"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponse) GetData() *GetPrivateMessagesIDRepliesSubIDResponseData {
-	if g == nil {
-		return nil
-	}
-	return g.Data
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDRepliesSubIDResponse) SetData(data *GetPrivateMessagesIDRepliesSubIDResponseData) {
-	g.Data = data
-	g.require(getPrivateMessagesIDRepliesSubIDResponseFieldData)
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesIDRepliesSubIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPrivateMessagesIDRepliesSubIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesIDRepliesSubIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-type GetPrivateMessagesIDRepliesSubIDResponseData struct {
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesIDRepliesSubIDResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPrivateMessagesIDRepliesSubIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesIDRepliesSubIDResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPrivateMessagesIDRepliesSubIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getPrivateMessagesIDResponseFieldData = big.NewInt(1 << 0)
-)
-
-type GetPrivateMessagesIDResponse struct {
-	Data *GetPrivateMessagesIDResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPrivateMessagesIDResponse) GetData() *GetPrivateMessagesIDResponseData {
-	if g == nil {
-		return nil
-	}
-	return g.Data
-}
-
-func (g *GetPrivateMessagesIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetPrivateMessagesIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponse) SetData(data *GetPrivateMessagesIDResponseData) {
-	g.Data = data
-	g.require(getPrivateMessagesIDResponseFieldData)
-}
-
-func (g *GetPrivateMessagesIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPrivateMessagesIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPrivateMessagesIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPrivateMessagesIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getPrivateMessagesIDResponseDataFieldRecipientID  = big.NewInt(1 << 0)
-	getPrivateMessagesIDResponseDataFieldSenderID     = big.NewInt(1 << 1)
-	getPrivateMessagesIDResponseDataFieldTitle        = big.NewInt(1 << 2)
-	getPrivateMessagesIDResponseDataFieldBody         = big.NewInt(1 << 3)
-	getPrivateMessagesIDResponseDataFieldParentID     = big.NewInt(1 << 4)
-	getPrivateMessagesIDResponseDataFieldExtendedData = big.NewInt(1 << 5)
-	getPrivateMessagesIDResponseDataFieldID           = big.NewInt(1 << 6)
-	getPrivateMessagesIDResponseDataFieldStatus       = big.NewInt(1 << 7)
-	getPrivateMessagesIDResponseDataFieldCreatedAt    = big.NewInt(1 << 8)
-	getPrivateMessagesIDResponseDataFieldUpdatedAt    = big.NewInt(1 << 9)
-)
-
-type GetPrivateMessagesIDResponseData struct {
+type PrivateMessageListResponseDataItemsItem struct {
 	// Recipient User ID
 	RecipientID string `json:"recipientId" url:"recipientId"`
 	// Sender user ID (required for API key auth, ignored for JWT auth)
@@ -1041,962 +618,81 @@ type GetPrivateMessagesIDResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetPrivateMessagesIDResponseData) GetRecipientID() string {
-	if g == nil {
-		return ""
-	}
-	return g.RecipientID
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetSenderID() *string {
-	if g == nil {
-		return nil
-	}
-	return g.SenderID
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetTitle() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Title
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetBody() string {
-	if g == nil {
-		return ""
-	}
-	return g.Body
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetParentID() *string {
-	if g == nil {
-		return nil
-	}
-	return g.ParentID
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetExtendedData() map[string]interface{} {
-	if g == nil {
-		return nil
-	}
-	return g.ExtendedData
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetID() string {
-	if g == nil {
-		return ""
-	}
-	return g.ID
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetStatus() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Status
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetCreatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.CreatedAt
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetUpdatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.UpdatedAt
-}
-
-func (g *GetPrivateMessagesIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetPrivateMessagesIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetRecipientID sets the RecipientID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetRecipientID(recipientID string) {
-	g.RecipientID = recipientID
-	g.require(getPrivateMessagesIDResponseDataFieldRecipientID)
-}
-
-// SetSenderID sets the SenderID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetSenderID(senderID *string) {
-	g.SenderID = senderID
-	g.require(getPrivateMessagesIDResponseDataFieldSenderID)
-}
-
-// SetTitle sets the Title field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetTitle(title *string) {
-	g.Title = title
-	g.require(getPrivateMessagesIDResponseDataFieldTitle)
-}
-
-// SetBody sets the Body field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetBody(body string) {
-	g.Body = body
-	g.require(getPrivateMessagesIDResponseDataFieldBody)
-}
-
-// SetParentID sets the ParentID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetParentID(parentID *string) {
-	g.ParentID = parentID
-	g.require(getPrivateMessagesIDResponseDataFieldParentID)
-}
-
-// SetExtendedData sets the ExtendedData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	g.ExtendedData = extendedData
-	g.require(getPrivateMessagesIDResponseDataFieldExtendedData)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetID(id string) {
-	g.ID = id
-	g.require(getPrivateMessagesIDResponseDataFieldID)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetStatus(status *string) {
-	g.Status = status
-	g.require(getPrivateMessagesIDResponseDataFieldStatus)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getPrivateMessagesIDResponseDataFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesIDResponseData) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getPrivateMessagesIDResponseDataFieldUpdatedAt)
-}
-
-func (g *GetPrivateMessagesIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesIDResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPrivateMessagesIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPrivateMessagesIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesIDResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPrivateMessagesIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getPrivateMessagesResponseFieldData = big.NewInt(1 << 0)
-	getPrivateMessagesResponseFieldMeta = big.NewInt(1 << 1)
-)
-
-type GetPrivateMessagesResponse struct {
-	Data []*GetPrivateMessagesResponseDataItem `json:"data" url:"data"`
-	Meta *GetPrivateMessagesResponseMeta       `json:"meta" url:"meta"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPrivateMessagesResponse) GetData() []*GetPrivateMessagesResponseDataItem {
-	if g == nil {
-		return nil
-	}
-	return g.Data
-}
-
-func (g *GetPrivateMessagesResponse) GetMeta() *GetPrivateMessagesResponseMeta {
-	if g == nil {
-		return nil
-	}
-	return g.Meta
-}
-
-func (g *GetPrivateMessagesResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetPrivateMessagesResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponse) SetData(data []*GetPrivateMessagesResponseDataItem) {
-	g.Data = data
-	g.require(getPrivateMessagesResponseFieldData)
-}
-
-// SetMeta sets the Meta field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponse) SetMeta(meta *GetPrivateMessagesResponseMeta) {
-	g.Meta = meta
-	g.require(getPrivateMessagesResponseFieldMeta)
-}
-
-func (g *GetPrivateMessagesResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPrivateMessagesResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPrivateMessagesResponse) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPrivateMessagesResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getPrivateMessagesResponseDataItemFieldRecipientID  = big.NewInt(1 << 0)
-	getPrivateMessagesResponseDataItemFieldSenderID     = big.NewInt(1 << 1)
-	getPrivateMessagesResponseDataItemFieldTitle        = big.NewInt(1 << 2)
-	getPrivateMessagesResponseDataItemFieldBody         = big.NewInt(1 << 3)
-	getPrivateMessagesResponseDataItemFieldParentID     = big.NewInt(1 << 4)
-	getPrivateMessagesResponseDataItemFieldExtendedData = big.NewInt(1 << 5)
-	getPrivateMessagesResponseDataItemFieldID           = big.NewInt(1 << 6)
-	getPrivateMessagesResponseDataItemFieldStatus       = big.NewInt(1 << 7)
-	getPrivateMessagesResponseDataItemFieldCreatedAt    = big.NewInt(1 << 8)
-	getPrivateMessagesResponseDataItemFieldUpdatedAt    = big.NewInt(1 << 9)
-)
-
-type GetPrivateMessagesResponseDataItem struct {
-	// Recipient User ID
-	RecipientID string `json:"recipientId" url:"recipientId"`
-	// Sender user ID (required for API key auth, ignored for JWT auth)
-	SenderID *string `json:"senderId,omitempty" url:"senderId,omitempty"`
-	// Message title (optional for replies)
-	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// Message content
-	Body string `json:"body" url:"body"`
-	// Parent Message ID (for replies)
-	ParentID *string `json:"parentId,omitempty" url:"parentId,omitempty"`
-	// Extended data
-	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
-	ID           string                 `json:"id" url:"id"`
-	// Message status (sent, delivered, read, archived)
-	Status *string `json:"status,omitempty" url:"status,omitempty"`
-	// Message sent timestamp
-	CreatedAt string `json:"createdAt" url:"createdAt"`
-	// Message last update timestamp
-	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetRecipientID() string {
-	if g == nil {
-		return ""
-	}
-	return g.RecipientID
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetSenderID() *string {
-	if g == nil {
-		return nil
-	}
-	return g.SenderID
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetTitle() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Title
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetBody() string {
-	if g == nil {
-		return ""
-	}
-	return g.Body
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetParentID() *string {
-	if g == nil {
-		return nil
-	}
-	return g.ParentID
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetExtendedData() map[string]interface{} {
-	if g == nil {
-		return nil
-	}
-	return g.ExtendedData
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetID() string {
-	if g == nil {
-		return ""
-	}
-	return g.ID
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetStatus() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Status
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetCreatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.CreatedAt
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetUpdatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.UpdatedAt
-}
-
-func (g *GetPrivateMessagesResponseDataItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetPrivateMessagesResponseDataItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetRecipientID sets the RecipientID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetRecipientID(recipientID string) {
-	g.RecipientID = recipientID
-	g.require(getPrivateMessagesResponseDataItemFieldRecipientID)
-}
-
-// SetSenderID sets the SenderID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetSenderID(senderID *string) {
-	g.SenderID = senderID
-	g.require(getPrivateMessagesResponseDataItemFieldSenderID)
-}
-
-// SetTitle sets the Title field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetTitle(title *string) {
-	g.Title = title
-	g.require(getPrivateMessagesResponseDataItemFieldTitle)
-}
-
-// SetBody sets the Body field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetBody(body string) {
-	g.Body = body
-	g.require(getPrivateMessagesResponseDataItemFieldBody)
-}
-
-// SetParentID sets the ParentID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetParentID(parentID *string) {
-	g.ParentID = parentID
-	g.require(getPrivateMessagesResponseDataItemFieldParentID)
-}
-
-// SetExtendedData sets the ExtendedData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetExtendedData(extendedData map[string]interface{}) {
-	g.ExtendedData = extendedData
-	g.require(getPrivateMessagesResponseDataItemFieldExtendedData)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetID(id string) {
-	g.ID = id
-	g.require(getPrivateMessagesResponseDataItemFieldID)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetStatus(status *string) {
-	g.Status = status
-	g.require(getPrivateMessagesResponseDataItemFieldStatus)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getPrivateMessagesResponseDataItemFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseDataItem) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getPrivateMessagesResponseDataItemFieldUpdatedAt)
-}
-
-func (g *GetPrivateMessagesResponseDataItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesResponseDataItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPrivateMessagesResponseDataItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPrivateMessagesResponseDataItem) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesResponseDataItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPrivateMessagesResponseDataItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getPrivateMessagesResponseMetaFieldTotal = big.NewInt(1 << 0)
-	getPrivateMessagesResponseMetaFieldPage  = big.NewInt(1 << 1)
-	getPrivateMessagesResponseMetaFieldLimit = big.NewInt(1 << 2)
-)
-
-type GetPrivateMessagesResponseMeta struct {
-	Total int `json:"total" url:"total"`
-	Page  int `json:"page" url:"page"`
-	Limit int `json:"limit" url:"limit"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPrivateMessagesResponseMeta) GetTotal() int {
-	if g == nil {
-		return 0
-	}
-	return g.Total
-}
-
-func (g *GetPrivateMessagesResponseMeta) GetPage() int {
-	if g == nil {
-		return 0
-	}
-	return g.Page
-}
-
-func (g *GetPrivateMessagesResponseMeta) GetLimit() int {
-	if g == nil {
-		return 0
-	}
-	return g.Limit
-}
-
-func (g *GetPrivateMessagesResponseMeta) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetPrivateMessagesResponseMeta) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTotal sets the Total field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseMeta) SetTotal(total int) {
-	g.Total = total
-	g.require(getPrivateMessagesResponseMetaFieldTotal)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseMeta) SetPage(page int) {
-	g.Page = page
-	g.require(getPrivateMessagesResponseMetaFieldPage)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPrivateMessagesResponseMeta) SetLimit(limit int) {
-	g.Limit = limit
-	g.require(getPrivateMessagesResponseMetaFieldLimit)
-}
-
-func (g *GetPrivateMessagesResponseMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPrivateMessagesResponseMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPrivateMessagesResponseMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPrivateMessagesResponseMeta) MarshalJSON() ([]byte, error) {
-	type embed GetPrivateMessagesResponseMeta
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPrivateMessagesResponseMeta) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	postPrivateMessagesIDRepliesResponseFieldData = big.NewInt(1 << 0)
-)
-
-type PostPrivateMessagesIDRepliesResponse struct {
-	Data *PostPrivateMessagesIDRepliesResponseData `json:"data" url:"data"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PostPrivateMessagesIDRepliesResponse) GetData() *PostPrivateMessagesIDRepliesResponseData {
-	if p == nil {
-		return nil
-	}
-	return p.Data
-}
-
-func (p *PostPrivateMessagesIDRepliesResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PostPrivateMessagesIDRepliesResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesIDRepliesResponse) SetData(data *PostPrivateMessagesIDRepliesResponseData) {
-	p.Data = data
-	p.require(postPrivateMessagesIDRepliesResponseFieldData)
-}
-
-func (p *PostPrivateMessagesIDRepliesResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostPrivateMessagesIDRepliesResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PostPrivateMessagesIDRepliesResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PostPrivateMessagesIDRepliesResponse) MarshalJSON() ([]byte, error) {
-	type embed PostPrivateMessagesIDRepliesResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PostPrivateMessagesIDRepliesResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PostPrivateMessagesIDRepliesResponseData struct {
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PostPrivateMessagesIDRepliesResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PostPrivateMessagesIDRepliesResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-func (p *PostPrivateMessagesIDRepliesResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostPrivateMessagesIDRepliesResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PostPrivateMessagesIDRepliesResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PostPrivateMessagesIDRepliesResponseData) MarshalJSON() ([]byte, error) {
-	type embed PostPrivateMessagesIDRepliesResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PostPrivateMessagesIDRepliesResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	postPrivateMessagesResponseFieldData = big.NewInt(1 << 0)
-)
-
-type PostPrivateMessagesResponse struct {
-	Data *PostPrivateMessagesResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PostPrivateMessagesResponse) GetData() *PostPrivateMessagesResponseData {
-	if p == nil {
-		return nil
-	}
-	return p.Data
-}
-
-func (p *PostPrivateMessagesResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PostPrivateMessagesResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponse) SetData(data *PostPrivateMessagesResponseData) {
-	p.Data = data
-	p.require(postPrivateMessagesResponseFieldData)
-}
-
-func (p *PostPrivateMessagesResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostPrivateMessagesResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PostPrivateMessagesResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PostPrivateMessagesResponse) MarshalJSON() ([]byte, error) {
-	type embed PostPrivateMessagesResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PostPrivateMessagesResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	postPrivateMessagesResponseDataFieldRecipientID  = big.NewInt(1 << 0)
-	postPrivateMessagesResponseDataFieldSenderID     = big.NewInt(1 << 1)
-	postPrivateMessagesResponseDataFieldTitle        = big.NewInt(1 << 2)
-	postPrivateMessagesResponseDataFieldBody         = big.NewInt(1 << 3)
-	postPrivateMessagesResponseDataFieldParentID     = big.NewInt(1 << 4)
-	postPrivateMessagesResponseDataFieldExtendedData = big.NewInt(1 << 5)
-	postPrivateMessagesResponseDataFieldID           = big.NewInt(1 << 6)
-	postPrivateMessagesResponseDataFieldStatus       = big.NewInt(1 << 7)
-	postPrivateMessagesResponseDataFieldCreatedAt    = big.NewInt(1 << 8)
-	postPrivateMessagesResponseDataFieldUpdatedAt    = big.NewInt(1 << 9)
-)
-
-type PostPrivateMessagesResponseData struct {
-	// Recipient User ID
-	RecipientID string `json:"recipientId" url:"recipientId"`
-	// Sender user ID (required for API key auth, ignored for JWT auth)
-	SenderID *string `json:"senderId,omitempty" url:"senderId,omitempty"`
-	// Message title (optional for replies)
-	Title *string `json:"title,omitempty" url:"title,omitempty"`
-	// Message content
-	Body string `json:"body" url:"body"`
-	// Parent Message ID (for replies)
-	ParentID *string `json:"parentId,omitempty" url:"parentId,omitempty"`
-	// Extended data
-	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
-	ID           string                 `json:"id" url:"id"`
-	// Message status (sent, delivered, read, archived)
-	Status *string `json:"status,omitempty" url:"status,omitempty"`
-	// Message sent timestamp
-	CreatedAt string `json:"createdAt" url:"createdAt"`
-	// Message last update timestamp
-	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PostPrivateMessagesResponseData) GetRecipientID() string {
+func (p *PrivateMessageListResponseDataItemsItem) GetRecipientID() string {
 	if p == nil {
 		return ""
 	}
 	return p.RecipientID
 }
 
-func (p *PostPrivateMessagesResponseData) GetSenderID() *string {
+func (p *PrivateMessageListResponseDataItemsItem) GetSenderID() *string {
 	if p == nil {
 		return nil
 	}
 	return p.SenderID
 }
 
-func (p *PostPrivateMessagesResponseData) GetTitle() *string {
+func (p *PrivateMessageListResponseDataItemsItem) GetTitle() *string {
 	if p == nil {
 		return nil
 	}
 	return p.Title
 }
 
-func (p *PostPrivateMessagesResponseData) GetBody() string {
+func (p *PrivateMessageListResponseDataItemsItem) GetBody() string {
 	if p == nil {
 		return ""
 	}
 	return p.Body
 }
 
-func (p *PostPrivateMessagesResponseData) GetParentID() *string {
+func (p *PrivateMessageListResponseDataItemsItem) GetParentID() *string {
 	if p == nil {
 		return nil
 	}
 	return p.ParentID
 }
 
-func (p *PostPrivateMessagesResponseData) GetExtendedData() map[string]interface{} {
+func (p *PrivateMessageListResponseDataItemsItem) GetExtendedData() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.ExtendedData
 }
 
-func (p *PostPrivateMessagesResponseData) GetID() string {
+func (p *PrivateMessageListResponseDataItemsItem) GetID() string {
 	if p == nil {
 		return ""
 	}
 	return p.ID
 }
 
-func (p *PostPrivateMessagesResponseData) GetStatus() *string {
+func (p *PrivateMessageListResponseDataItemsItem) GetStatus() *string {
 	if p == nil {
 		return nil
 	}
 	return p.Status
 }
 
-func (p *PostPrivateMessagesResponseData) GetCreatedAt() string {
+func (p *PrivateMessageListResponseDataItemsItem) GetCreatedAt() string {
 	if p == nil {
 		return ""
 	}
 	return p.CreatedAt
 }
 
-func (p *PostPrivateMessagesResponseData) GetUpdatedAt() string {
+func (p *PrivateMessageListResponseDataItemsItem) GetUpdatedAt() string {
 	if p == nil {
 		return ""
 	}
 	return p.UpdatedAt
 }
 
-func (p *PostPrivateMessagesResponseData) GetExtraProperties() map[string]interface{} {
+func (p *PrivateMessageListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
 	return p.extraProperties
 }
 
-func (p *PostPrivateMessagesResponseData) require(field *big.Int) {
+func (p *PrivateMessageListResponseDataItemsItem) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -2005,81 +701,81 @@ func (p *PostPrivateMessagesResponseData) require(field *big.Int) {
 
 // SetRecipientID sets the RecipientID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetRecipientID(recipientID string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetRecipientID(recipientID string) {
 	p.RecipientID = recipientID
-	p.require(postPrivateMessagesResponseDataFieldRecipientID)
+	p.require(privateMessageListResponseDataItemsItemFieldRecipientID)
 }
 
 // SetSenderID sets the SenderID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetSenderID(senderID *string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetSenderID(senderID *string) {
 	p.SenderID = senderID
-	p.require(postPrivateMessagesResponseDataFieldSenderID)
+	p.require(privateMessageListResponseDataItemsItemFieldSenderID)
 }
 
 // SetTitle sets the Title field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetTitle(title *string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetTitle(title *string) {
 	p.Title = title
-	p.require(postPrivateMessagesResponseDataFieldTitle)
+	p.require(privateMessageListResponseDataItemsItemFieldTitle)
 }
 
 // SetBody sets the Body field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetBody(body string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetBody(body string) {
 	p.Body = body
-	p.require(postPrivateMessagesResponseDataFieldBody)
+	p.require(privateMessageListResponseDataItemsItemFieldBody)
 }
 
 // SetParentID sets the ParentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetParentID(parentID *string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetParentID(parentID *string) {
 	p.ParentID = parentID
-	p.require(postPrivateMessagesResponseDataFieldParentID)
+	p.require(privateMessageListResponseDataItemsItemFieldParentID)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetExtendedData(extendedData map[string]interface{}) {
+func (p *PrivateMessageListResponseDataItemsItem) SetExtendedData(extendedData map[string]interface{}) {
 	p.ExtendedData = extendedData
-	p.require(postPrivateMessagesResponseDataFieldExtendedData)
+	p.require(privateMessageListResponseDataItemsItemFieldExtendedData)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetID(id string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetID(id string) {
 	p.ID = id
-	p.require(postPrivateMessagesResponseDataFieldID)
+	p.require(privateMessageListResponseDataItemsItemFieldID)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetStatus(status *string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetStatus(status *string) {
 	p.Status = status
-	p.require(postPrivateMessagesResponseDataFieldStatus)
+	p.require(privateMessageListResponseDataItemsItemFieldStatus)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetCreatedAt(createdAt string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetCreatedAt(createdAt string) {
 	p.CreatedAt = createdAt
-	p.require(postPrivateMessagesResponseDataFieldCreatedAt)
+	p.require(privateMessageListResponseDataItemsItemFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostPrivateMessagesResponseData) SetUpdatedAt(updatedAt string) {
+func (p *PrivateMessageListResponseDataItemsItem) SetUpdatedAt(updatedAt string) {
 	p.UpdatedAt = updatedAt
-	p.require(postPrivateMessagesResponseDataFieldUpdatedAt)
+	p.require(privateMessageListResponseDataItemsItemFieldUpdatedAt)
 }
 
-func (p *PostPrivateMessagesResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostPrivateMessagesResponseData
+func (p *PrivateMessageListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageListResponseDataItemsItem
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostPrivateMessagesResponseData(value)
+	*p = PrivateMessageListResponseDataItemsItem(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -2089,8 +785,8 @@ func (p *PostPrivateMessagesResponseData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PostPrivateMessagesResponseData) MarshalJSON() ([]byte, error) {
-	type embed PostPrivateMessagesResponseData
+func (p *PrivateMessageListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageListResponseDataItemsItem
 	var marshaler = struct {
 		embed
 	}{
@@ -2100,7 +796,7 @@ func (p *PostPrivateMessagesResponseData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostPrivateMessagesResponseData) String() string {
+func (p *PrivateMessageListResponseDataItemsItem) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -2110,4 +806,1544 @@ func (p *PostPrivateMessagesResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	privateMessageReplyListResponseFieldData = big.NewInt(1 << 0)
+)
+
+type PrivateMessageReplyListResponse struct {
+	Data *PrivateMessageReplyListResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PrivateMessageReplyListResponse) GetData() *PrivateMessageReplyListResponseData {
+	if p == nil {
+		return nil
+	}
+	return p.Data
+}
+
+func (p *PrivateMessageReplyListResponse) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PrivateMessageReplyListResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponse) SetData(data *PrivateMessageReplyListResponseData) {
+	p.Data = data
+	p.require(privateMessageReplyListResponseFieldData)
+}
+
+func (p *PrivateMessageReplyListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageReplyListResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PrivateMessageReplyListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PrivateMessageReplyListResponse) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageReplyListResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PrivateMessageReplyListResponse) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	privateMessageReplyListResponseDataFieldItems      = big.NewInt(1 << 0)
+	privateMessageReplyListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	privateMessageReplyListResponseDataFieldCount      = big.NewInt(1 << 2)
+)
+
+type PrivateMessageReplyListResponseData struct {
+	Items      []*PrivateMessageReplyListResponseDataItemsItem `json:"items" url:"items"`
+	NextCursor *string                                         `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	Count      int                                             `json:"count" url:"count"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PrivateMessageReplyListResponseData) GetItems() []*PrivateMessageReplyListResponseDataItemsItem {
+	if p == nil {
+		return nil
+	}
+	return p.Items
+}
+
+func (p *PrivateMessageReplyListResponseData) GetNextCursor() *string {
+	if p == nil {
+		return nil
+	}
+	return p.NextCursor
+}
+
+func (p *PrivateMessageReplyListResponseData) GetCount() int {
+	if p == nil {
+		return 0
+	}
+	return p.Count
+}
+
+func (p *PrivateMessageReplyListResponseData) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PrivateMessageReplyListResponseData) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseData) SetItems(items []*PrivateMessageReplyListResponseDataItemsItem) {
+	p.Items = items
+	p.require(privateMessageReplyListResponseDataFieldItems)
+}
+
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseData) SetNextCursor(nextCursor *string) {
+	p.NextCursor = nextCursor
+	p.require(privateMessageReplyListResponseDataFieldNextCursor)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseData) SetCount(count int) {
+	p.Count = count
+	p.require(privateMessageReplyListResponseDataFieldCount)
+}
+
+func (p *PrivateMessageReplyListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageReplyListResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PrivateMessageReplyListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PrivateMessageReplyListResponseData) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageReplyListResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PrivateMessageReplyListResponseData) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	privateMessageReplyListResponseDataItemsItemFieldID          = big.NewInt(1 << 0)
+	privateMessageReplyListResponseDataItemsItemFieldParentID    = big.NewInt(1 << 1)
+	privateMessageReplyListResponseDataItemsItemFieldSenderID    = big.NewInt(1 << 2)
+	privateMessageReplyListResponseDataItemsItemFieldRecipientID = big.NewInt(1 << 3)
+	privateMessageReplyListResponseDataItemsItemFieldBody        = big.NewInt(1 << 4)
+	privateMessageReplyListResponseDataItemsItemFieldStatus      = big.NewInt(1 << 5)
+	privateMessageReplyListResponseDataItemsItemFieldCreatedAt   = big.NewInt(1 << 6)
+)
+
+type PrivateMessageReplyListResponseDataItemsItem struct {
+	ID          string  `json:"id" url:"id"`
+	ParentID    *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	SenderID    string  `json:"senderId" url:"senderId"`
+	RecipientID string  `json:"recipientId" url:"recipientId"`
+	Body        string  `json:"body" url:"body"`
+	Status      *string `json:"status,omitempty" url:"status,omitempty"`
+	CreatedAt   string  `json:"createdAt" url:"createdAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) GetID() string {
+	if p == nil {
+		return ""
+	}
+	return p.ID
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) GetParentID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ParentID
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) GetSenderID() string {
+	if p == nil {
+		return ""
+	}
+	return p.SenderID
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) GetRecipientID() string {
+	if p == nil {
+		return ""
+	}
+	return p.RecipientID
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) GetBody() string {
+	if p == nil {
+		return ""
+	}
+	return p.Body
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) GetStatus() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Status
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) GetCreatedAt() string {
+	if p == nil {
+		return ""
+	}
+	return p.CreatedAt
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseDataItemsItem) SetID(id string) {
+	p.ID = id
+	p.require(privateMessageReplyListResponseDataItemsItemFieldID)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseDataItemsItem) SetParentID(parentID *string) {
+	p.ParentID = parentID
+	p.require(privateMessageReplyListResponseDataItemsItemFieldParentID)
+}
+
+// SetSenderID sets the SenderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseDataItemsItem) SetSenderID(senderID string) {
+	p.SenderID = senderID
+	p.require(privateMessageReplyListResponseDataItemsItemFieldSenderID)
+}
+
+// SetRecipientID sets the RecipientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseDataItemsItem) SetRecipientID(recipientID string) {
+	p.RecipientID = recipientID
+	p.require(privateMessageReplyListResponseDataItemsItemFieldRecipientID)
+}
+
+// SetBody sets the Body field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseDataItemsItem) SetBody(body string) {
+	p.Body = body
+	p.require(privateMessageReplyListResponseDataItemsItemFieldBody)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseDataItemsItem) SetStatus(status *string) {
+	p.Status = status
+	p.require(privateMessageReplyListResponseDataItemsItemFieldStatus)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	p.CreatedAt = createdAt
+	p.require(privateMessageReplyListResponseDataItemsItemFieldCreatedAt)
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageReplyListResponseDataItemsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PrivateMessageReplyListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageReplyListResponseDataItemsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PrivateMessageReplyListResponseDataItemsItem) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	privateMessageReplyResponseFieldData = big.NewInt(1 << 0)
+)
+
+type PrivateMessageReplyResponse struct {
+	Data *PrivateMessageReplyResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PrivateMessageReplyResponse) GetData() *PrivateMessageReplyResponseData {
+	if p == nil {
+		return nil
+	}
+	return p.Data
+}
+
+func (p *PrivateMessageReplyResponse) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PrivateMessageReplyResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyResponse) SetData(data *PrivateMessageReplyResponseData) {
+	p.Data = data
+	p.require(privateMessageReplyResponseFieldData)
+}
+
+func (p *PrivateMessageReplyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageReplyResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PrivateMessageReplyResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PrivateMessageReplyResponse) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageReplyResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PrivateMessageReplyResponse) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	privateMessageReplyResponseDataFieldID          = big.NewInt(1 << 0)
+	privateMessageReplyResponseDataFieldParentID    = big.NewInt(1 << 1)
+	privateMessageReplyResponseDataFieldSenderID    = big.NewInt(1 << 2)
+	privateMessageReplyResponseDataFieldRecipientID = big.NewInt(1 << 3)
+	privateMessageReplyResponseDataFieldBody        = big.NewInt(1 << 4)
+	privateMessageReplyResponseDataFieldStatus      = big.NewInt(1 << 5)
+	privateMessageReplyResponseDataFieldCreatedAt   = big.NewInt(1 << 6)
+)
+
+type PrivateMessageReplyResponseData struct {
+	ID          string  `json:"id" url:"id"`
+	ParentID    *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	SenderID    string  `json:"senderId" url:"senderId"`
+	RecipientID string  `json:"recipientId" url:"recipientId"`
+	Body        string  `json:"body" url:"body"`
+	Status      *string `json:"status,omitempty" url:"status,omitempty"`
+	CreatedAt   string  `json:"createdAt" url:"createdAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PrivateMessageReplyResponseData) GetID() string {
+	if p == nil {
+		return ""
+	}
+	return p.ID
+}
+
+func (p *PrivateMessageReplyResponseData) GetParentID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ParentID
+}
+
+func (p *PrivateMessageReplyResponseData) GetSenderID() string {
+	if p == nil {
+		return ""
+	}
+	return p.SenderID
+}
+
+func (p *PrivateMessageReplyResponseData) GetRecipientID() string {
+	if p == nil {
+		return ""
+	}
+	return p.RecipientID
+}
+
+func (p *PrivateMessageReplyResponseData) GetBody() string {
+	if p == nil {
+		return ""
+	}
+	return p.Body
+}
+
+func (p *PrivateMessageReplyResponseData) GetStatus() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Status
+}
+
+func (p *PrivateMessageReplyResponseData) GetCreatedAt() string {
+	if p == nil {
+		return ""
+	}
+	return p.CreatedAt
+}
+
+func (p *PrivateMessageReplyResponseData) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PrivateMessageReplyResponseData) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyResponseData) SetID(id string) {
+	p.ID = id
+	p.require(privateMessageReplyResponseDataFieldID)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyResponseData) SetParentID(parentID *string) {
+	p.ParentID = parentID
+	p.require(privateMessageReplyResponseDataFieldParentID)
+}
+
+// SetSenderID sets the SenderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyResponseData) SetSenderID(senderID string) {
+	p.SenderID = senderID
+	p.require(privateMessageReplyResponseDataFieldSenderID)
+}
+
+// SetRecipientID sets the RecipientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyResponseData) SetRecipientID(recipientID string) {
+	p.RecipientID = recipientID
+	p.require(privateMessageReplyResponseDataFieldRecipientID)
+}
+
+// SetBody sets the Body field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyResponseData) SetBody(body string) {
+	p.Body = body
+	p.require(privateMessageReplyResponseDataFieldBody)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyResponseData) SetStatus(status *string) {
+	p.Status = status
+	p.require(privateMessageReplyResponseDataFieldStatus)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageReplyResponseData) SetCreatedAt(createdAt string) {
+	p.CreatedAt = createdAt
+	p.require(privateMessageReplyResponseDataFieldCreatedAt)
+}
+
+func (p *PrivateMessageReplyResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageReplyResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PrivateMessageReplyResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PrivateMessageReplyResponseData) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageReplyResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PrivateMessageReplyResponseData) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	privateMessageResponseFieldData = big.NewInt(1 << 0)
+)
+
+type PrivateMessageResponse struct {
+	Data *PrivateMessageResponseData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PrivateMessageResponse) GetData() *PrivateMessageResponseData {
+	if p == nil {
+		return nil
+	}
+	return p.Data
+}
+
+func (p *PrivateMessageResponse) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PrivateMessageResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponse) SetData(data *PrivateMessageResponseData) {
+	p.Data = data
+	p.require(privateMessageResponseFieldData)
+}
+
+func (p *PrivateMessageResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PrivateMessageResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PrivateMessageResponse) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PrivateMessageResponse) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	privateMessageResponseDataFieldRecipientID  = big.NewInt(1 << 0)
+	privateMessageResponseDataFieldSenderID     = big.NewInt(1 << 1)
+	privateMessageResponseDataFieldTitle        = big.NewInt(1 << 2)
+	privateMessageResponseDataFieldBody         = big.NewInt(1 << 3)
+	privateMessageResponseDataFieldParentID     = big.NewInt(1 << 4)
+	privateMessageResponseDataFieldExtendedData = big.NewInt(1 << 5)
+	privateMessageResponseDataFieldID           = big.NewInt(1 << 6)
+	privateMessageResponseDataFieldStatus       = big.NewInt(1 << 7)
+	privateMessageResponseDataFieldCreatedAt    = big.NewInt(1 << 8)
+	privateMessageResponseDataFieldUpdatedAt    = big.NewInt(1 << 9)
+)
+
+type PrivateMessageResponseData struct {
+	// Recipient User ID
+	RecipientID string `json:"recipientId" url:"recipientId"`
+	// Sender user ID (required for API key auth, ignored for JWT auth)
+	SenderID *string `json:"senderId,omitempty" url:"senderId,omitempty"`
+	// Message title (optional for replies)
+	Title *string `json:"title,omitempty" url:"title,omitempty"`
+	// Message content
+	Body string `json:"body" url:"body"`
+	// Parent Message ID (for replies)
+	ParentID *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	// Extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
+	ID           string                 `json:"id" url:"id"`
+	// Message status (sent, delivered, read, archived)
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	// Message sent timestamp
+	CreatedAt string `json:"createdAt" url:"createdAt"`
+	// Message last update timestamp
+	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PrivateMessageResponseData) GetRecipientID() string {
+	if p == nil {
+		return ""
+	}
+	return p.RecipientID
+}
+
+func (p *PrivateMessageResponseData) GetSenderID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.SenderID
+}
+
+func (p *PrivateMessageResponseData) GetTitle() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Title
+}
+
+func (p *PrivateMessageResponseData) GetBody() string {
+	if p == nil {
+		return ""
+	}
+	return p.Body
+}
+
+func (p *PrivateMessageResponseData) GetParentID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ParentID
+}
+
+func (p *PrivateMessageResponseData) GetExtendedData() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.ExtendedData
+}
+
+func (p *PrivateMessageResponseData) GetID() string {
+	if p == nil {
+		return ""
+	}
+	return p.ID
+}
+
+func (p *PrivateMessageResponseData) GetStatus() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Status
+}
+
+func (p *PrivateMessageResponseData) GetCreatedAt() string {
+	if p == nil {
+		return ""
+	}
+	return p.CreatedAt
+}
+
+func (p *PrivateMessageResponseData) GetUpdatedAt() string {
+	if p == nil {
+		return ""
+	}
+	return p.UpdatedAt
+}
+
+func (p *PrivateMessageResponseData) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PrivateMessageResponseData) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetRecipientID sets the RecipientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetRecipientID(recipientID string) {
+	p.RecipientID = recipientID
+	p.require(privateMessageResponseDataFieldRecipientID)
+}
+
+// SetSenderID sets the SenderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetSenderID(senderID *string) {
+	p.SenderID = senderID
+	p.require(privateMessageResponseDataFieldSenderID)
+}
+
+// SetTitle sets the Title field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetTitle(title *string) {
+	p.Title = title
+	p.require(privateMessageResponseDataFieldTitle)
+}
+
+// SetBody sets the Body field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetBody(body string) {
+	p.Body = body
+	p.require(privateMessageResponseDataFieldBody)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetParentID(parentID *string) {
+	p.ParentID = parentID
+	p.require(privateMessageResponseDataFieldParentID)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	p.ExtendedData = extendedData
+	p.require(privateMessageResponseDataFieldExtendedData)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetID(id string) {
+	p.ID = id
+	p.require(privateMessageResponseDataFieldID)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetStatus(status *string) {
+	p.Status = status
+	p.require(privateMessageResponseDataFieldStatus)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetCreatedAt(createdAt string) {
+	p.CreatedAt = createdAt
+	p.require(privateMessageResponseDataFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PrivateMessageResponseData) SetUpdatedAt(updatedAt string) {
+	p.UpdatedAt = updatedAt
+	p.require(privateMessageResponseDataFieldUpdatedAt)
+}
+
+func (p *PrivateMessageResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler PrivateMessageResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PrivateMessageResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PrivateMessageResponseData) MarshalJSON() ([]byte, error) {
+	type embed PrivateMessageResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PrivateMessageResponseData) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	retrieveReplyPrivateMessagesResponseFieldData = big.NewInt(1 << 0)
+)
+
+type RetrieveReplyPrivateMessagesResponse struct {
+	Data *RetrieveReplyPrivateMessagesResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RetrieveReplyPrivateMessagesResponse) GetData() *RetrieveReplyPrivateMessagesResponseData {
+	if r == nil {
+		return nil
+	}
+	return r.Data
+}
+
+func (r *RetrieveReplyPrivateMessagesResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RetrieveReplyPrivateMessagesResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesResponse) SetData(data *RetrieveReplyPrivateMessagesResponseData) {
+	r.Data = data
+	r.require(retrieveReplyPrivateMessagesResponseFieldData)
+}
+
+func (r *RetrieveReplyPrivateMessagesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RetrieveReplyPrivateMessagesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RetrieveReplyPrivateMessagesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RetrieveReplyPrivateMessagesResponse) MarshalJSON() ([]byte, error) {
+	type embed RetrieveReplyPrivateMessagesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RetrieveReplyPrivateMessagesResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	retrieveReplyPrivateMessagesResponseDataFieldID          = big.NewInt(1 << 0)
+	retrieveReplyPrivateMessagesResponseDataFieldParentID    = big.NewInt(1 << 1)
+	retrieveReplyPrivateMessagesResponseDataFieldSenderID    = big.NewInt(1 << 2)
+	retrieveReplyPrivateMessagesResponseDataFieldRecipientID = big.NewInt(1 << 3)
+	retrieveReplyPrivateMessagesResponseDataFieldBody        = big.NewInt(1 << 4)
+	retrieveReplyPrivateMessagesResponseDataFieldStatus      = big.NewInt(1 << 5)
+	retrieveReplyPrivateMessagesResponseDataFieldCreatedAt   = big.NewInt(1 << 6)
+)
+
+type RetrieveReplyPrivateMessagesResponseData struct {
+	ID          string  `json:"id" url:"id"`
+	ParentID    *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	SenderID    string  `json:"senderId" url:"senderId"`
+	RecipientID string  `json:"recipientId" url:"recipientId"`
+	Body        string  `json:"body" url:"body"`
+	Status      *string `json:"status,omitempty" url:"status,omitempty"`
+	CreatedAt   string  `json:"createdAt" url:"createdAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) GetID() string {
+	if r == nil {
+		return ""
+	}
+	return r.ID
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) GetParentID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ParentID
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) GetSenderID() string {
+	if r == nil {
+		return ""
+	}
+	return r.SenderID
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) GetRecipientID() string {
+	if r == nil {
+		return ""
+	}
+	return r.RecipientID
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) GetBody() string {
+	if r == nil {
+		return ""
+	}
+	return r.Body
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) GetStatus() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Status
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) GetCreatedAt() string {
+	if r == nil {
+		return ""
+	}
+	return r.CreatedAt
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesResponseData) SetID(id string) {
+	r.ID = id
+	r.require(retrieveReplyPrivateMessagesResponseDataFieldID)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesResponseData) SetParentID(parentID *string) {
+	r.ParentID = parentID
+	r.require(retrieveReplyPrivateMessagesResponseDataFieldParentID)
+}
+
+// SetSenderID sets the SenderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesResponseData) SetSenderID(senderID string) {
+	r.SenderID = senderID
+	r.require(retrieveReplyPrivateMessagesResponseDataFieldSenderID)
+}
+
+// SetRecipientID sets the RecipientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesResponseData) SetRecipientID(recipientID string) {
+	r.RecipientID = recipientID
+	r.require(retrieveReplyPrivateMessagesResponseDataFieldRecipientID)
+}
+
+// SetBody sets the Body field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesResponseData) SetBody(body string) {
+	r.Body = body
+	r.require(retrieveReplyPrivateMessagesResponseDataFieldBody)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesResponseData) SetStatus(status *string) {
+	r.Status = status
+	r.require(retrieveReplyPrivateMessagesResponseDataFieldStatus)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveReplyPrivateMessagesResponseData) SetCreatedAt(createdAt string) {
+	r.CreatedAt = createdAt
+	r.require(retrieveReplyPrivateMessagesResponseDataFieldCreatedAt)
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler RetrieveReplyPrivateMessagesResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RetrieveReplyPrivateMessagesResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) MarshalJSON() ([]byte, error) {
+	type embed RetrieveReplyPrivateMessagesResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RetrieveReplyPrivateMessagesResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	updatePrivateMessagesResponseFieldData = big.NewInt(1 << 0)
+)
+
+type UpdatePrivateMessagesResponse struct {
+	Data *UpdatePrivateMessagesResponseData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdatePrivateMessagesResponse) GetData() *UpdatePrivateMessagesResponseData {
+	if u == nil {
+		return nil
+	}
+	return u.Data
+}
+
+func (u *UpdatePrivateMessagesResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdatePrivateMessagesResponse) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponse) SetData(data *UpdatePrivateMessagesResponseData) {
+	u.Data = data
+	u.require(updatePrivateMessagesResponseFieldData)
+}
+
+func (u *UpdatePrivateMessagesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdatePrivateMessagesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdatePrivateMessagesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdatePrivateMessagesResponse) MarshalJSON() ([]byte, error) {
+	type embed UpdatePrivateMessagesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdatePrivateMessagesResponse) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updatePrivateMessagesResponseDataFieldRecipientID  = big.NewInt(1 << 0)
+	updatePrivateMessagesResponseDataFieldSenderID     = big.NewInt(1 << 1)
+	updatePrivateMessagesResponseDataFieldTitle        = big.NewInt(1 << 2)
+	updatePrivateMessagesResponseDataFieldBody         = big.NewInt(1 << 3)
+	updatePrivateMessagesResponseDataFieldParentID     = big.NewInt(1 << 4)
+	updatePrivateMessagesResponseDataFieldExtendedData = big.NewInt(1 << 5)
+	updatePrivateMessagesResponseDataFieldID           = big.NewInt(1 << 6)
+	updatePrivateMessagesResponseDataFieldStatus       = big.NewInt(1 << 7)
+	updatePrivateMessagesResponseDataFieldCreatedAt    = big.NewInt(1 << 8)
+	updatePrivateMessagesResponseDataFieldUpdatedAt    = big.NewInt(1 << 9)
+)
+
+type UpdatePrivateMessagesResponseData struct {
+	// Recipient User ID
+	RecipientID string `json:"recipientId" url:"recipientId"`
+	// Sender user ID (required for API key auth, ignored for JWT auth)
+	SenderID *string `json:"senderId,omitempty" url:"senderId,omitempty"`
+	// Message title (optional for replies)
+	Title *string `json:"title,omitempty" url:"title,omitempty"`
+	// Message content
+	Body string `json:"body" url:"body"`
+	// Parent Message ID (for replies)
+	ParentID *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	// Extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
+	ID           string                 `json:"id" url:"id"`
+	// Message status (sent, delivered, read, archived)
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	// Message sent timestamp
+	CreatedAt string `json:"createdAt" url:"createdAt"`
+	// Message last update timestamp
+	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetRecipientID() string {
+	if u == nil {
+		return ""
+	}
+	return u.RecipientID
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetSenderID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.SenderID
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetTitle() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Title
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetBody() string {
+	if u == nil {
+		return ""
+	}
+	return u.Body
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetParentID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ParentID
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetExtendedData() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
+	return u.ExtendedData
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetID() string {
+	if u == nil {
+		return ""
+	}
+	return u.ID
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetStatus() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Status
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetCreatedAt() string {
+	if u == nil {
+		return ""
+	}
+	return u.CreatedAt
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetUpdatedAt() string {
+	if u == nil {
+		return ""
+	}
+	return u.UpdatedAt
+}
+
+func (u *UpdatePrivateMessagesResponseData) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdatePrivateMessagesResponseData) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetRecipientID sets the RecipientID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetRecipientID(recipientID string) {
+	u.RecipientID = recipientID
+	u.require(updatePrivateMessagesResponseDataFieldRecipientID)
+}
+
+// SetSenderID sets the SenderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetSenderID(senderID *string) {
+	u.SenderID = senderID
+	u.require(updatePrivateMessagesResponseDataFieldSenderID)
+}
+
+// SetTitle sets the Title field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetTitle(title *string) {
+	u.Title = title
+	u.require(updatePrivateMessagesResponseDataFieldTitle)
+}
+
+// SetBody sets the Body field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetBody(body string) {
+	u.Body = body
+	u.require(updatePrivateMessagesResponseDataFieldBody)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetParentID(parentID *string) {
+	u.ParentID = parentID
+	u.require(updatePrivateMessagesResponseDataFieldParentID)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updatePrivateMessagesResponseDataFieldExtendedData)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetID(id string) {
+	u.ID = id
+	u.require(updatePrivateMessagesResponseDataFieldID)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetStatus(status *string) {
+	u.Status = status
+	u.require(updatePrivateMessagesResponseDataFieldStatus)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetCreatedAt(createdAt string) {
+	u.CreatedAt = createdAt
+	u.require(updatePrivateMessagesResponseDataFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesResponseData) SetUpdatedAt(updatedAt string) {
+	u.UpdatedAt = updatedAt
+	u.require(updatePrivateMessagesResponseDataFieldUpdatedAt)
+}
+
+func (u *UpdatePrivateMessagesResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdatePrivateMessagesResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdatePrivateMessagesResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdatePrivateMessagesResponseData) MarshalJSON() ([]byte, error) {
+	type embed UpdatePrivateMessagesResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdatePrivateMessagesResponseData) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updatePrivateMessagesRequestFieldID           = big.NewInt(1 << 0)
+	updatePrivateMessagesRequestFieldBody         = big.NewInt(1 << 1)
+	updatePrivateMessagesRequestFieldStatus       = big.NewInt(1 << 2)
+	updatePrivateMessagesRequestFieldExtendedData = big.NewInt(1 << 3)
+)
+
+type UpdatePrivateMessagesRequest struct {
+	// Private Message ID
+	ID string `json:"-" url:"-"`
+	// Message content
+	Body *string `json:"body,omitempty" url:"-"`
+	// Message status (read, unread, archived)
+	Status *string `json:"status,omitempty" url:"-"`
+	// Extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (u *UpdatePrivateMessagesRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesRequest) SetID(id string) {
+	u.ID = id
+	u.require(updatePrivateMessagesRequestFieldID)
+}
+
+// SetBody sets the Body field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesRequest) SetBody(body *string) {
+	u.Body = body
+	u.require(updatePrivateMessagesRequestFieldBody)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesRequest) SetStatus(status *string) {
+	u.Status = status
+	u.require(updatePrivateMessagesRequestFieldStatus)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePrivateMessagesRequest) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updatePrivateMessagesRequestFieldExtendedData)
 }

@@ -10,13 +10,15 @@ import (
 )
 
 var (
-	postWebhooksRequestFieldName   = big.NewInt(1 << 0)
-	postWebhooksRequestFieldURL    = big.NewInt(1 << 1)
-	postWebhooksRequestFieldEvents = big.NewInt(1 << 2)
-	postWebhooksRequestFieldSecret = big.NewInt(1 << 3)
+	createWebhooksRequestFieldName         = big.NewInt(1 << 0)
+	createWebhooksRequestFieldURL          = big.NewInt(1 << 1)
+	createWebhooksRequestFieldEvents       = big.NewInt(1 << 2)
+	createWebhooksRequestFieldSecret       = big.NewInt(1 << 3)
+	createWebhooksRequestFieldActive       = big.NewInt(1 << 4)
+	createWebhooksRequestFieldExtendedData = big.NewInt(1 << 5)
 )
 
-type PostWebhooksRequest struct {
+type CreateWebhooksRequest struct {
 	// Webhook name
 	Name string `json:"name" url:"-"`
 	// Target URL
@@ -25,52 +27,96 @@ type PostWebhooksRequest struct {
 	Events []string `json:"events,omitempty" url:"-"`
 	// Secret for signature verification (auto-generated if missing)
 	Secret *string `json:"secret,omitempty" url:"-"`
+	// Whether webhook is active
+	Active *bool `json:"active,omitempty" url:"-"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PostWebhooksRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (c *CreateWebhooksRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksRequest) SetName(name string) {
-	p.Name = name
-	p.require(postWebhooksRequestFieldName)
+func (c *CreateWebhooksRequest) SetName(name string) {
+	c.Name = name
+	c.require(createWebhooksRequestFieldName)
 }
 
 // SetURL sets the URL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksRequest) SetURL(url string) {
-	p.URL = url
-	p.require(postWebhooksRequestFieldURL)
+func (c *CreateWebhooksRequest) SetURL(url string) {
+	c.URL = url
+	c.require(createWebhooksRequestFieldURL)
 }
 
 // SetEvents sets the Events field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksRequest) SetEvents(events []string) {
-	p.Events = events
-	p.require(postWebhooksRequestFieldEvents)
+func (c *CreateWebhooksRequest) SetEvents(events []string) {
+	c.Events = events
+	c.require(createWebhooksRequestFieldEvents)
 }
 
 // SetSecret sets the Secret field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksRequest) SetSecret(secret *string) {
-	p.Secret = secret
-	p.require(postWebhooksRequestFieldSecret)
+func (c *CreateWebhooksRequest) SetSecret(secret *string) {
+	c.Secret = secret
+	c.require(createWebhooksRequestFieldSecret)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateWebhooksRequest) SetActive(active *bool) {
+	c.Active = active
+	c.require(createWebhooksRequestFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateWebhooksRequest) SetExtendedData(extendedData map[string]interface{}) {
+	c.ExtendedData = extendedData
+	c.require(createWebhooksRequestFieldExtendedData)
 }
 
 var (
-	deleteWebhooksIDDeliveriesSubIDRequestFieldID    = big.NewInt(1 << 0)
-	deleteWebhooksIDDeliveriesSubIDRequestFieldSubID = big.NewInt(1 << 1)
+	deleteWebhooksRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeleteWebhooksIDDeliveriesSubIDRequest struct {
+type DeleteWebhooksRequest struct {
+	// Webhook ID
+	ID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (d *DeleteWebhooksRequest) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteWebhooksRequest) SetID(id string) {
+	d.ID = id
+	d.require(deleteWebhooksRequestFieldID)
+}
+
+var (
+	deleteDeliveryWebhooksRequestFieldID    = big.NewInt(1 << 0)
+	deleteDeliveryWebhooksRequestFieldSubID = big.NewInt(1 << 1)
+)
+
+type DeleteDeliveryWebhooksRequest struct {
 	// Webhook ID
 	ID string `json:"-" url:"-"`
 	// Delivery ID
@@ -80,7 +126,7 @@ type DeleteWebhooksIDDeliveriesSubIDRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeleteWebhooksIDDeliveriesSubIDRequest) require(field *big.Int) {
+func (d *DeleteDeliveryWebhooksRequest) require(field *big.Int) {
 	if d.explicitFields == nil {
 		d.explicitFields = big.NewInt(0)
 	}
@@ -89,355 +135,168 @@ func (d *DeleteWebhooksIDDeliveriesSubIDRequest) require(field *big.Int) {
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteWebhooksIDDeliveriesSubIDRequest) SetID(id string) {
+func (d *DeleteDeliveryWebhooksRequest) SetID(id string) {
 	d.ID = id
-	d.require(deleteWebhooksIDDeliveriesSubIDRequestFieldID)
+	d.require(deleteDeliveryWebhooksRequestFieldID)
 }
 
 // SetSubID sets the SubID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteWebhooksIDDeliveriesSubIDRequest) SetSubID(subID string) {
+func (d *DeleteDeliveryWebhooksRequest) SetSubID(subID string) {
 	d.SubID = subID
-	d.require(deleteWebhooksIDDeliveriesSubIDRequestFieldSubID)
+	d.require(deleteDeliveryWebhooksRequestFieldSubID)
 }
 
 var (
-	deleteWebhooksIDRequestFieldID = big.NewInt(1 << 0)
+	listWebhooksRequestFieldLimit  = big.NewInt(1 << 0)
+	listWebhooksRequestFieldCursor = big.NewInt(1 << 1)
 )
 
-type DeleteWebhooksIDRequest struct {
-	ID string `json:"-" url:"-"`
+type ListWebhooksRequest struct {
+	// Items per page (max 75)
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Cursor for pagination
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeleteWebhooksIDRequest) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
+func (l *ListWebhooksRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteWebhooksIDRequest) SetID(id string) {
-	d.ID = id
-	d.require(deleteWebhooksIDRequestFieldID)
-}
-
-var (
-	getWebhooksIDDeliveriesSubIDRequestFieldID    = big.NewInt(1 << 0)
-	getWebhooksIDDeliveriesSubIDRequestFieldSubID = big.NewInt(1 << 1)
-)
-
-type GetWebhooksIDDeliveriesSubIDRequest struct {
-	// Webhook ID
-	ID string `json:"-" url:"-"`
-	// Delivery ID
-	SubID string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetWebhooksIDDeliveriesSubIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesSubIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getWebhooksIDDeliveriesSubIDRequestFieldID)
-}
-
-// SetSubID sets the SubID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesSubIDRequest) SetSubID(subID string) {
-	g.SubID = subID
-	g.require(getWebhooksIDDeliveriesSubIDRequestFieldSubID)
-}
-
-var (
-	getWebhooksIDRequestFieldID = big.NewInt(1 << 0)
-)
-
-type GetWebhooksIDRequest struct {
-	ID string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetWebhooksIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getWebhooksIDRequestFieldID)
-}
-
-var (
-	getWebhooksRequestFieldPage   = big.NewInt(1 << 0)
-	getWebhooksRequestFieldLimit  = big.NewInt(1 << 1)
-	getWebhooksRequestFieldSearch = big.NewInt(1 << 2)
-)
-
-type GetWebhooksRequest struct {
-	Page   *int    `json:"-" url:"page,omitempty"`
-	Limit  *int    `json:"-" url:"limit,omitempty"`
-	Search *string `json:"-" url:"search,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetWebhooksRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getWebhooksRequestFieldPage)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getWebhooksRequestFieldLimit)
+func (l *ListWebhooksRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listWebhooksRequestFieldLimit)
 }
 
-// SetSearch sets the Search field and marks it as non-optional;
+// SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksRequest) SetSearch(search *string) {
-	g.Search = search
-	g.require(getWebhooksRequestFieldSearch)
+func (l *ListWebhooksRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listWebhooksRequestFieldCursor)
 }
 
 var (
-	getWebhooksIDDeliveriesRequestFieldID     = big.NewInt(1 << 0)
-	getWebhooksIDDeliveriesRequestFieldCursor = big.NewInt(1 << 1)
-	getWebhooksIDDeliveriesRequestFieldLimit  = big.NewInt(1 << 2)
+	listDeliveriesWebhooksRequestFieldID     = big.NewInt(1 << 0)
+	listDeliveriesWebhooksRequestFieldCursor = big.NewInt(1 << 1)
+	listDeliveriesWebhooksRequestFieldLimit  = big.NewInt(1 << 2)
 )
 
-type GetWebhooksIDDeliveriesRequest struct {
+type ListDeliveriesWebhooksRequest struct {
 	// Webhook ID
 	ID string `json:"-" url:"-"`
 	// Pagination cursor
 	Cursor *string `json:"-" url:"cursor,omitempty"`
-	// Items per page
+	// Items per page (max 75)
 	Limit *int `json:"-" url:"limit,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetWebhooksIDDeliveriesRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *ListDeliveriesWebhooksRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesRequest) SetID(id string) {
-	g.ID = id
-	g.require(getWebhooksIDDeliveriesRequestFieldID)
+func (l *ListDeliveriesWebhooksRequest) SetID(id string) {
+	l.ID = id
+	l.require(listDeliveriesWebhooksRequestFieldID)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesRequest) SetCursor(cursor *string) {
-	g.Cursor = cursor
-	g.require(getWebhooksIDDeliveriesRequestFieldCursor)
+func (l *ListDeliveriesWebhooksRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listDeliveriesWebhooksRequestFieldCursor)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getWebhooksIDDeliveriesRequestFieldLimit)
+func (l *ListDeliveriesWebhooksRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listDeliveriesWebhooksRequestFieldLimit)
 }
 
 var (
-	deleteWebhooksIDDeliveriesSubIDResponseFieldSuccess = big.NewInt(1 << 0)
+	retrieveWebhooksRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeleteWebhooksIDDeliveriesSubIDResponse struct {
-	Success bool `json:"success" url:"success"`
+type RetrieveWebhooksRequest struct {
+	// Webhook ID
+	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
 }
 
-func (d *DeleteWebhooksIDDeliveriesSubIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
+func (r *RetrieveWebhooksRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return d.Success
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
-func (d *DeleteWebhooksIDDeliveriesSubIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeleteWebhooksIDDeliveriesSubIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteWebhooksIDDeliveriesSubIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deleteWebhooksIDDeliveriesSubIDResponseFieldSuccess)
-}
-
-func (d *DeleteWebhooksIDDeliveriesSubIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteWebhooksIDDeliveriesSubIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteWebhooksIDDeliveriesSubIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteWebhooksIDDeliveriesSubIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteWebhooksIDDeliveriesSubIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteWebhooksIDDeliveriesSubIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
+func (r *RetrieveWebhooksRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveWebhooksRequestFieldID)
 }
 
 var (
-	deleteWebhooksIDResponseFieldSuccess = big.NewInt(1 << 0)
+	retrieveDeliveryWebhooksRequestFieldID    = big.NewInt(1 << 0)
+	retrieveDeliveryWebhooksRequestFieldSubID = big.NewInt(1 << 1)
 )
 
-type DeleteWebhooksIDResponse struct {
-	Success bool `json:"success" url:"success"`
+type RetrieveDeliveryWebhooksRequest struct {
+	// Webhook ID
+	ID string `json:"-" url:"-"`
+	// Delivery ID
+	SubID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
 }
 
-func (d *DeleteWebhooksIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
+func (r *RetrieveDeliveryWebhooksRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return d.Success
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
-func (d *DeleteWebhooksIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeleteWebhooksIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteWebhooksIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deleteWebhooksIDResponseFieldSuccess)
+func (r *RetrieveDeliveryWebhooksRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveDeliveryWebhooksRequestFieldID)
 }
 
-func (d *DeleteWebhooksIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteWebhooksIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteWebhooksIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteWebhooksIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteWebhooksIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteWebhooksIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
+// SetSubID sets the SubID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksRequest) SetSubID(subID string) {
+	r.SubID = subID
+	r.require(retrieveDeliveryWebhooksRequestFieldSubID)
 }
 
 var (
-	getWebhooksIDDeliveriesResponseFieldData = big.NewInt(1 << 0)
+	webhookDeliveryListResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetWebhooksIDDeliveriesResponse struct {
-	Data *GetWebhooksIDDeliveriesResponseData `json:"data" url:"data"`
+type WebhookDeliveryListResponse struct {
+	Data *WebhookDeliveryListResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -446,80 +305,80 @@ type GetWebhooksIDDeliveriesResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWebhooksIDDeliveriesResponse) GetData() *GetWebhooksIDDeliveriesResponseData {
-	if g == nil {
+func (w *WebhookDeliveryListResponse) GetData() *WebhookDeliveryListResponseData {
+	if w == nil {
 		return nil
 	}
-	return g.Data
+	return w.Data
 }
 
-func (g *GetWebhooksIDDeliveriesResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (w *WebhookDeliveryListResponse) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
 }
 
-func (g *GetWebhooksIDDeliveriesResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (w *WebhookDeliveryListResponse) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	w.explicitFields.Or(w.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesResponse) SetData(data *GetWebhooksIDDeliveriesResponseData) {
-	g.Data = data
-	g.require(getWebhooksIDDeliveriesResponseFieldData)
+func (w *WebhookDeliveryListResponse) SetData(data *WebhookDeliveryListResponseData) {
+	w.Data = data
+	w.require(webhookDeliveryListResponseFieldData)
 }
 
-func (g *GetWebhooksIDDeliveriesResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksIDDeliveriesResponse
+func (w *WebhookDeliveryListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookDeliveryListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetWebhooksIDDeliveriesResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*w = WebhookDeliveryListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetWebhooksIDDeliveriesResponse) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksIDDeliveriesResponse
+func (w *WebhookDeliveryListResponse) MarshalJSON() ([]byte, error) {
+	type embed WebhookDeliveryListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*w),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetWebhooksIDDeliveriesResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (w *WebhookDeliveryListResponse) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", w)
 }
 
 var (
-	getWebhooksIDDeliveriesResponseDataFieldItems      = big.NewInt(1 << 0)
-	getWebhooksIDDeliveriesResponseDataFieldNextCursor = big.NewInt(1 << 1)
-	getWebhooksIDDeliveriesResponseDataFieldCount      = big.NewInt(1 << 2)
+	webhookDeliveryListResponseDataFieldItems      = big.NewInt(1 << 0)
+	webhookDeliveryListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	webhookDeliveryListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type GetWebhooksIDDeliveriesResponseData struct {
-	Items      []*GetWebhooksIDDeliveriesResponseDataItemsItem `json:"items" url:"items"`
-	NextCursor *string                                         `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
-	Count      int                                             `json:"count" url:"count"`
+type WebhookDeliveryListResponseData struct {
+	Items      []*WebhookDeliveryListResponseDataItemsItem `json:"items" url:"items"`
+	NextCursor *string                                     `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	Count      int                                         `json:"count" url:"count"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -528,163 +387,120 @@ type GetWebhooksIDDeliveriesResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWebhooksIDDeliveriesResponseData) GetItems() []*GetWebhooksIDDeliveriesResponseDataItemsItem {
-	if g == nil {
+func (w *WebhookDeliveryListResponseData) GetItems() []*WebhookDeliveryListResponseDataItemsItem {
+	if w == nil {
 		return nil
 	}
-	return g.Items
+	return w.Items
 }
 
-func (g *GetWebhooksIDDeliveriesResponseData) GetNextCursor() *string {
-	if g == nil {
+func (w *WebhookDeliveryListResponseData) GetNextCursor() *string {
+	if w == nil {
 		return nil
 	}
-	return g.NextCursor
+	return w.NextCursor
 }
 
-func (g *GetWebhooksIDDeliveriesResponseData) GetCount() int {
-	if g == nil {
+func (w *WebhookDeliveryListResponseData) GetCount() int {
+	if w == nil {
 		return 0
 	}
-	return g.Count
+	return w.Count
 }
 
-func (g *GetWebhooksIDDeliveriesResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (w *WebhookDeliveryListResponseData) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
 }
 
-func (g *GetWebhooksIDDeliveriesResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (w *WebhookDeliveryListResponseData) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	w.explicitFields.Or(w.explicitFields, field)
 }
 
 // SetItems sets the Items field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesResponseData) SetItems(items []*GetWebhooksIDDeliveriesResponseDataItemsItem) {
-	g.Items = items
-	g.require(getWebhooksIDDeliveriesResponseDataFieldItems)
+func (w *WebhookDeliveryListResponseData) SetItems(items []*WebhookDeliveryListResponseDataItemsItem) {
+	w.Items = items
+	w.require(webhookDeliveryListResponseDataFieldItems)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesResponseData) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(getWebhooksIDDeliveriesResponseDataFieldNextCursor)
+func (w *WebhookDeliveryListResponseData) SetNextCursor(nextCursor *string) {
+	w.NextCursor = nextCursor
+	w.require(webhookDeliveryListResponseDataFieldNextCursor)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesResponseData) SetCount(count int) {
-	g.Count = count
-	g.require(getWebhooksIDDeliveriesResponseDataFieldCount)
+func (w *WebhookDeliveryListResponseData) SetCount(count int) {
+	w.Count = count
+	w.require(webhookDeliveryListResponseDataFieldCount)
 }
 
-func (g *GetWebhooksIDDeliveriesResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksIDDeliveriesResponseData
+func (w *WebhookDeliveryListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookDeliveryListResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetWebhooksIDDeliveriesResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*w = WebhookDeliveryListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetWebhooksIDDeliveriesResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksIDDeliveriesResponseData
+func (w *WebhookDeliveryListResponseData) MarshalJSON() ([]byte, error) {
+	type embed WebhookDeliveryListResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*w),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetWebhooksIDDeliveriesResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (w *WebhookDeliveryListResponseData) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
-}
-
-type GetWebhooksIDDeliveriesResponseDataItemsItem struct {
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetWebhooksIDDeliveriesResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetWebhooksIDDeliveriesResponseDataItemsItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-func (g *GetWebhooksIDDeliveriesResponseDataItemsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksIDDeliveriesResponseDataItemsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetWebhooksIDDeliveriesResponseDataItemsItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetWebhooksIDDeliveriesResponseDataItemsItem) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksIDDeliveriesResponseDataItemsItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetWebhooksIDDeliveriesResponseDataItemsItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", w)
 }
 
 var (
-	getWebhooksIDDeliveriesSubIDResponseFieldData = big.NewInt(1 << 0)
+	webhookDeliveryListResponseDataItemsItemFieldID           = big.NewInt(1 << 0)
+	webhookDeliveryListResponseDataItemsItemFieldWebhookID    = big.NewInt(1 << 1)
+	webhookDeliveryListResponseDataItemsItemFieldEvent        = big.NewInt(1 << 2)
+	webhookDeliveryListResponseDataItemsItemFieldPayload      = big.NewInt(1 << 3)
+	webhookDeliveryListResponseDataItemsItemFieldResponseCode = big.NewInt(1 << 4)
+	webhookDeliveryListResponseDataItemsItemFieldResponseBody = big.NewInt(1 << 5)
+	webhookDeliveryListResponseDataItemsItemFieldSuccess      = big.NewInt(1 << 6)
+	webhookDeliveryListResponseDataItemsItemFieldError        = big.NewInt(1 << 7)
+	webhookDeliveryListResponseDataItemsItemFieldCreatedAt    = big.NewInt(1 << 8)
 )
 
-type GetWebhooksIDDeliveriesSubIDResponse struct {
-	Data *GetWebhooksIDDeliveriesSubIDResponseData `json:"data" url:"data"`
+type WebhookDeliveryListResponseDataItemsItem struct {
+	ID           string                 `json:"id" url:"id"`
+	WebhookID    string                 `json:"webhookId" url:"webhookId"`
+	Event        string                 `json:"event" url:"event"`
+	Payload      map[string]interface{} `json:"payload,omitempty" url:"payload,omitempty"`
+	ResponseCode *int                   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	ResponseBody *string                `json:"responseBody,omitempty" url:"responseBody,omitempty"`
+	Success      bool                   `json:"success" url:"success"`
+	Error        *string                `json:"error,omitempty" url:"error,omitempty"`
+	CreatedAt    string                 `json:"createdAt" url:"createdAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -693,135 +509,272 @@ type GetWebhooksIDDeliveriesSubIDResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWebhooksIDDeliveriesSubIDResponse) GetData() *GetWebhooksIDDeliveriesSubIDResponseData {
-	if g == nil {
+func (w *WebhookDeliveryListResponseDataItemsItem) GetID() string {
+	if w == nil {
+		return ""
+	}
+	return w.ID
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) GetWebhookID() string {
+	if w == nil {
+		return ""
+	}
+	return w.WebhookID
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) GetEvent() string {
+	if w == nil {
+		return ""
+	}
+	return w.Event
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) GetPayload() map[string]interface{} {
+	if w == nil {
 		return nil
 	}
-	return g.Data
+	return w.Payload
 }
 
-func (g *GetWebhooksIDDeliveriesSubIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetWebhooksIDDeliveriesSubIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (w *WebhookDeliveryListResponseDataItemsItem) GetResponseCode() *int {
+	if w == nil {
+		return nil
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	return w.ResponseCode
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) GetResponseBody() *string {
+	if w == nil {
+		return nil
+	}
+	return w.ResponseBody
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) GetSuccess() bool {
+	if w == nil {
+		return false
+	}
+	return w.Success
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) GetError() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Error
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) GetCreatedAt() string {
+	if w == nil {
+		return ""
+	}
+	return w.CreatedAt
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetID(id string) {
+	w.ID = id
+	w.require(webhookDeliveryListResponseDataItemsItemFieldID)
+}
+
+// SetWebhookID sets the WebhookID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetWebhookID(webhookID string) {
+	w.WebhookID = webhookID
+	w.require(webhookDeliveryListResponseDataItemsItemFieldWebhookID)
+}
+
+// SetEvent sets the Event field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetEvent(event string) {
+	w.Event = event
+	w.require(webhookDeliveryListResponseDataItemsItemFieldEvent)
+}
+
+// SetPayload sets the Payload field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetPayload(payload map[string]interface{}) {
+	w.Payload = payload
+	w.require(webhookDeliveryListResponseDataItemsItemFieldPayload)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetResponseCode(responseCode *int) {
+	w.ResponseCode = responseCode
+	w.require(webhookDeliveryListResponseDataItemsItemFieldResponseCode)
+}
+
+// SetResponseBody sets the ResponseBody field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetResponseBody(responseBody *string) {
+	w.ResponseBody = responseBody
+	w.require(webhookDeliveryListResponseDataItemsItemFieldResponseBody)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetSuccess(success bool) {
+	w.Success = success
+	w.require(webhookDeliveryListResponseDataItemsItemFieldSuccess)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetError(error_ *string) {
+	w.Error = error_
+	w.require(webhookDeliveryListResponseDataItemsItemFieldError)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookDeliveryListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	w.CreatedAt = createdAt
+	w.require(webhookDeliveryListResponseDataItemsItemFieldCreatedAt)
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookDeliveryListResponseDataItemsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WebhookDeliveryListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed WebhookDeliveryListResponseDataItemsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*w),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (w *WebhookDeliveryListResponseDataItemsItem) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+var (
+	webhookListResponseFieldData = big.NewInt(1 << 0)
+)
+
+type WebhookListResponse struct {
+	Data *WebhookListResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookListResponse) GetData() *WebhookListResponseData {
+	if w == nil {
+		return nil
+	}
+	return w.Data
+}
+
+func (w *WebhookListResponse) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WebhookListResponse) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDDeliveriesSubIDResponse) SetData(data *GetWebhooksIDDeliveriesSubIDResponseData) {
-	g.Data = data
-	g.require(getWebhooksIDDeliveriesSubIDResponseFieldData)
+func (w *WebhookListResponse) SetData(data *WebhookListResponseData) {
+	w.Data = data
+	w.require(webhookListResponseFieldData)
 }
 
-func (g *GetWebhooksIDDeliveriesSubIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksIDDeliveriesSubIDResponse
+func (w *WebhookListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetWebhooksIDDeliveriesSubIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*w = WebhookListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetWebhooksIDDeliveriesSubIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksIDDeliveriesSubIDResponse
+func (w *WebhookListResponse) MarshalJSON() ([]byte, error) {
+	type embed WebhookListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*w),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetWebhooksIDDeliveriesSubIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (w *WebhookListResponse) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
-}
-
-type GetWebhooksIDDeliveriesSubIDResponseData struct {
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetWebhooksIDDeliveriesSubIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetWebhooksIDDeliveriesSubIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-func (g *GetWebhooksIDDeliveriesSubIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksIDDeliveriesSubIDResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetWebhooksIDDeliveriesSubIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetWebhooksIDDeliveriesSubIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksIDDeliveriesSubIDResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetWebhooksIDDeliveriesSubIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", w)
 }
 
 var (
-	getWebhooksIDResponseFieldData = big.NewInt(1 << 0)
+	webhookListResponseDataFieldItems      = big.NewInt(1 << 0)
+	webhookListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	webhookListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type GetWebhooksIDResponse struct {
-	Data *GetWebhooksIDResponseData `json:"data,omitempty" url:"data,omitempty"`
+type WebhookListResponseData struct {
+	Items []*WebhookListResponseDataItemsItem `json:"items" url:"items"`
+	// Cursor for next page
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	// Total count of items
+	Count int `json:"count" url:"count"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -830,83 +783,112 @@ type GetWebhooksIDResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWebhooksIDResponse) GetData() *GetWebhooksIDResponseData {
-	if g == nil {
+func (w *WebhookListResponseData) GetItems() []*WebhookListResponseDataItemsItem {
+	if w == nil {
 		return nil
 	}
-	return g.Data
+	return w.Items
 }
 
-func (g *GetWebhooksIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetWebhooksIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (w *WebhookListResponseData) GetNextCursor() *string {
+	if w == nil {
+		return nil
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	return w.NextCursor
 }
 
-// SetData sets the Data field and marks it as non-optional;
+func (w *WebhookListResponseData) GetCount() int {
+	if w == nil {
+		return 0
+	}
+	return w.Count
+}
+
+func (w *WebhookListResponseData) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WebhookListResponseData) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponse) SetData(data *GetWebhooksIDResponseData) {
-	g.Data = data
-	g.require(getWebhooksIDResponseFieldData)
+func (w *WebhookListResponseData) SetItems(items []*WebhookListResponseDataItemsItem) {
+	w.Items = items
+	w.require(webhookListResponseDataFieldItems)
 }
 
-func (g *GetWebhooksIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksIDResponse
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookListResponseData) SetNextCursor(nextCursor *string) {
+	w.NextCursor = nextCursor
+	w.require(webhookListResponseDataFieldNextCursor)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookListResponseData) SetCount(count int) {
+	w.Count = count
+	w.require(webhookListResponseDataFieldCount)
+}
+
+func (w *WebhookListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookListResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetWebhooksIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*w = WebhookListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetWebhooksIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksIDResponse
+func (w *WebhookListResponseData) MarshalJSON() ([]byte, error) {
+	type embed WebhookListResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*w),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetWebhooksIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (w *WebhookListResponseData) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", w)
 }
 
 var (
-	getWebhooksIDResponseDataFieldID            = big.NewInt(1 << 0)
-	getWebhooksIDResponseDataFieldName          = big.NewInt(1 << 1)
-	getWebhooksIDResponseDataFieldURL           = big.NewInt(1 << 2)
-	getWebhooksIDResponseDataFieldEvents        = big.NewInt(1 << 3)
-	getWebhooksIDResponseDataFieldActive        = big.NewInt(1 << 4)
-	getWebhooksIDResponseDataFieldLastTriggered = big.NewInt(1 << 5)
-	getWebhooksIDResponseDataFieldFailureCount  = big.NewInt(1 << 6)
-	getWebhooksIDResponseDataFieldCreatedAt     = big.NewInt(1 << 7)
-	getWebhooksIDResponseDataFieldUpdatedAt     = big.NewInt(1 << 8)
+	webhookListResponseDataItemsItemFieldID            = big.NewInt(1 << 0)
+	webhookListResponseDataItemsItemFieldName          = big.NewInt(1 << 1)
+	webhookListResponseDataItemsItemFieldURL           = big.NewInt(1 << 2)
+	webhookListResponseDataItemsItemFieldEvents        = big.NewInt(1 << 3)
+	webhookListResponseDataItemsItemFieldActive        = big.NewInt(1 << 4)
+	webhookListResponseDataItemsItemFieldExtendedData  = big.NewInt(1 << 5)
+	webhookListResponseDataItemsItemFieldLastTriggered = big.NewInt(1 << 6)
+	webhookListResponseDataItemsItemFieldFailureCount  = big.NewInt(1 << 7)
+	webhookListResponseDataItemsItemFieldCreatedAt     = big.NewInt(1 << 8)
+	webhookListResponseDataItemsItemFieldUpdatedAt     = big.NewInt(1 << 9)
 )
 
-type GetWebhooksIDResponseData struct {
+type WebhookListResponseDataItemsItem struct {
 	ID string `json:"id" url:"id"`
 	// Webhook name
 	Name string `json:"name" url:"name"`
@@ -916,6 +898,8 @@ type GetWebhooksIDResponseData struct {
 	Events []string `json:"events" url:"events"`
 	// Whether webhook is active
 	Active bool `json:"active" url:"active"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
 	// Last trigger timestamp
 	LastTriggered *string `json:"lastTriggered,omitempty" url:"lastTriggered,omitempty"`
 	// Consecutive failure count
@@ -932,190 +916,202 @@ type GetWebhooksIDResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWebhooksIDResponseData) GetID() string {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetID() string {
+	if w == nil {
 		return ""
 	}
-	return g.ID
+	return w.ID
 }
 
-func (g *GetWebhooksIDResponseData) GetName() string {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetName() string {
+	if w == nil {
 		return ""
 	}
-	return g.Name
+	return w.Name
 }
 
-func (g *GetWebhooksIDResponseData) GetURL() string {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetURL() string {
+	if w == nil {
 		return ""
 	}
-	return g.URL
+	return w.URL
 }
 
-func (g *GetWebhooksIDResponseData) GetEvents() []string {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetEvents() []string {
+	if w == nil {
 		return nil
 	}
-	return g.Events
+	return w.Events
 }
 
-func (g *GetWebhooksIDResponseData) GetActive() bool {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetActive() bool {
+	if w == nil {
 		return false
 	}
-	return g.Active
+	return w.Active
 }
 
-func (g *GetWebhooksIDResponseData) GetLastTriggered() *string {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetExtendedData() map[string]interface{} {
+	if w == nil {
 		return nil
 	}
-	return g.LastTriggered
+	return w.ExtendedData
 }
 
-func (g *GetWebhooksIDResponseData) GetFailureCount() int {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetLastTriggered() *string {
+	if w == nil {
+		return nil
+	}
+	return w.LastTriggered
+}
+
+func (w *WebhookListResponseDataItemsItem) GetFailureCount() int {
+	if w == nil {
 		return 0
 	}
-	return g.FailureCount
+	return w.FailureCount
 }
 
-func (g *GetWebhooksIDResponseData) GetCreatedAt() string {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetCreatedAt() string {
+	if w == nil {
 		return ""
 	}
-	return g.CreatedAt
+	return w.CreatedAt
 }
 
-func (g *GetWebhooksIDResponseData) GetUpdatedAt() string {
-	if g == nil {
+func (w *WebhookListResponseDataItemsItem) GetUpdatedAt() string {
+	if w == nil {
 		return ""
 	}
-	return g.UpdatedAt
+	return w.UpdatedAt
 }
 
-func (g *GetWebhooksIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (w *WebhookListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
 }
 
-func (g *GetWebhooksIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (w *WebhookListResponseDataItemsItem) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	w.explicitFields.Or(w.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetID(id string) {
-	g.ID = id
-	g.require(getWebhooksIDResponseDataFieldID)
+func (w *WebhookListResponseDataItemsItem) SetID(id string) {
+	w.ID = id
+	w.require(webhookListResponseDataItemsItemFieldID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetName(name string) {
-	g.Name = name
-	g.require(getWebhooksIDResponseDataFieldName)
+func (w *WebhookListResponseDataItemsItem) SetName(name string) {
+	w.Name = name
+	w.require(webhookListResponseDataItemsItemFieldName)
 }
 
 // SetURL sets the URL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetURL(url string) {
-	g.URL = url
-	g.require(getWebhooksIDResponseDataFieldURL)
+func (w *WebhookListResponseDataItemsItem) SetURL(url string) {
+	w.URL = url
+	w.require(webhookListResponseDataItemsItemFieldURL)
 }
 
 // SetEvents sets the Events field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetEvents(events []string) {
-	g.Events = events
-	g.require(getWebhooksIDResponseDataFieldEvents)
+func (w *WebhookListResponseDataItemsItem) SetEvents(events []string) {
+	w.Events = events
+	w.require(webhookListResponseDataItemsItemFieldEvents)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetActive(active bool) {
-	g.Active = active
-	g.require(getWebhooksIDResponseDataFieldActive)
+func (w *WebhookListResponseDataItemsItem) SetActive(active bool) {
+	w.Active = active
+	w.require(webhookListResponseDataItemsItemFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookListResponseDataItemsItem) SetExtendedData(extendedData map[string]interface{}) {
+	w.ExtendedData = extendedData
+	w.require(webhookListResponseDataItemsItemFieldExtendedData)
 }
 
 // SetLastTriggered sets the LastTriggered field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetLastTriggered(lastTriggered *string) {
-	g.LastTriggered = lastTriggered
-	g.require(getWebhooksIDResponseDataFieldLastTriggered)
+func (w *WebhookListResponseDataItemsItem) SetLastTriggered(lastTriggered *string) {
+	w.LastTriggered = lastTriggered
+	w.require(webhookListResponseDataItemsItemFieldLastTriggered)
 }
 
 // SetFailureCount sets the FailureCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetFailureCount(failureCount int) {
-	g.FailureCount = failureCount
-	g.require(getWebhooksIDResponseDataFieldFailureCount)
+func (w *WebhookListResponseDataItemsItem) SetFailureCount(failureCount int) {
+	w.FailureCount = failureCount
+	w.require(webhookListResponseDataItemsItemFieldFailureCount)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getWebhooksIDResponseDataFieldCreatedAt)
+func (w *WebhookListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	w.CreatedAt = createdAt
+	w.require(webhookListResponseDataItemsItemFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksIDResponseData) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getWebhooksIDResponseDataFieldUpdatedAt)
+func (w *WebhookListResponseDataItemsItem) SetUpdatedAt(updatedAt string) {
+	w.UpdatedAt = updatedAt
+	w.require(webhookListResponseDataItemsItemFieldUpdatedAt)
 }
 
-func (g *GetWebhooksIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksIDResponseData
+func (w *WebhookListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookListResponseDataItemsItem
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetWebhooksIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*w = WebhookListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetWebhooksIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksIDResponseData
+func (w *WebhookListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed WebhookListResponseDataItemsItem
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*w),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetWebhooksIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (w *WebhookListResponseDataItemsItem) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", w)
 }
 
 var (
-	getWebhooksResponseFieldData = big.NewInt(1 << 0)
-	getWebhooksResponseFieldMeta = big.NewInt(1 << 1)
+	webhookResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetWebhooksResponse struct {
-	Data []*GetWebhooksResponseDataItem `json:"data" url:"data"`
-	Meta *GetWebhooksResponseMeta       `json:"meta" url:"meta"`
+type WebhookResponse struct {
+	Data *WebhookResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1124,97 +1120,84 @@ type GetWebhooksResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWebhooksResponse) GetData() []*GetWebhooksResponseDataItem {
-	if g == nil {
+func (w *WebhookResponse) GetData() *WebhookResponseData {
+	if w == nil {
 		return nil
 	}
-	return g.Data
+	return w.Data
 }
 
-func (g *GetWebhooksResponse) GetMeta() *GetWebhooksResponseMeta {
-	if g == nil {
-		return nil
+func (w *WebhookResponse) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WebhookResponse) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
 	}
-	return g.Meta
-}
-
-func (g *GetWebhooksResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetWebhooksResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
+	w.explicitFields.Or(w.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponse) SetData(data []*GetWebhooksResponseDataItem) {
-	g.Data = data
-	g.require(getWebhooksResponseFieldData)
+func (w *WebhookResponse) SetData(data *WebhookResponseData) {
+	w.Data = data
+	w.require(webhookResponseFieldData)
 }
 
-// SetMeta sets the Meta field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponse) SetMeta(meta *GetWebhooksResponseMeta) {
-	g.Meta = meta
-	g.require(getWebhooksResponseFieldMeta)
-}
-
-func (g *GetWebhooksResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksResponse
+func (w *WebhookResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetWebhooksResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*w = WebhookResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetWebhooksResponse) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksResponse
+func (w *WebhookResponse) MarshalJSON() ([]byte, error) {
+	type embed WebhookResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*w),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetWebhooksResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (w *WebhookResponse) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", w)
 }
 
 var (
-	getWebhooksResponseDataItemFieldID            = big.NewInt(1 << 0)
-	getWebhooksResponseDataItemFieldName          = big.NewInt(1 << 1)
-	getWebhooksResponseDataItemFieldURL           = big.NewInt(1 << 2)
-	getWebhooksResponseDataItemFieldEvents        = big.NewInt(1 << 3)
-	getWebhooksResponseDataItemFieldActive        = big.NewInt(1 << 4)
-	getWebhooksResponseDataItemFieldLastTriggered = big.NewInt(1 << 5)
-	getWebhooksResponseDataItemFieldFailureCount  = big.NewInt(1 << 6)
-	getWebhooksResponseDataItemFieldCreatedAt     = big.NewInt(1 << 7)
-	getWebhooksResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 8)
+	webhookResponseDataFieldID            = big.NewInt(1 << 0)
+	webhookResponseDataFieldName          = big.NewInt(1 << 1)
+	webhookResponseDataFieldURL           = big.NewInt(1 << 2)
+	webhookResponseDataFieldEvents        = big.NewInt(1 << 3)
+	webhookResponseDataFieldActive        = big.NewInt(1 << 4)
+	webhookResponseDataFieldExtendedData  = big.NewInt(1 << 5)
+	webhookResponseDataFieldLastTriggered = big.NewInt(1 << 6)
+	webhookResponseDataFieldFailureCount  = big.NewInt(1 << 7)
+	webhookResponseDataFieldCreatedAt     = big.NewInt(1 << 8)
+	webhookResponseDataFieldUpdatedAt     = big.NewInt(1 << 9)
 )
 
-type GetWebhooksResponseDataItem struct {
+type WebhookResponseData struct {
 	ID string `json:"id" url:"id"`
 	// Webhook name
 	Name string `json:"name" url:"name"`
@@ -1224,6 +1207,8 @@ type GetWebhooksResponseDataItem struct {
 	Events []string `json:"events" url:"events"`
 	// Whether webhook is active
 	Active bool `json:"active" url:"active"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
 	// Last trigger timestamp
 	LastTriggered *string `json:"lastTriggered,omitempty" url:"lastTriggered,omitempty"`
 	// Consecutive failure count
@@ -1240,192 +1225,202 @@ type GetWebhooksResponseDataItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWebhooksResponseDataItem) GetID() string {
-	if g == nil {
+func (w *WebhookResponseData) GetID() string {
+	if w == nil {
 		return ""
 	}
-	return g.ID
+	return w.ID
 }
 
-func (g *GetWebhooksResponseDataItem) GetName() string {
-	if g == nil {
+func (w *WebhookResponseData) GetName() string {
+	if w == nil {
 		return ""
 	}
-	return g.Name
+	return w.Name
 }
 
-func (g *GetWebhooksResponseDataItem) GetURL() string {
-	if g == nil {
+func (w *WebhookResponseData) GetURL() string {
+	if w == nil {
 		return ""
 	}
-	return g.URL
+	return w.URL
 }
 
-func (g *GetWebhooksResponseDataItem) GetEvents() []string {
-	if g == nil {
+func (w *WebhookResponseData) GetEvents() []string {
+	if w == nil {
 		return nil
 	}
-	return g.Events
+	return w.Events
 }
 
-func (g *GetWebhooksResponseDataItem) GetActive() bool {
-	if g == nil {
+func (w *WebhookResponseData) GetActive() bool {
+	if w == nil {
 		return false
 	}
-	return g.Active
+	return w.Active
 }
 
-func (g *GetWebhooksResponseDataItem) GetLastTriggered() *string {
-	if g == nil {
+func (w *WebhookResponseData) GetExtendedData() map[string]interface{} {
+	if w == nil {
 		return nil
 	}
-	return g.LastTriggered
+	return w.ExtendedData
 }
 
-func (g *GetWebhooksResponseDataItem) GetFailureCount() int {
-	if g == nil {
+func (w *WebhookResponseData) GetLastTriggered() *string {
+	if w == nil {
+		return nil
+	}
+	return w.LastTriggered
+}
+
+func (w *WebhookResponseData) GetFailureCount() int {
+	if w == nil {
 		return 0
 	}
-	return g.FailureCount
+	return w.FailureCount
 }
 
-func (g *GetWebhooksResponseDataItem) GetCreatedAt() string {
-	if g == nil {
+func (w *WebhookResponseData) GetCreatedAt() string {
+	if w == nil {
 		return ""
 	}
-	return g.CreatedAt
+	return w.CreatedAt
 }
 
-func (g *GetWebhooksResponseDataItem) GetUpdatedAt() string {
-	if g == nil {
+func (w *WebhookResponseData) GetUpdatedAt() string {
+	if w == nil {
 		return ""
 	}
-	return g.UpdatedAt
+	return w.UpdatedAt
 }
 
-func (g *GetWebhooksResponseDataItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (w *WebhookResponseData) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
 }
 
-func (g *GetWebhooksResponseDataItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (w *WebhookResponseData) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	w.explicitFields.Or(w.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetID(id string) {
-	g.ID = id
-	g.require(getWebhooksResponseDataItemFieldID)
+func (w *WebhookResponseData) SetID(id string) {
+	w.ID = id
+	w.require(webhookResponseDataFieldID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetName(name string) {
-	g.Name = name
-	g.require(getWebhooksResponseDataItemFieldName)
+func (w *WebhookResponseData) SetName(name string) {
+	w.Name = name
+	w.require(webhookResponseDataFieldName)
 }
 
 // SetURL sets the URL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetURL(url string) {
-	g.URL = url
-	g.require(getWebhooksResponseDataItemFieldURL)
+func (w *WebhookResponseData) SetURL(url string) {
+	w.URL = url
+	w.require(webhookResponseDataFieldURL)
 }
 
 // SetEvents sets the Events field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetEvents(events []string) {
-	g.Events = events
-	g.require(getWebhooksResponseDataItemFieldEvents)
+func (w *WebhookResponseData) SetEvents(events []string) {
+	w.Events = events
+	w.require(webhookResponseDataFieldEvents)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetActive(active bool) {
-	g.Active = active
-	g.require(getWebhooksResponseDataItemFieldActive)
+func (w *WebhookResponseData) SetActive(active bool) {
+	w.Active = active
+	w.require(webhookResponseDataFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	w.ExtendedData = extendedData
+	w.require(webhookResponseDataFieldExtendedData)
 }
 
 // SetLastTriggered sets the LastTriggered field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetLastTriggered(lastTriggered *string) {
-	g.LastTriggered = lastTriggered
-	g.require(getWebhooksResponseDataItemFieldLastTriggered)
+func (w *WebhookResponseData) SetLastTriggered(lastTriggered *string) {
+	w.LastTriggered = lastTriggered
+	w.require(webhookResponseDataFieldLastTriggered)
 }
 
 // SetFailureCount sets the FailureCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetFailureCount(failureCount int) {
-	g.FailureCount = failureCount
-	g.require(getWebhooksResponseDataItemFieldFailureCount)
+func (w *WebhookResponseData) SetFailureCount(failureCount int) {
+	w.FailureCount = failureCount
+	w.require(webhookResponseDataFieldFailureCount)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getWebhooksResponseDataItemFieldCreatedAt)
+func (w *WebhookResponseData) SetCreatedAt(createdAt string) {
+	w.CreatedAt = createdAt
+	w.require(webhookResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseDataItem) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getWebhooksResponseDataItemFieldUpdatedAt)
+func (w *WebhookResponseData) SetUpdatedAt(updatedAt string) {
+	w.UpdatedAt = updatedAt
+	w.require(webhookResponseDataFieldUpdatedAt)
 }
 
-func (g *GetWebhooksResponseDataItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksResponseDataItem
+func (w *WebhookResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetWebhooksResponseDataItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*w = WebhookResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetWebhooksResponseDataItem) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksResponseDataItem
+func (w *WebhookResponseData) MarshalJSON() ([]byte, error) {
+	type embed WebhookResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*w),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetWebhooksResponseDataItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (w *WebhookResponseData) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(w); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", w)
 }
 
 var (
-	getWebhooksResponseMetaFieldTotal = big.NewInt(1 << 0)
-	getWebhooksResponseMetaFieldPage  = big.NewInt(1 << 1)
-	getWebhooksResponseMetaFieldLimit = big.NewInt(1 << 2)
+	retrieveDeliveryWebhooksResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetWebhooksResponseMeta struct {
-	Total int `json:"total" url:"total"`
-	Page  int `json:"page" url:"page"`
-	Limit int `json:"limit" url:"limit"`
+type RetrieveDeliveryWebhooksResponse struct {
+	Data *RetrieveDeliveryWebhooksResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1434,189 +1429,368 @@ type GetWebhooksResponseMeta struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWebhooksResponseMeta) GetTotal() int {
-	if g == nil {
-		return 0
-	}
-	return g.Total
-}
-
-func (g *GetWebhooksResponseMeta) GetPage() int {
-	if g == nil {
-		return 0
-	}
-	return g.Page
-}
-
-func (g *GetWebhooksResponseMeta) GetLimit() int {
-	if g == nil {
-		return 0
-	}
-	return g.Limit
-}
-
-func (g *GetWebhooksResponseMeta) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetWebhooksResponseMeta) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTotal sets the Total field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseMeta) SetTotal(total int) {
-	g.Total = total
-	g.require(getWebhooksResponseMetaFieldTotal)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseMeta) SetPage(page int) {
-	g.Page = page
-	g.require(getWebhooksResponseMetaFieldPage)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWebhooksResponseMeta) SetLimit(limit int) {
-	g.Limit = limit
-	g.require(getWebhooksResponseMetaFieldLimit)
-}
-
-func (g *GetWebhooksResponseMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetWebhooksResponseMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetWebhooksResponseMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetWebhooksResponseMeta) MarshalJSON() ([]byte, error) {
-	type embed GetWebhooksResponseMeta
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetWebhooksResponseMeta) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	postWebhooksResponseFieldData = big.NewInt(1 << 0)
-)
-
-type PostWebhooksResponse struct {
-	Data *PostWebhooksResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PostWebhooksResponse) GetData() *PostWebhooksResponseData {
-	if p == nil {
+func (r *RetrieveDeliveryWebhooksResponse) GetData() *RetrieveDeliveryWebhooksResponseData {
+	if r == nil {
 		return nil
 	}
-	return p.Data
+	return r.Data
 }
 
-func (p *PostWebhooksResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (r *RetrieveDeliveryWebhooksResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
-func (p *PostWebhooksResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (r *RetrieveDeliveryWebhooksResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponse) SetData(data *PostWebhooksResponseData) {
-	p.Data = data
-	p.require(postWebhooksResponseFieldData)
+func (r *RetrieveDeliveryWebhooksResponse) SetData(data *RetrieveDeliveryWebhooksResponseData) {
+	r.Data = data
+	r.require(retrieveDeliveryWebhooksResponseFieldData)
 }
 
-func (p *PostWebhooksResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostWebhooksResponse
+func (r *RetrieveDeliveryWebhooksResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RetrieveDeliveryWebhooksResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostWebhooksResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*r = RetrieveDeliveryWebhooksResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostWebhooksResponse) MarshalJSON() ([]byte, error) {
-	type embed PostWebhooksResponse
+func (r *RetrieveDeliveryWebhooksResponse) MarshalJSON() ([]byte, error) {
+	type embed RetrieveDeliveryWebhooksResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostWebhooksResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (r *RetrieveDeliveryWebhooksResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	postWebhooksResponseDataFieldID            = big.NewInt(1 << 0)
-	postWebhooksResponseDataFieldName          = big.NewInt(1 << 1)
-	postWebhooksResponseDataFieldURL           = big.NewInt(1 << 2)
-	postWebhooksResponseDataFieldEvents        = big.NewInt(1 << 3)
-	postWebhooksResponseDataFieldActive        = big.NewInt(1 << 4)
-	postWebhooksResponseDataFieldLastTriggered = big.NewInt(1 << 5)
-	postWebhooksResponseDataFieldFailureCount  = big.NewInt(1 << 6)
-	postWebhooksResponseDataFieldCreatedAt     = big.NewInt(1 << 7)
-	postWebhooksResponseDataFieldUpdatedAt     = big.NewInt(1 << 8)
+	retrieveDeliveryWebhooksResponseDataFieldID           = big.NewInt(1 << 0)
+	retrieveDeliveryWebhooksResponseDataFieldWebhookID    = big.NewInt(1 << 1)
+	retrieveDeliveryWebhooksResponseDataFieldEvent        = big.NewInt(1 << 2)
+	retrieveDeliveryWebhooksResponseDataFieldPayload      = big.NewInt(1 << 3)
+	retrieveDeliveryWebhooksResponseDataFieldResponseCode = big.NewInt(1 << 4)
+	retrieveDeliveryWebhooksResponseDataFieldResponseBody = big.NewInt(1 << 5)
+	retrieveDeliveryWebhooksResponseDataFieldSuccess      = big.NewInt(1 << 6)
+	retrieveDeliveryWebhooksResponseDataFieldError        = big.NewInt(1 << 7)
+	retrieveDeliveryWebhooksResponseDataFieldCreatedAt    = big.NewInt(1 << 8)
 )
 
-type PostWebhooksResponseData struct {
+type RetrieveDeliveryWebhooksResponseData struct {
+	ID           string                 `json:"id" url:"id"`
+	WebhookID    string                 `json:"webhookId" url:"webhookId"`
+	Event        string                 `json:"event" url:"event"`
+	Payload      map[string]interface{} `json:"payload,omitempty" url:"payload,omitempty"`
+	ResponseCode *int                   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	ResponseBody *string                `json:"responseBody,omitempty" url:"responseBody,omitempty"`
+	Success      bool                   `json:"success" url:"success"`
+	Error        *string                `json:"error,omitempty" url:"error,omitempty"`
+	CreatedAt    string                 `json:"createdAt" url:"createdAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetID() string {
+	if r == nil {
+		return ""
+	}
+	return r.ID
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetWebhookID() string {
+	if r == nil {
+		return ""
+	}
+	return r.WebhookID
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetEvent() string {
+	if r == nil {
+		return ""
+	}
+	return r.Event
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetPayload() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.Payload
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetResponseCode() *int {
+	if r == nil {
+		return nil
+	}
+	return r.ResponseCode
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetResponseBody() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ResponseBody
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetSuccess() bool {
+	if r == nil {
+		return false
+	}
+	return r.Success
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetError() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Error
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetCreatedAt() string {
+	if r == nil {
+		return ""
+	}
+	return r.CreatedAt
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetID(id string) {
+	r.ID = id
+	r.require(retrieveDeliveryWebhooksResponseDataFieldID)
+}
+
+// SetWebhookID sets the WebhookID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetWebhookID(webhookID string) {
+	r.WebhookID = webhookID
+	r.require(retrieveDeliveryWebhooksResponseDataFieldWebhookID)
+}
+
+// SetEvent sets the Event field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetEvent(event string) {
+	r.Event = event
+	r.require(retrieveDeliveryWebhooksResponseDataFieldEvent)
+}
+
+// SetPayload sets the Payload field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetPayload(payload map[string]interface{}) {
+	r.Payload = payload
+	r.require(retrieveDeliveryWebhooksResponseDataFieldPayload)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetResponseCode(responseCode *int) {
+	r.ResponseCode = responseCode
+	r.require(retrieveDeliveryWebhooksResponseDataFieldResponseCode)
+}
+
+// SetResponseBody sets the ResponseBody field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetResponseBody(responseBody *string) {
+	r.ResponseBody = responseBody
+	r.require(retrieveDeliveryWebhooksResponseDataFieldResponseBody)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetSuccess(success bool) {
+	r.Success = success
+	r.require(retrieveDeliveryWebhooksResponseDataFieldSuccess)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetError(error_ *string) {
+	r.Error = error_
+	r.require(retrieveDeliveryWebhooksResponseDataFieldError)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveDeliveryWebhooksResponseData) SetCreatedAt(createdAt string) {
+	r.CreatedAt = createdAt
+	r.require(retrieveDeliveryWebhooksResponseDataFieldCreatedAt)
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler RetrieveDeliveryWebhooksResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RetrieveDeliveryWebhooksResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) MarshalJSON() ([]byte, error) {
+	type embed RetrieveDeliveryWebhooksResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RetrieveDeliveryWebhooksResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	updateWebhooksResponseFieldData = big.NewInt(1 << 0)
+)
+
+type UpdateWebhooksResponse struct {
+	Data *UpdateWebhooksResponseData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateWebhooksResponse) GetData() *UpdateWebhooksResponseData {
+	if u == nil {
+		return nil
+	}
+	return u.Data
+}
+
+func (u *UpdateWebhooksResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateWebhooksResponse) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksResponse) SetData(data *UpdateWebhooksResponseData) {
+	u.Data = data
+	u.require(updateWebhooksResponseFieldData)
+}
+
+func (u *UpdateWebhooksResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateWebhooksResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateWebhooksResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateWebhooksResponse) MarshalJSON() ([]byte, error) {
+	type embed UpdateWebhooksResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateWebhooksResponse) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateWebhooksResponseDataFieldID            = big.NewInt(1 << 0)
+	updateWebhooksResponseDataFieldName          = big.NewInt(1 << 1)
+	updateWebhooksResponseDataFieldURL           = big.NewInt(1 << 2)
+	updateWebhooksResponseDataFieldEvents        = big.NewInt(1 << 3)
+	updateWebhooksResponseDataFieldActive        = big.NewInt(1 << 4)
+	updateWebhooksResponseDataFieldExtendedData  = big.NewInt(1 << 5)
+	updateWebhooksResponseDataFieldLastTriggered = big.NewInt(1 << 6)
+	updateWebhooksResponseDataFieldFailureCount  = big.NewInt(1 << 7)
+	updateWebhooksResponseDataFieldCreatedAt     = big.NewInt(1 << 8)
+	updateWebhooksResponseDataFieldUpdatedAt     = big.NewInt(1 << 9)
+)
+
+type UpdateWebhooksResponseData struct {
 	ID string `json:"id" url:"id"`
 	// Webhook name
 	Name string `json:"name" url:"name"`
@@ -1626,6 +1800,8 @@ type PostWebhooksResponseData struct {
 	Events []string `json:"events" url:"events"`
 	// Whether webhook is active
 	Active bool `json:"active" url:"active"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
 	// Last trigger timestamp
 	LastTriggered *string `json:"lastTriggered,omitempty" url:"lastTriggered,omitempty"`
 	// Consecutive failure count
@@ -1642,178 +1818,278 @@ type PostWebhooksResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostWebhooksResponseData) GetID() string {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetID() string {
+	if u == nil {
 		return ""
 	}
-	return p.ID
+	return u.ID
 }
 
-func (p *PostWebhooksResponseData) GetName() string {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetName() string {
+	if u == nil {
 		return ""
 	}
-	return p.Name
+	return u.Name
 }
 
-func (p *PostWebhooksResponseData) GetURL() string {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetURL() string {
+	if u == nil {
 		return ""
 	}
-	return p.URL
+	return u.URL
 }
 
-func (p *PostWebhooksResponseData) GetEvents() []string {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetEvents() []string {
+	if u == nil {
 		return nil
 	}
-	return p.Events
+	return u.Events
 }
 
-func (p *PostWebhooksResponseData) GetActive() bool {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetActive() bool {
+	if u == nil {
 		return false
 	}
-	return p.Active
+	return u.Active
 }
 
-func (p *PostWebhooksResponseData) GetLastTriggered() *string {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetExtendedData() map[string]interface{} {
+	if u == nil {
 		return nil
 	}
-	return p.LastTriggered
+	return u.ExtendedData
 }
 
-func (p *PostWebhooksResponseData) GetFailureCount() int {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetLastTriggered() *string {
+	if u == nil {
+		return nil
+	}
+	return u.LastTriggered
+}
+
+func (u *UpdateWebhooksResponseData) GetFailureCount() int {
+	if u == nil {
 		return 0
 	}
-	return p.FailureCount
+	return u.FailureCount
 }
 
-func (p *PostWebhooksResponseData) GetCreatedAt() string {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetCreatedAt() string {
+	if u == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return u.CreatedAt
 }
 
-func (p *PostWebhooksResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (u *UpdateWebhooksResponseData) GetUpdatedAt() string {
+	if u == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return u.UpdatedAt
 }
 
-func (p *PostWebhooksResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (u *UpdateWebhooksResponseData) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
 }
 
-func (p *PostWebhooksResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateWebhooksResponseData) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetID(id string) {
-	p.ID = id
-	p.require(postWebhooksResponseDataFieldID)
+func (u *UpdateWebhooksResponseData) SetID(id string) {
+	u.ID = id
+	u.require(updateWebhooksResponseDataFieldID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetName(name string) {
-	p.Name = name
-	p.require(postWebhooksResponseDataFieldName)
+func (u *UpdateWebhooksResponseData) SetName(name string) {
+	u.Name = name
+	u.require(updateWebhooksResponseDataFieldName)
 }
 
 // SetURL sets the URL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetURL(url string) {
-	p.URL = url
-	p.require(postWebhooksResponseDataFieldURL)
+func (u *UpdateWebhooksResponseData) SetURL(url string) {
+	u.URL = url
+	u.require(updateWebhooksResponseDataFieldURL)
 }
 
 // SetEvents sets the Events field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetEvents(events []string) {
-	p.Events = events
-	p.require(postWebhooksResponseDataFieldEvents)
+func (u *UpdateWebhooksResponseData) SetEvents(events []string) {
+	u.Events = events
+	u.require(updateWebhooksResponseDataFieldEvents)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetActive(active bool) {
-	p.Active = active
-	p.require(postWebhooksResponseDataFieldActive)
+func (u *UpdateWebhooksResponseData) SetActive(active bool) {
+	u.Active = active
+	u.require(updateWebhooksResponseDataFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateWebhooksResponseDataFieldExtendedData)
 }
 
 // SetLastTriggered sets the LastTriggered field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetLastTriggered(lastTriggered *string) {
-	p.LastTriggered = lastTriggered
-	p.require(postWebhooksResponseDataFieldLastTriggered)
+func (u *UpdateWebhooksResponseData) SetLastTriggered(lastTriggered *string) {
+	u.LastTriggered = lastTriggered
+	u.require(updateWebhooksResponseDataFieldLastTriggered)
 }
 
 // SetFailureCount sets the FailureCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetFailureCount(failureCount int) {
-	p.FailureCount = failureCount
-	p.require(postWebhooksResponseDataFieldFailureCount)
+func (u *UpdateWebhooksResponseData) SetFailureCount(failureCount int) {
+	u.FailureCount = failureCount
+	u.require(updateWebhooksResponseDataFieldFailureCount)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(postWebhooksResponseDataFieldCreatedAt)
+func (u *UpdateWebhooksResponseData) SetCreatedAt(createdAt string) {
+	u.CreatedAt = createdAt
+	u.require(updateWebhooksResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostWebhooksResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(postWebhooksResponseDataFieldUpdatedAt)
+func (u *UpdateWebhooksResponseData) SetUpdatedAt(updatedAt string) {
+	u.UpdatedAt = updatedAt
+	u.require(updateWebhooksResponseDataFieldUpdatedAt)
 }
 
-func (p *PostWebhooksResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostWebhooksResponseData
+func (u *UpdateWebhooksResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateWebhooksResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostWebhooksResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*u = UpdateWebhooksResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostWebhooksResponseData) MarshalJSON() ([]byte, error) {
-	type embed PostWebhooksResponseData
+func (u *UpdateWebhooksResponseData) MarshalJSON() ([]byte, error) {
+	type embed UpdateWebhooksResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostWebhooksResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (u *UpdateWebhooksResponseData) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateWebhooksRequestFieldID           = big.NewInt(1 << 0)
+	updateWebhooksRequestFieldName         = big.NewInt(1 << 1)
+	updateWebhooksRequestFieldURL          = big.NewInt(1 << 2)
+	updateWebhooksRequestFieldEvents       = big.NewInt(1 << 3)
+	updateWebhooksRequestFieldSecret       = big.NewInt(1 << 4)
+	updateWebhooksRequestFieldActive       = big.NewInt(1 << 5)
+	updateWebhooksRequestFieldExtendedData = big.NewInt(1 << 6)
+)
+
+type UpdateWebhooksRequest struct {
+	// Webhook ID
+	ID string `json:"-" url:"-"`
+	// Webhook name
+	Name *string `json:"name,omitempty" url:"-"`
+	// Target URL
+	URL *string `json:"url,omitempty" url:"-"`
+	// Event types to trigger on
+	Events []string `json:"events,omitempty" url:"-"`
+	// New secret
+	Secret *string `json:"secret,omitempty" url:"-"`
+	// Enable/disable webhook
+	Active *bool `json:"active,omitempty" url:"-"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (u *UpdateWebhooksRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksRequest) SetID(id string) {
+	u.ID = id
+	u.require(updateWebhooksRequestFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksRequest) SetName(name *string) {
+	u.Name = name
+	u.require(updateWebhooksRequestFieldName)
+}
+
+// SetURL sets the URL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksRequest) SetURL(url *string) {
+	u.URL = url
+	u.require(updateWebhooksRequestFieldURL)
+}
+
+// SetEvents sets the Events field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksRequest) SetEvents(events []string) {
+	u.Events = events
+	u.require(updateWebhooksRequestFieldEvents)
+}
+
+// SetSecret sets the Secret field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksRequest) SetSecret(secret *string) {
+	u.Secret = secret
+	u.require(updateWebhooksRequestFieldSecret)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksRequest) SetActive(active *bool) {
+	u.Active = active
+	u.require(updateWebhooksRequestFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateWebhooksRequest) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateWebhooksRequestFieldExtendedData)
 }

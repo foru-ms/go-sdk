@@ -32,12 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllTags(
+// Retrieve a paginated list of tags. Use cursor for pagination.
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetTagsRequest,
+	request *foru_ms_sdk.ListTagsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetTagsResponse, error) {
-	response, err := c.WithRawResponse.ListAllTags(
+) (*foru_ms_sdk.TagListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +49,13 @@ func (c *Client) ListAllTags(
 	return response.Body, nil
 }
 
-func (c *Client) CreateATag(
+// Create a new tag.
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostTagsRequest,
+	request *foru_ms_sdk.CreateTagsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostTagsResponse, error) {
-	response, err := c.WithRawResponse.CreateATag(
+) (*foru_ms_sdk.TagResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +66,13 @@ func (c *Client) CreateATag(
 	return response.Body, nil
 }
 
-func (c *Client) GetATag(
+// Retrieve a tag by ID or slug (if supported).
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetTagsIDRequest,
+	request *foru_ms_sdk.RetrieveTagsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetTagsIDResponse, error) {
-	response, err := c.WithRawResponse.GetATag(
+) (*foru_ms_sdk.TagResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +83,13 @@ func (c *Client) GetATag(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteATag(
+// Permanently delete a tag.
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteTagsIDRequest,
+	request *foru_ms_sdk.DeleteTagsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteTagsIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteATag(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +100,13 @@ func (c *Client) DeleteATag(
 	return response.Body, nil
 }
 
-func (c *Client) UpdateATag(
+// Update an existing tag. Only provided fields will be modified.
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchTagsIDRequest,
+	request *foru_ms_sdk.UpdateTagsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchTagsIDResponse, error) {
-	response, err := c.WithRawResponse.UpdateATag(
+) (*foru_ms_sdk.UpdateTagsResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,
@@ -112,12 +117,13 @@ func (c *Client) UpdateATag(
 	return response.Body, nil
 }
 
-func (c *Client) ListTagSubscribers(
+// Retrieve a paginated list of subscribers for Tag.
+func (c *Client) ListSubscribers(
 	ctx context.Context,
-	request *foru_ms_sdk.GetTagsIDSubscribersRequest,
+	request *foru_ms_sdk.ListSubscribersTagsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetTagsIDSubscribersResponse, error) {
-	response, err := c.WithRawResponse.ListTagSubscribers(
+) (*foru_ms_sdk.TagSubscriberListResponse, error) {
+	response, err := c.WithRawResponse.ListSubscribers(
 		ctx,
 		request,
 		opts...,
@@ -128,12 +134,12 @@ func (c *Client) ListTagSubscribers(
 	return response.Body, nil
 }
 
-func (c *Client) GetASubscriberFromTag(
+func (c *Client) RetrieveSubscriber(
 	ctx context.Context,
-	request *foru_ms_sdk.GetTagsIDSubscribersSubIDRequest,
+	request *foru_ms_sdk.RetrieveSubscriberTagsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetTagsIDSubscribersSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetASubscriberFromTag(
+) (*foru_ms_sdk.RetrieveSubscriberTagsResponse, error) {
+	response, err := c.WithRawResponse.RetrieveSubscriber(
 		ctx,
 		request,
 		opts...,
@@ -144,12 +150,12 @@ func (c *Client) GetASubscriberFromTag(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteASubscriberFromTag(
+func (c *Client) DeleteSubscriber(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteTagsIDSubscribersSubIDRequest,
+	request *foru_ms_sdk.DeleteSubscriberTagsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteTagsIDSubscribersSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteASubscriberFromTag(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeleteSubscriber(
 		ctx,
 		request,
 		opts...,

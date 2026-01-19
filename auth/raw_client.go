@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Register(
 	ctx context.Context,
-	request *foru_ms_sdk.PostAuthRegisterRequest,
+	request *foru_ms_sdk.RegisterAuthRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostAuthRegisterResponse], error) {
+) (*core.Response[*foru_ms_sdk.RegisterResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -47,7 +47,7 @@ func (r *RawClient) Register(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostAuthRegisterResponse
+	var response *foru_ms_sdk.RegisterResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -66,7 +66,7 @@ func (r *RawClient) Register(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostAuthRegisterResponse]{
+	return &core.Response[*foru_ms_sdk.RegisterResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -75,9 +75,9 @@ func (r *RawClient) Register(
 
 func (r *RawClient) Login(
 	ctx context.Context,
-	request *foru_ms_sdk.PostAuthLoginRequest,
+	request *foru_ms_sdk.LoginAuthRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostAuthLoginResponse], error) {
+) (*core.Response[*foru_ms_sdk.LoginResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -90,7 +90,7 @@ func (r *RawClient) Login(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostAuthLoginResponse
+	var response *foru_ms_sdk.LoginResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -109,17 +109,17 @@ func (r *RawClient) Login(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostAuthLoginResponse]{
+	return &core.Response[*foru_ms_sdk.LoginResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetCurrentUser(
+func (r *RawClient) Me(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetAuthMeResponse], error) {
+) (*core.Response[*foru_ms_sdk.MeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -131,7 +131,7 @@ func (r *RawClient) GetCurrentUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetAuthMeResponse
+	var response *foru_ms_sdk.MeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -149,18 +149,18 @@ func (r *RawClient) GetCurrentUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetAuthMeResponse]{
+	return &core.Response[*foru_ms_sdk.MeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) RequestPasswordReset(
+func (r *RawClient) ForgotPassword(
 	ctx context.Context,
-	request *foru_ms_sdk.PostAuthForgotPasswordRequest,
+	request *foru_ms_sdk.ForgotPasswordAuthRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostAuthForgotPasswordResponse], error) {
+) (*core.Response[*foru_ms_sdk.ForgotPasswordResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -173,7 +173,7 @@ func (r *RawClient) RequestPasswordReset(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostAuthForgotPasswordResponse
+	var response *foru_ms_sdk.ForgotPasswordResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -192,7 +192,7 @@ func (r *RawClient) RequestPasswordReset(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostAuthForgotPasswordResponse]{
+	return &core.Response[*foru_ms_sdk.ForgotPasswordResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -201,9 +201,9 @@ func (r *RawClient) RequestPasswordReset(
 
 func (r *RawClient) ResetPassword(
 	ctx context.Context,
-	request *foru_ms_sdk.PostAuthResetPasswordRequest,
+	request *foru_ms_sdk.ResetPasswordAuthRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostAuthResetPasswordResponse], error) {
+) (*core.Response[*foru_ms_sdk.ResetPasswordResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -216,7 +216,7 @@ func (r *RawClient) ResetPassword(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostAuthResetPasswordResponse
+	var response *foru_ms_sdk.ResetPasswordResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -235,7 +235,7 @@ func (r *RawClient) ResetPassword(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostAuthResetPasswordResponse]{
+	return &core.Response[*foru_ms_sdk.ResetPasswordResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

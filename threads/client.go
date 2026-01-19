@@ -32,12 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllThreads(
+// Retrieve a paginated list of threads. Use cursor for pagination.
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsRequest,
+	request *foru_ms_sdk.ListThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsResponse, error) {
-	response, err := c.WithRawResponse.ListAllThreads(
+) (*foru_ms_sdk.ThreadListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +49,13 @@ func (c *Client) ListAllThreads(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAThread(
+// Create a new thread.
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostThreadsRequest,
+	request *foru_ms_sdk.CreateThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostThreadsResponse, error) {
-	response, err := c.WithRawResponse.CreateAThread(
+) (*foru_ms_sdk.ThreadResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +66,13 @@ func (c *Client) CreateAThread(
 	return response.Body, nil
 }
 
-func (c *Client) GetAThread(
+// Retrieve a thread by ID or slug (if supported).
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsIDRequest,
+	request *foru_ms_sdk.RetrieveThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsIDResponse, error) {
-	response, err := c.WithRawResponse.GetAThread(
+) (*foru_ms_sdk.ThreadResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +83,13 @@ func (c *Client) GetAThread(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAThread(
+// Permanently delete a thread.
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteThreadsIDRequest,
+	request *foru_ms_sdk.DeleteThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteThreadsIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAThread(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +100,13 @@ func (c *Client) DeleteAThread(
 	return response.Body, nil
 }
 
-func (c *Client) UpdateAThread(
+// Update an existing thread. Only provided fields will be modified.
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchThreadsIDRequest,
+	request *foru_ms_sdk.UpdateThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchThreadsIDResponse, error) {
-	response, err := c.WithRawResponse.UpdateAThread(
+) (*foru_ms_sdk.UpdateThreadsResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,
@@ -112,12 +117,13 @@ func (c *Client) UpdateAThread(
 	return response.Body, nil
 }
 
-func (c *Client) ListThreadPosts(
+// Retrieve a paginated list of posts for Thread.
+func (c *Client) ListPosts(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsIDPostsRequest,
+	request *foru_ms_sdk.ListPostsThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsIDPostsResponse, error) {
-	response, err := c.WithRawResponse.ListThreadPosts(
+) (*foru_ms_sdk.ThreadPostListResponse, error) {
+	response, err := c.WithRawResponse.ListPosts(
 		ctx,
 		request,
 		opts...,
@@ -128,12 +134,12 @@ func (c *Client) ListThreadPosts(
 	return response.Body, nil
 }
 
-func (c *Client) GetAPostFromThread(
+func (c *Client) RetrievePost(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsIDPostsSubIDRequest,
+	request *foru_ms_sdk.RetrievePostThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsIDPostsSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetAPostFromThread(
+) (*foru_ms_sdk.RetrievePostThreadsResponse, error) {
+	response, err := c.WithRawResponse.RetrievePost(
 		ctx,
 		request,
 		opts...,
@@ -144,12 +150,12 @@ func (c *Client) GetAPostFromThread(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAPostFromThread(
+func (c *Client) DeletePost(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteThreadsIDPostsSubIDRequest,
+	request *foru_ms_sdk.DeletePostThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteThreadsIDPostsSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAPostFromThread(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeletePost(
 		ctx,
 		request,
 		opts...,
@@ -160,12 +166,13 @@ func (c *Client) DeleteAPostFromThread(
 	return response.Body, nil
 }
 
-func (c *Client) ListThreadReactions(
+// Retrieve a paginated list of reactions for Thread.
+func (c *Client) ListReactions(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsIDReactionsRequest,
+	request *foru_ms_sdk.ListReactionsThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsIDReactionsResponse, error) {
-	response, err := c.WithRawResponse.ListThreadReactions(
+) (*foru_ms_sdk.ThreadReactionListResponse, error) {
+	response, err := c.WithRawResponse.ListReactions(
 		ctx,
 		request,
 		opts...,
@@ -176,12 +183,13 @@ func (c *Client) ListThreadReactions(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAReactionInThread(
+// Create a Reaction in Thread.
+func (c *Client) CreateReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.PostThreadsIDReactionsRequest,
+	request *foru_ms_sdk.CreateReactionThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostThreadsIDReactionsResponse, error) {
-	response, err := c.WithRawResponse.CreateAReactionInThread(
+) (*foru_ms_sdk.ThreadReactionResponse, error) {
+	response, err := c.WithRawResponse.CreateReaction(
 		ctx,
 		request,
 		opts...,
@@ -192,13 +200,12 @@ func (c *Client) CreateAReactionInThread(
 	return response.Body, nil
 }
 
-// Removes the authenticated user's reaction. No subId needed.
-func (c *Client) RemoveYourReactionFromThread(
+func (c *Client) DeleteReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteThreadsIDReactionsRequest,
+	request *foru_ms_sdk.DeleteReactionThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteThreadsIDReactionsResponse, error) {
-	response, err := c.WithRawResponse.RemoveYourReactionFromThread(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeleteReaction(
 		ctx,
 		request,
 		opts...,
@@ -209,12 +216,12 @@ func (c *Client) RemoveYourReactionFromThread(
 	return response.Body, nil
 }
 
-func (c *Client) GetAReactionFromThread(
+func (c *Client) RetrieveReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsIDReactionsSubIDRequest,
+	request *foru_ms_sdk.RetrieveReactionThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsIDReactionsSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetAReactionFromThread(
+) (*foru_ms_sdk.RetrieveReactionThreadsResponse, error) {
+	response, err := c.WithRawResponse.RetrieveReaction(
 		ctx,
 		request,
 		opts...,
@@ -225,12 +232,13 @@ func (c *Client) GetAReactionFromThread(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAReactionFromThread(
+// Retrieve a paginated list of subscribers for Thread.
+func (c *Client) ListSubscribers(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteThreadsIDReactionsSubIDRequest,
+	request *foru_ms_sdk.ListSubscribersThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteThreadsIDReactionsSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAReactionFromThread(
+) (*foru_ms_sdk.ThreadSubscriberListResponse, error) {
+	response, err := c.WithRawResponse.ListSubscribers(
 		ctx,
 		request,
 		opts...,
@@ -241,12 +249,12 @@ func (c *Client) DeleteAReactionFromThread(
 	return response.Body, nil
 }
 
-func (c *Client) ListThreadSubscribers(
+func (c *Client) RetrieveSubscriber(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsIDSubscribersRequest,
+	request *foru_ms_sdk.RetrieveSubscriberThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsIDSubscribersResponse, error) {
-	response, err := c.WithRawResponse.ListThreadSubscribers(
+) (*foru_ms_sdk.RetrieveSubscriberThreadsResponse, error) {
+	response, err := c.WithRawResponse.RetrieveSubscriber(
 		ctx,
 		request,
 		opts...,
@@ -257,12 +265,12 @@ func (c *Client) ListThreadSubscribers(
 	return response.Body, nil
 }
 
-func (c *Client) GetASubscriberFromThread(
+func (c *Client) DeleteSubscriber(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsIDSubscribersSubIDRequest,
+	request *foru_ms_sdk.DeleteSubscriberThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsIDSubscribersSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetASubscriberFromThread(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeleteSubscriber(
 		ctx,
 		request,
 		opts...,
@@ -273,12 +281,12 @@ func (c *Client) GetASubscriberFromThread(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteASubscriberFromThread(
+func (c *Client) RetrievePoll(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteThreadsIDSubscribersSubIDRequest,
+	request *foru_ms_sdk.RetrievePollThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteThreadsIDSubscribersSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteASubscriberFromThread(
+) (*foru_ms_sdk.ThreadPollResponse, error) {
+	response, err := c.WithRawResponse.RetrievePoll(
 		ctx,
 		request,
 		opts...,
@@ -289,12 +297,12 @@ func (c *Client) DeleteASubscriberFromThread(
 	return response.Body, nil
 }
 
-func (c *Client) GetThreadPoll(
+func (c *Client) CreatePoll(
 	ctx context.Context,
-	request *foru_ms_sdk.GetThreadsIDPollRequest,
+	request *foru_ms_sdk.CreatePollThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetThreadsIDPollResponse, error) {
-	response, err := c.WithRawResponse.GetThreadPoll(
+) (*foru_ms_sdk.ThreadPollResponse, error) {
+	response, err := c.WithRawResponse.CreatePoll(
 		ctx,
 		request,
 		opts...,
@@ -305,28 +313,12 @@ func (c *Client) GetThreadPoll(
 	return response.Body, nil
 }
 
-func (c *Client) CreateThreadPoll(
+func (c *Client) UpdatePoll(
 	ctx context.Context,
-	request *foru_ms_sdk.PostThreadsIDPollRequest,
+	request *foru_ms_sdk.UpdatePollThreadsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostThreadsIDPollResponse, error) {
-	response, err := c.WithRawResponse.CreateThreadPoll(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-func (c *Client) UpdateThreadPoll(
-	ctx context.Context,
-	request *foru_ms_sdk.PatchThreadsIDPollRequest,
-	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchThreadsIDPollResponse, error) {
-	response, err := c.WithRawResponse.UpdateThreadPoll(
+) (*foru_ms_sdk.ThreadPollResponse, error) {
+	response, err := c.WithRawResponse.UpdatePoll(
 		ctx,
 		request,
 		opts...,

@@ -32,12 +32,15 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllIntegrations(
+// Retrieve a paginated list of integrations. Use cursor for pagination.
+//
+// **Requires feature: integrations**
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetIntegrationsRequest,
+	request *foru_ms_sdk.ListIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetIntegrationsResponse, error) {
-	response, err := c.WithRawResponse.ListAllIntegrations(
+) (*foru_ms_sdk.IntegrationListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +51,15 @@ func (c *Client) ListAllIntegrations(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAnIntegration(
+// Create an new integration.
+//
+// **Requires feature: integrations**
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostIntegrationsRequest,
+	request *foru_ms_sdk.CreateIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostIntegrationsResponse, error) {
-	response, err := c.WithRawResponse.CreateAnIntegration(
+) (*foru_ms_sdk.IntegrationResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +70,15 @@ func (c *Client) CreateAnIntegration(
 	return response.Body, nil
 }
 
-func (c *Client) GetAnIntegration(
+// Retrieve an integration by ID or slug (if supported).
+//
+// **Requires feature: integrations**
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetIntegrationsIDRequest,
+	request *foru_ms_sdk.RetrieveIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetIntegrationsIDResponse, error) {
-	response, err := c.WithRawResponse.GetAnIntegration(
+) (*foru_ms_sdk.IntegrationResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +89,15 @@ func (c *Client) GetAnIntegration(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAnIntegration(
+// Permanently delete an integration.
+//
+// **Requires feature: integrations**
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteIntegrationsIDRequest,
+	request *foru_ms_sdk.DeleteIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteIntegrationsIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAnIntegration(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +108,15 @@ func (c *Client) DeleteAnIntegration(
 	return response.Body, nil
 }
 
-func (c *Client) UpdateAnIntegration(
+// Update an existing integration. Only provided fields will be modified.
+//
+// **Requires feature: integrations**
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchIntegrationsIDRequest,
+	request *foru_ms_sdk.UpdateIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchIntegrationsIDResponse, error) {
-	response, err := c.WithRawResponse.UpdateAnIntegration(
+) (*foru_ms_sdk.UpdateIntegrationsResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,

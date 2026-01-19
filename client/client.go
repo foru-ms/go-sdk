@@ -11,8 +11,10 @@ import (
 	option "github.com/foru-ms/go-sdk/option"
 	posts "github.com/foru-ms/go-sdk/posts"
 	privatemessages "github.com/foru-ms/go-sdk/privatemessages"
+	provisioning "github.com/foru-ms/go-sdk/provisioning"
 	reports "github.com/foru-ms/go-sdk/reports"
 	roles "github.com/foru-ms/go-sdk/roles"
+	search "github.com/foru-ms/go-sdk/search"
 	ssos "github.com/foru-ms/go-sdk/ssos"
 	tags "github.com/foru-ms/go-sdk/tags"
 	threads "github.com/foru-ms/go-sdk/threads"
@@ -22,6 +24,7 @@ import (
 
 type Client struct {
 	Auth            *auth.Client
+	Search          *search.Client
 	Tags            *tags.Client
 	Threads         *threads.Client
 	Posts           *posts.Client
@@ -33,6 +36,7 @@ type Client struct {
 	Webhooks        *webhooks.Client
 	Integrations    *integrations.Client
 	SsOs            *ssos.Client
+	Provisioning    *provisioning.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -43,6 +47,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		Auth:            auth.NewClient(options),
+		Search:          search.NewClient(options),
 		Tags:            tags.NewClient(options),
 		Threads:         threads.NewClient(options),
 		Posts:           posts.NewClient(options),
@@ -54,6 +59,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Webhooks:        webhooks.NewClient(options),
 		Integrations:    integrations.NewClient(options),
 		SsOs:            ssos.NewClient(options),
+		Provisioning:    provisioning.NewClient(options),
 		options:         options,
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(

@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllPosts(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsRequest,
+	request *foru_ms_sdk.ListPostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPostsResponse], error) {
+) (*core.Response[*foru_ms_sdk.PostListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllPosts(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPostsResponse
+	var response *foru_ms_sdk.PostListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllPosts(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPostsResponse]{
+	return &core.Response[*foru_ms_sdk.PostListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateAPost(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostPostsRequest,
+	request *foru_ms_sdk.CreatePostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostPostsResponse], error) {
+) (*core.Response[*foru_ms_sdk.PostResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateAPost(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostPostsResponse
+	var response *foru_ms_sdk.PostResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateAPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostPostsResponse]{
+	return &core.Response[*foru_ms_sdk.PostResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAPost(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDRequest,
+	request *foru_ms_sdk.RetrievePostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPostsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.PostResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetAPost(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPostsIDResponse
+	var response *foru_ms_sdk.PostResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetAPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPostsIDResponse]{
+	return &core.Response[*foru_ms_sdk.PostResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAPost(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePostsIDRequest,
+	request *foru_ms_sdk.DeletePostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeletePostsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteAPost(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeletePostsIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,18 +202,18 @@ func (r *RawClient) DeleteAPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeletePostsIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdateAPost(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchPostsIDRequest,
+	request *foru_ms_sdk.UpdatePostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PatchPostsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdatePostsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateAPost(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PatchPostsIDResponse
+	var response *foru_ms_sdk.UpdatePostsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -248,18 +248,18 @@ func (r *RawClient) UpdateAPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PatchPostsIDResponse]{
+	return &core.Response[*foru_ms_sdk.UpdatePostsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) ListPostReactions(
+func (r *RawClient) ListReactions(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDReactionsRequest,
+	request *foru_ms_sdk.ListReactionsPostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPostsIDReactionsResponse], error) {
+) (*core.Response[*foru_ms_sdk.PostReactionListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -281,7 +281,7 @@ func (r *RawClient) ListPostReactions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPostsIDReactionsResponse
+	var response *foru_ms_sdk.PostReactionListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -299,18 +299,18 @@ func (r *RawClient) ListPostReactions(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPostsIDReactionsResponse]{
+	return &core.Response[*foru_ms_sdk.PostReactionListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateAReactionInPost(
+func (r *RawClient) CreateReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.PostPostsIDReactionsRequest,
+	request *foru_ms_sdk.CreateReactionPostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostPostsIDReactionsResponse], error) {
+) (*core.Response[*foru_ms_sdk.PostReactionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -326,7 +326,7 @@ func (r *RawClient) CreateAReactionInPost(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostPostsIDReactionsResponse
+	var response *foru_ms_sdk.PostReactionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -345,18 +345,18 @@ func (r *RawClient) CreateAReactionInPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostPostsIDReactionsResponse]{
+	return &core.Response[*foru_ms_sdk.PostReactionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) RemoveYourReactionFromPost(
+func (r *RawClient) DeleteReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePostsIDReactionsRequest,
+	request *foru_ms_sdk.DeleteReactionPostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeletePostsIDReactionsResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -364,14 +364,15 @@ func (r *RawClient) RemoveYourReactionFromPost(
 		"https://api.foru.ms/v2",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/posts/%v/reactions",
+		baseURL+"/posts/%v/reactions/%v",
 		request.ID,
+		request.SubID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeletePostsIDReactionsResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -389,18 +390,18 @@ func (r *RawClient) RemoveYourReactionFromPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeletePostsIDReactionsResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAReactionFromPost(
+func (r *RawClient) RetrieveReaction(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDReactionsSubIDRequest,
+	request *foru_ms_sdk.RetrieveReactionPostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPostsIDReactionsSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.RetrieveReactionPostsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -416,7 +417,7 @@ func (r *RawClient) GetAReactionFromPost(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPostsIDReactionsSubIDResponse
+	var response *foru_ms_sdk.RetrieveReactionPostsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -434,63 +435,18 @@ func (r *RawClient) GetAReactionFromPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPostsIDReactionsSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.RetrieveReactionPostsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAReactionFromPost(
+func (r *RawClient) ListPosts(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePostsIDReactionsSubIDRequest,
+	request *foru_ms_sdk.ListPostsPostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeletePostsIDReactionsSubIDResponse], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api.foru.ms/v2",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/posts/%v/reactions/%v",
-		request.ID,
-		request.SubID,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	var response *foru_ms_sdk.DeletePostsIDReactionsSubIDResponse
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodDelete,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(foru_ms_sdk.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*foru_ms_sdk.DeletePostsIDReactionsSubIDResponse]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) ListPostPosts(
-	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDPostsRequest,
-	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPostsIDPostsResponse], error) {
+) (*core.Response[*foru_ms_sdk.PostPostListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -512,7 +468,7 @@ func (r *RawClient) ListPostPosts(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPostsIDPostsResponse
+	var response *foru_ms_sdk.PostPostListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -530,18 +486,18 @@ func (r *RawClient) ListPostPosts(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPostsIDPostsResponse]{
+	return &core.Response[*foru_ms_sdk.PostPostListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAPostFromPost(
+func (r *RawClient) RetrievePost(
 	ctx context.Context,
-	request *foru_ms_sdk.GetPostsIDPostsSubIDRequest,
+	request *foru_ms_sdk.RetrievePostPostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetPostsIDPostsSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.RetrievePostPostsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -557,7 +513,7 @@ func (r *RawClient) GetAPostFromPost(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetPostsIDPostsSubIDResponse
+	var response *foru_ms_sdk.RetrievePostPostsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -575,18 +531,18 @@ func (r *RawClient) GetAPostFromPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetPostsIDPostsSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.RetrievePostPostsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAPostFromPost(
+func (r *RawClient) DeletePost(
 	ctx context.Context,
-	request *foru_ms_sdk.DeletePostsIDPostsSubIDRequest,
+	request *foru_ms_sdk.DeletePostPostsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeletePostsIDPostsSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -602,7 +558,7 @@ func (r *RawClient) DeleteAPostFromPost(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeletePostsIDPostsSubIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -620,7 +576,7 @@ func (r *RawClient) DeleteAPostFromPost(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeletePostsIDPostsSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

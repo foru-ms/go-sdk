@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllWebhooks(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetWebhooksRequest,
+	request *foru_ms_sdk.ListWebhooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetWebhooksResponse], error) {
+) (*core.Response[*foru_ms_sdk.WebhookListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllWebhooks(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetWebhooksResponse
+	var response *foru_ms_sdk.WebhookListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllWebhooks(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetWebhooksResponse]{
+	return &core.Response[*foru_ms_sdk.WebhookListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateAWebhook(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostWebhooksRequest,
+	request *foru_ms_sdk.CreateWebhooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostWebhooksResponse], error) {
+) (*core.Response[*foru_ms_sdk.WebhookResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateAWebhook(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostWebhooksResponse
+	var response *foru_ms_sdk.WebhookResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateAWebhook(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostWebhooksResponse]{
+	return &core.Response[*foru_ms_sdk.WebhookResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAWebhook(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetWebhooksIDRequest,
+	request *foru_ms_sdk.RetrieveWebhooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetWebhooksIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.WebhookResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetAWebhook(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetWebhooksIDResponse
+	var response *foru_ms_sdk.WebhookResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetAWebhook(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetWebhooksIDResponse]{
+	return &core.Response[*foru_ms_sdk.WebhookResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAWebhook(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteWebhooksIDRequest,
+	request *foru_ms_sdk.DeleteWebhooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteWebhooksIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteAWebhook(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteWebhooksIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,18 +202,64 @@ func (r *RawClient) DeleteAWebhook(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteWebhooksIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) ListWebhookDeliveries(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.GetWebhooksIDDeliveriesRequest,
+	request *foru_ms_sdk.UpdateWebhooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetWebhooksIDDeliveriesResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdateWebhooksResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api.foru.ms/v2",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/webhooks/%v",
+		request.ID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *foru_ms_sdk.UpdateWebhooksResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPatch,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(foru_ms_sdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*foru_ms_sdk.UpdateWebhooksResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ListDeliveries(
+	ctx context.Context,
+	request *foru_ms_sdk.ListDeliveriesWebhooksRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*foru_ms_sdk.WebhookDeliveryListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -235,7 +281,7 @@ func (r *RawClient) ListWebhookDeliveries(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetWebhooksIDDeliveriesResponse
+	var response *foru_ms_sdk.WebhookDeliveryListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -253,18 +299,18 @@ func (r *RawClient) ListWebhookDeliveries(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetWebhooksIDDeliveriesResponse]{
+	return &core.Response[*foru_ms_sdk.WebhookDeliveryListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetADeliveryFromWebhook(
+func (r *RawClient) RetrieveDelivery(
 	ctx context.Context,
-	request *foru_ms_sdk.GetWebhooksIDDeliveriesSubIDRequest,
+	request *foru_ms_sdk.RetrieveDeliveryWebhooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetWebhooksIDDeliveriesSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.RetrieveDeliveryWebhooksResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -280,7 +326,7 @@ func (r *RawClient) GetADeliveryFromWebhook(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetWebhooksIDDeliveriesSubIDResponse
+	var response *foru_ms_sdk.RetrieveDeliveryWebhooksResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -298,18 +344,18 @@ func (r *RawClient) GetADeliveryFromWebhook(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetWebhooksIDDeliveriesSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.RetrieveDeliveryWebhooksResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteADeliveryFromWebhook(
+func (r *RawClient) DeleteDelivery(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDRequest,
+	request *foru_ms_sdk.DeleteDeliveryWebhooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -325,7 +371,7 @@ func (r *RawClient) DeleteADeliveryFromWebhook(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -343,7 +389,7 @@ func (r *RawClient) DeleteADeliveryFromWebhook(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

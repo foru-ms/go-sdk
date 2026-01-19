@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestThreadsListAllThreadsWithWireMock(
+func TestThreadsListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestThreadsListAllThreadsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetThreadsRequest{}
-	_, invocationErr := client.Threads.ListAllThreads(
+	request := &foru_ms_sdk.ListThreadsRequest{}
+	_, invocationErr := client.Threads.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsListAllThreadsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsListAllThreadsWithWireMock", "GET", "/threads", nil, 1)
+	VerifyRequestCount(t, "TestThreadsListWithWireMock", "GET", "/threads", nil, 1)
 }
 
-func TestThreadsCreateAThreadWithWireMock(
+func TestThreadsCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,23 +101,23 @@ func TestThreadsCreateAThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostThreadsRequest{
+	request := &foru_ms_sdk.CreateThreadsRequest{
 		Title: "title",
 		Body:  "body",
 	}
-	_, invocationErr := client.Threads.CreateAThread(
+	_, invocationErr := client.Threads.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsCreateAThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsCreateAThreadWithWireMock", "POST", "/threads", nil, 1)
+	VerifyRequestCount(t, "TestThreadsCreateWithWireMock", "POST", "/threads", nil, 1)
 }
 
-func TestThreadsGetAThreadWithWireMock(
+func TestThreadsRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -130,22 +130,22 @@ func TestThreadsGetAThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetThreadsIDRequest{
+	request := &foru_ms_sdk.RetrieveThreadsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Threads.GetAThread(
+	_, invocationErr := client.Threads.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsGetAThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsGetAThreadWithWireMock", "GET", "/threads/id", nil, 1)
+	VerifyRequestCount(t, "TestThreadsRetrieveWithWireMock", "GET", "/threads/id", nil, 1)
 }
 
-func TestThreadsDeleteAThreadWithWireMock(
+func TestThreadsDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -158,22 +158,22 @@ func TestThreadsDeleteAThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteThreadsIDRequest{
+	request := &foru_ms_sdk.DeleteThreadsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Threads.DeleteAThread(
+	_, invocationErr := client.Threads.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsDeleteAThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsDeleteAThreadWithWireMock", "DELETE", "/threads/id", nil, 1)
+	VerifyRequestCount(t, "TestThreadsDeleteWithWireMock", "DELETE", "/threads/id", nil, 1)
 }
 
-func TestThreadsUpdateAThreadWithWireMock(
+func TestThreadsUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -186,22 +186,22 @@ func TestThreadsUpdateAThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PatchThreadsIDRequest{
+	request := &foru_ms_sdk.UpdateThreadsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Threads.UpdateAThread(
+	_, invocationErr := client.Threads.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsUpdateAThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsUpdateAThreadWithWireMock", "PATCH", "/threads/id", nil, 1)
+	VerifyRequestCount(t, "TestThreadsUpdateWithWireMock", "PATCH", "/threads/id", nil, 1)
 }
 
-func TestThreadsListThreadPostsWithWireMock(
+func TestThreadsListPostsWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -214,22 +214,22 @@ func TestThreadsListThreadPostsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetThreadsIDPostsRequest{
+	request := &foru_ms_sdk.ListPostsThreadsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Threads.ListThreadPosts(
+	_, invocationErr := client.Threads.ListPosts(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsListThreadPostsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsListPostsWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsListThreadPostsWithWireMock", "GET", "/threads/id/posts", nil, 1)
+	VerifyRequestCount(t, "TestThreadsListPostsWithWireMock", "GET", "/threads/id/posts", nil, 1)
 }
 
-func TestThreadsGetAPostFromThreadWithWireMock(
+func TestThreadsRetrievePostWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -242,23 +242,23 @@ func TestThreadsGetAPostFromThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetThreadsIDPostsSubIDRequest{
+	request := &foru_ms_sdk.RetrievePostThreadsRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Threads.GetAPostFromThread(
+	_, invocationErr := client.Threads.RetrievePost(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsGetAPostFromThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsRetrievePostWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsGetAPostFromThreadWithWireMock", "GET", "/threads/id/posts/subId", nil, 1)
+	VerifyRequestCount(t, "TestThreadsRetrievePostWithWireMock", "GET", "/threads/id/posts/subId", nil, 1)
 }
 
-func TestThreadsDeleteAPostFromThreadWithWireMock(
+func TestThreadsDeletePostWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -271,23 +271,23 @@ func TestThreadsDeleteAPostFromThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteThreadsIDPostsSubIDRequest{
+	request := &foru_ms_sdk.DeletePostThreadsRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Threads.DeleteAPostFromThread(
+	_, invocationErr := client.Threads.DeletePost(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsDeleteAPostFromThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsDeletePostWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsDeleteAPostFromThreadWithWireMock", "DELETE", "/threads/id/posts/subId", nil, 1)
+	VerifyRequestCount(t, "TestThreadsDeletePostWithWireMock", "DELETE", "/threads/id/posts/subId", nil, 1)
 }
 
-func TestThreadsListThreadReactionsWithWireMock(
+func TestThreadsListReactionsWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -300,22 +300,22 @@ func TestThreadsListThreadReactionsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetThreadsIDReactionsRequest{
+	request := &foru_ms_sdk.ListReactionsThreadsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Threads.ListThreadReactions(
+	_, invocationErr := client.Threads.ListReactions(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsListThreadReactionsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsListReactionsWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsListThreadReactionsWithWireMock", "GET", "/threads/id/reactions", nil, 1)
+	VerifyRequestCount(t, "TestThreadsListReactionsWithWireMock", "GET", "/threads/id/reactions", nil, 1)
 }
 
-func TestThreadsCreateAReactionInThreadWithWireMock(
+func TestThreadsCreateReactionWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -328,23 +328,23 @@ func TestThreadsCreateAReactionInThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostThreadsIDReactionsRequest{
+	request := &foru_ms_sdk.CreateReactionThreadsRequest{
 		ID:   "id",
-		Type: foru_ms_sdk.PostThreadsIDReactionsRequestTypeLike,
+		Type: foru_ms_sdk.CreateReactionThreadsRequestTypeLike,
 	}
-	_, invocationErr := client.Threads.CreateAReactionInThread(
+	_, invocationErr := client.Threads.CreateReaction(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsCreateAReactionInThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsCreateReactionWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsCreateAReactionInThreadWithWireMock", "POST", "/threads/id/reactions", nil, 1)
+	VerifyRequestCount(t, "TestThreadsCreateReactionWithWireMock", "POST", "/threads/id/reactions", nil, 1)
 }
 
-func TestThreadsRemoveYourReactionFromThreadWithWireMock(
+func TestThreadsDeleteReactionWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -357,22 +357,80 @@ func TestThreadsRemoveYourReactionFromThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteThreadsIDReactionsRequest{
+	request := &foru_ms_sdk.DeleteReactionThreadsRequest{
+		ID:    "id",
+		SubID: "subId",
+	}
+	_, invocationErr := client.Threads.DeleteReaction(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestThreadsDeleteReactionWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestThreadsDeleteReactionWithWireMock", "DELETE", "/threads/id/reactions/subId", nil, 1)
+}
+
+func TestThreadsRetrieveReactionWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(
+			WireMockBaseURL,
+		),
+	)
+	request := &foru_ms_sdk.RetrieveReactionThreadsRequest{
+		ID:    "id",
+		SubID: "subId",
+	}
+	_, invocationErr := client.Threads.RetrieveReaction(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestThreadsRetrieveReactionWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestThreadsRetrieveReactionWithWireMock", "GET", "/threads/id/reactions/subId", nil, 1)
+}
+
+func TestThreadsListSubscribersWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(
+			WireMockBaseURL,
+		),
+	)
+	request := &foru_ms_sdk.ListSubscribersThreadsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Threads.RemoveYourReactionFromThread(
+	_, invocationErr := client.Threads.ListSubscribers(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsRemoveYourReactionFromThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsListSubscribersWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsRemoveYourReactionFromThreadWithWireMock", "DELETE", "/threads/id/reactions", nil, 1)
+	VerifyRequestCount(t, "TestThreadsListSubscribersWithWireMock", "GET", "/threads/id/subscribers", nil, 1)
 }
 
-func TestThreadsGetAReactionFromThreadWithWireMock(
+func TestThreadsRetrieveSubscriberWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -385,23 +443,23 @@ func TestThreadsGetAReactionFromThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetThreadsIDReactionsSubIDRequest{
+	request := &foru_ms_sdk.RetrieveSubscriberThreadsRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Threads.GetAReactionFromThread(
+	_, invocationErr := client.Threads.RetrieveSubscriber(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsGetAReactionFromThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsRetrieveSubscriberWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsGetAReactionFromThreadWithWireMock", "GET", "/threads/id/reactions/subId", nil, 1)
+	VerifyRequestCount(t, "TestThreadsRetrieveSubscriberWithWireMock", "GET", "/threads/id/subscribers/subId", nil, 1)
 }
 
-func TestThreadsDeleteAReactionFromThreadWithWireMock(
+func TestThreadsDeleteSubscriberWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -414,23 +472,23 @@ func TestThreadsDeleteAReactionFromThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteThreadsIDReactionsSubIDRequest{
+	request := &foru_ms_sdk.DeleteSubscriberThreadsRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Threads.DeleteAReactionFromThread(
+	_, invocationErr := client.Threads.DeleteSubscriber(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsDeleteAReactionFromThreadWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsDeleteSubscriberWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsDeleteAReactionFromThreadWithWireMock", "DELETE", "/threads/id/reactions/subId", nil, 1)
+	VerifyRequestCount(t, "TestThreadsDeleteSubscriberWithWireMock", "DELETE", "/threads/id/subscribers/subId", nil, 1)
 }
 
-func TestThreadsListThreadSubscribersWithWireMock(
+func TestThreadsRetrievePollWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -443,22 +501,22 @@ func TestThreadsListThreadSubscribersWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetThreadsIDSubscribersRequest{
+	request := &foru_ms_sdk.RetrievePollThreadsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Threads.ListThreadSubscribers(
+	_, invocationErr := client.Threads.RetrievePoll(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsListThreadSubscribersWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsRetrievePollWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsListThreadSubscribersWithWireMock", "GET", "/threads/id/subscribers", nil, 1)
+	VerifyRequestCount(t, "TestThreadsRetrievePollWithWireMock", "GET", "/threads/id/poll", nil, 1)
 }
 
-func TestThreadsGetASubscriberFromThreadWithWireMock(
+func TestThreadsCreatePollWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -471,114 +529,28 @@ func TestThreadsGetASubscriberFromThreadWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetThreadsIDSubscribersSubIDRequest{
-		ID:    "id",
-		SubID: "subId",
-	}
-	_, invocationErr := client.Threads.GetASubscriberFromThread(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsGetASubscriberFromThreadWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsGetASubscriberFromThreadWithWireMock", "GET", "/threads/id/subscribers/subId", nil, 1)
-}
-
-func TestThreadsDeleteASubscriberFromThreadWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
-	)
-	request := &foru_ms_sdk.DeleteThreadsIDSubscribersSubIDRequest{
-		ID:    "id",
-		SubID: "subId",
-	}
-	_, invocationErr := client.Threads.DeleteASubscriberFromThread(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsDeleteASubscriberFromThreadWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsDeleteASubscriberFromThreadWithWireMock", "DELETE", "/threads/id/subscribers/subId", nil, 1)
-}
-
-func TestThreadsGetThreadPollWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
-	)
-	request := &foru_ms_sdk.GetThreadsIDPollRequest{
-		ID: "id",
-	}
-	_, invocationErr := client.Threads.GetThreadPoll(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsGetThreadPollWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsGetThreadPollWithWireMock", "GET", "/threads/id/poll", nil, 1)
-}
-
-func TestThreadsCreateThreadPollWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(
-			WireMockBaseURL,
-		),
-	)
-	request := &foru_ms_sdk.PostThreadsIDPollRequest{
+	request := &foru_ms_sdk.CreatePollThreadsRequest{
 		ID:    "id",
 		Title: "title",
-		Options: []*foru_ms_sdk.PostThreadsIDPollRequestOptionsItem{
-			&foru_ms_sdk.PostThreadsIDPollRequestOptionsItem{
+		Options: []*foru_ms_sdk.CreatePollThreadsRequestOptionsItem{
+			&foru_ms_sdk.CreatePollThreadsRequestOptionsItem{
 				Title: "title",
 			},
 		},
 	}
-	_, invocationErr := client.Threads.CreateThreadPoll(
+	_, invocationErr := client.Threads.CreatePoll(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsCreateThreadPollWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsCreatePollWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsCreateThreadPollWithWireMock", "POST", "/threads/id/poll", nil, 1)
+	VerifyRequestCount(t, "TestThreadsCreatePollWithWireMock", "POST", "/threads/id/poll", nil, 1)
 }
 
-func TestThreadsUpdateThreadPollWithWireMock(
+func TestThreadsUpdatePollWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -591,17 +563,17 @@ func TestThreadsUpdateThreadPollWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PatchThreadsIDPollRequest{
+	request := &foru_ms_sdk.UpdatePollThreadsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Threads.UpdateThreadPoll(
+	_, invocationErr := client.Threads.UpdatePoll(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestThreadsUpdateThreadPollWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestThreadsUpdatePollWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestThreadsUpdateThreadPollWithWireMock", "PATCH", "/threads/id/poll", nil, 1)
+	VerifyRequestCount(t, "TestThreadsUpdatePollWithWireMock", "PATCH", "/threads/id/poll", nil, 1)
 }

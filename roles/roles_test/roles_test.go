@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestRolesListAllRolesWithWireMock(
+func TestRolesListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestRolesListAllRolesWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetRolesRequest{}
-	_, invocationErr := client.Roles.ListAllRoles(
+	request := &foru_ms_sdk.ListRolesRequest{}
+	_, invocationErr := client.Roles.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestRolesListAllRolesWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestRolesListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestRolesListAllRolesWithWireMock", "GET", "/roles", nil, 1)
+	VerifyRequestCount(t, "TestRolesListWithWireMock", "GET", "/roles", nil, 1)
 }
 
-func TestRolesCreateARoleWithWireMock(
+func TestRolesCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,22 +101,22 @@ func TestRolesCreateARoleWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostRolesRequest{
+	request := &foru_ms_sdk.CreateRolesRequest{
 		Name: "name",
 	}
-	_, invocationErr := client.Roles.CreateARole(
+	_, invocationErr := client.Roles.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestRolesCreateARoleWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestRolesCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestRolesCreateARoleWithWireMock", "POST", "/roles", nil, 1)
+	VerifyRequestCount(t, "TestRolesCreateWithWireMock", "POST", "/roles", nil, 1)
 }
 
-func TestRolesGetARoleWithWireMock(
+func TestRolesRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -129,22 +129,22 @@ func TestRolesGetARoleWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetRolesIDRequest{
+	request := &foru_ms_sdk.RetrieveRolesRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Roles.GetARole(
+	_, invocationErr := client.Roles.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestRolesGetARoleWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestRolesRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestRolesGetARoleWithWireMock", "GET", "/roles/id", nil, 1)
+	VerifyRequestCount(t, "TestRolesRetrieveWithWireMock", "GET", "/roles/id", nil, 1)
 }
 
-func TestRolesDeleteARoleWithWireMock(
+func TestRolesDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -157,22 +157,22 @@ func TestRolesDeleteARoleWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteRolesIDRequest{
+	request := &foru_ms_sdk.DeleteRolesRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Roles.DeleteARole(
+	_, invocationErr := client.Roles.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestRolesDeleteARoleWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestRolesDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestRolesDeleteARoleWithWireMock", "DELETE", "/roles/id", nil, 1)
+	VerifyRequestCount(t, "TestRolesDeleteWithWireMock", "DELETE", "/roles/id", nil, 1)
 }
 
-func TestRolesUpdateARoleWithWireMock(
+func TestRolesUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -185,17 +185,17 @@ func TestRolesUpdateARoleWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PatchRolesIDRequest{
+	request := &foru_ms_sdk.UpdateRolesRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Roles.UpdateARole(
+	_, invocationErr := client.Roles.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestRolesUpdateARoleWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestRolesUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestRolesUpdateARoleWithWireMock", "PATCH", "/roles/id", nil, 1)
+	VerifyRequestCount(t, "TestRolesUpdateWithWireMock", "PATCH", "/roles/id", nil, 1)
 }

@@ -75,7 +75,7 @@ func TestAuthRegisterWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostAuthRegisterRequest{
+	request := &foru_ms_sdk.RegisterAuthRequest{
 		Username: "username",
 		Email:    "email",
 		Password: "password",
@@ -105,7 +105,7 @@ func TestAuthLoginWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostAuthLoginRequest{
+	request := &foru_ms_sdk.LoginAuthRequest{
 		Login:    "login",
 		Password: "password",
 	}
@@ -121,7 +121,7 @@ func TestAuthLoginWithWireMock(
 	VerifyRequestCount(t, "TestAuthLoginWithWireMock", "POST", "/auth/login", nil, 1)
 }
 
-func TestAuthGetCurrentUserWithWireMock(
+func TestAuthMeWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -134,18 +134,18 @@ func TestAuthGetCurrentUserWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	_, invocationErr := client.Auth.GetCurrentUser(
+	_, invocationErr := client.Auth.Me(
 		context.TODO(),
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestAuthGetCurrentUserWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestAuthMeWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestAuthGetCurrentUserWithWireMock", "GET", "/auth/me", nil, 1)
+	VerifyRequestCount(t, "TestAuthMeWithWireMock", "GET", "/auth/me", nil, 1)
 }
 
-func TestAuthRequestPasswordResetWithWireMock(
+func TestAuthForgotPasswordWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -158,19 +158,19 @@ func TestAuthRequestPasswordResetWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostAuthForgotPasswordRequest{
+	request := &foru_ms_sdk.ForgotPasswordAuthRequest{
 		Email: "email",
 	}
-	_, invocationErr := client.Auth.RequestPasswordReset(
+	_, invocationErr := client.Auth.ForgotPassword(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestAuthRequestPasswordResetWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestAuthForgotPasswordWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestAuthRequestPasswordResetWithWireMock", "POST", "/auth/forgot-password", nil, 1)
+	VerifyRequestCount(t, "TestAuthForgotPasswordWithWireMock", "POST", "/auth/forgot-password", nil, 1)
 }
 
 func TestAuthResetPasswordWithWireMock(
@@ -186,7 +186,7 @@ func TestAuthResetPasswordWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostAuthResetPasswordRequest{
+	request := &foru_ms_sdk.ResetPasswordAuthRequest{
 		Password: "password",
 	}
 	_, invocationErr := client.Auth.ResetPassword(

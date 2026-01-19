@@ -10,14 +10,14 @@ import (
 )
 
 var (
-	postRolesRequestFieldName         = big.NewInt(1 << 0)
-	postRolesRequestFieldSlug         = big.NewInt(1 << 1)
-	postRolesRequestFieldDescription  = big.NewInt(1 << 2)
-	postRolesRequestFieldColor        = big.NewInt(1 << 3)
-	postRolesRequestFieldExtendedData = big.NewInt(1 << 4)
+	createRolesRequestFieldName         = big.NewInt(1 << 0)
+	createRolesRequestFieldSlug         = big.NewInt(1 << 1)
+	createRolesRequestFieldDescription  = big.NewInt(1 << 2)
+	createRolesRequestFieldColor        = big.NewInt(1 << 3)
+	createRolesRequestFieldExtendedData = big.NewInt(1 << 4)
 )
 
-type PostRolesRequest struct {
+type CreateRolesRequest struct {
 	// Role name
 	Name string `json:"name" url:"-"`
 	// Role slug (unique identifier)
@@ -33,60 +33,61 @@ type PostRolesRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PostRolesRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (c *CreateRolesRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesRequest) SetName(name string) {
-	p.Name = name
-	p.require(postRolesRequestFieldName)
+func (c *CreateRolesRequest) SetName(name string) {
+	c.Name = name
+	c.require(createRolesRequestFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesRequest) SetSlug(slug *string) {
-	p.Slug = slug
-	p.require(postRolesRequestFieldSlug)
+func (c *CreateRolesRequest) SetSlug(slug *string) {
+	c.Slug = slug
+	c.require(createRolesRequestFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesRequest) SetDescription(description *string) {
-	p.Description = description
-	p.require(postRolesRequestFieldDescription)
+func (c *CreateRolesRequest) SetDescription(description *string) {
+	c.Description = description
+	c.require(createRolesRequestFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesRequest) SetColor(color *string) {
-	p.Color = color
-	p.require(postRolesRequestFieldColor)
+func (c *CreateRolesRequest) SetColor(color *string) {
+	c.Color = color
+	c.require(createRolesRequestFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesRequest) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(postRolesRequestFieldExtendedData)
+func (c *CreateRolesRequest) SetExtendedData(extendedData map[string]interface{}) {
+	c.ExtendedData = extendedData
+	c.require(createRolesRequestFieldExtendedData)
 }
 
 var (
-	deleteRolesIDRequestFieldID = big.NewInt(1 << 0)
+	deleteRolesRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeleteRolesIDRequest struct {
+type DeleteRolesRequest struct {
+	// Role ID
 	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeleteRolesIDRequest) require(field *big.Int) {
+func (d *DeleteRolesRequest) require(field *big.Int) {
 	if d.explicitFields == nil {
 		d.explicitFields = big.NewInt(0)
 	}
@@ -95,440 +96,99 @@ func (d *DeleteRolesIDRequest) require(field *big.Int) {
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteRolesIDRequest) SetID(id string) {
+func (d *DeleteRolesRequest) SetID(id string) {
 	d.ID = id
-	d.require(deleteRolesIDRequestFieldID)
+	d.require(deleteRolesRequestFieldID)
 }
 
 var (
-	getRolesIDRequestFieldID = big.NewInt(1 << 0)
+	listRolesRequestFieldLimit  = big.NewInt(1 << 0)
+	listRolesRequestFieldCursor = big.NewInt(1 << 1)
+	listRolesRequestFieldSearch = big.NewInt(1 << 2)
+	listRolesRequestFieldSort   = big.NewInt(1 << 3)
 )
 
-type GetRolesIDRequest struct {
-	ID string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetRolesIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getRolesIDRequestFieldID)
-}
-
-var (
-	getRolesRequestFieldPage   = big.NewInt(1 << 0)
-	getRolesRequestFieldLimit  = big.NewInt(1 << 1)
-	getRolesRequestFieldSearch = big.NewInt(1 << 2)
-)
-
-type GetRolesRequest struct {
-	Page   *int    `json:"-" url:"page,omitempty"`
-	Limit  *int    `json:"-" url:"limit,omitempty"`
+type ListRolesRequest struct {
+	// Items per page (max 75)
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Cursor for pagination
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// Search by name or slug
 	Search *string `json:"-" url:"search,omitempty"`
+	// Sort order
+	Sort *ListRolesRequestSort `json:"-" url:"sort,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetRolesRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *ListRolesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getRolesRequestFieldPage)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getRolesRequestFieldLimit)
+func (l *ListRolesRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listRolesRequestFieldLimit)
+}
+
+// SetCursor sets the Cursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListRolesRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listRolesRequestFieldCursor)
 }
 
 // SetSearch sets the Search field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesRequest) SetSearch(search *string) {
-	g.Search = search
-	g.require(getRolesRequestFieldSearch)
+func (l *ListRolesRequest) SetSearch(search *string) {
+	l.Search = search
+	l.require(listRolesRequestFieldSearch)
+}
+
+// SetSort sets the Sort field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListRolesRequest) SetSort(sort *ListRolesRequestSort) {
+	l.Sort = sort
+	l.require(listRolesRequestFieldSort)
 }
 
 var (
-	deleteRolesIDResponseFieldSuccess = big.NewInt(1 << 0)
+	retrieveRolesRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeleteRolesIDResponse struct {
-	Success bool `json:"success" url:"success"`
+type RetrieveRolesRequest struct {
+	// Role ID
+	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
 }
 
-func (d *DeleteRolesIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
+func (r *RetrieveRolesRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return d.Success
-}
-
-func (d *DeleteRolesIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeleteRolesIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteRolesIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deleteRolesIDResponseFieldSuccess)
-}
-
-func (d *DeleteRolesIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteRolesIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteRolesIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteRolesIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteRolesIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteRolesIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	getRolesIDResponseFieldData = big.NewInt(1 << 0)
-)
-
-type GetRolesIDResponse struct {
-	Data *GetRolesIDResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetRolesIDResponse) GetData() *GetRolesIDResponseData {
-	if g == nil {
-		return nil
-	}
-	return g.Data
-}
-
-func (g *GetRolesIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetRolesIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponse) SetData(data *GetRolesIDResponseData) {
-	g.Data = data
-	g.require(getRolesIDResponseFieldData)
-}
-
-func (g *GetRolesIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetRolesIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetRolesIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetRolesIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetRolesIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetRolesIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getRolesIDResponseDataFieldName         = big.NewInt(1 << 0)
-	getRolesIDResponseDataFieldSlug         = big.NewInt(1 << 1)
-	getRolesIDResponseDataFieldDescription  = big.NewInt(1 << 2)
-	getRolesIDResponseDataFieldColor        = big.NewInt(1 << 3)
-	getRolesIDResponseDataFieldExtendedData = big.NewInt(1 << 4)
-	getRolesIDResponseDataFieldID           = big.NewInt(1 << 5)
-	getRolesIDResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
-	getRolesIDResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
-)
-
-type GetRolesIDResponseData struct {
-	// Role name
-	Name string `json:"name" url:"name"`
-	// Role slug (unique identifier)
-	Slug *string `json:"slug,omitempty" url:"slug,omitempty"`
-	// Role description
-	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Role color hex
-	Color *string `json:"color,omitempty" url:"color,omitempty"`
-	// Extended data
-	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
-	ID           string                 `json:"id" url:"id"`
-	// Role creation timestamp
-	CreatedAt string `json:"createdAt" url:"createdAt"`
-	// Role last update timestamp
-	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetRolesIDResponseData) GetName() string {
-	if g == nil {
-		return ""
-	}
-	return g.Name
-}
-
-func (g *GetRolesIDResponseData) GetSlug() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Slug
-}
-
-func (g *GetRolesIDResponseData) GetDescription() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Description
-}
-
-func (g *GetRolesIDResponseData) GetColor() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Color
-}
-
-func (g *GetRolesIDResponseData) GetExtendedData() map[string]interface{} {
-	if g == nil {
-		return nil
-	}
-	return g.ExtendedData
-}
-
-func (g *GetRolesIDResponseData) GetID() string {
-	if g == nil {
-		return ""
-	}
-	return g.ID
-}
-
-func (g *GetRolesIDResponseData) GetCreatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.CreatedAt
-}
-
-func (g *GetRolesIDResponseData) GetUpdatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.UpdatedAt
-}
-
-func (g *GetRolesIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetRolesIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponseData) SetName(name string) {
-	g.Name = name
-	g.require(getRolesIDResponseDataFieldName)
-}
-
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponseData) SetSlug(slug *string) {
-	g.Slug = slug
-	g.require(getRolesIDResponseDataFieldSlug)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponseData) SetDescription(description *string) {
-	g.Description = description
-	g.require(getRolesIDResponseDataFieldDescription)
-}
-
-// SetColor sets the Color field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponseData) SetColor(color *string) {
-	g.Color = color
-	g.require(getRolesIDResponseDataFieldColor)
-}
-
-// SetExtendedData sets the ExtendedData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	g.ExtendedData = extendedData
-	g.require(getRolesIDResponseDataFieldExtendedData)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponseData) SetID(id string) {
-	g.ID = id
-	g.require(getRolesIDResponseDataFieldID)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponseData) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getRolesIDResponseDataFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesIDResponseData) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getRolesIDResponseDataFieldUpdatedAt)
-}
-
-func (g *GetRolesIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetRolesIDResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetRolesIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetRolesIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetRolesIDResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetRolesIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
+func (r *RetrieveRolesRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveRolesRequestFieldID)
 }
 
 var (
-	getRolesResponseFieldData = big.NewInt(1 << 0)
-	getRolesResponseFieldMeta = big.NewInt(1 << 1)
+	roleListResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetRolesResponse struct {
-	Data []*GetRolesResponseDataItem `json:"data" url:"data"`
-	Meta *GetRolesResponseMeta       `json:"meta" url:"meta"`
+type RoleListResponse struct {
+	Data *RoleListResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -537,111 +197,82 @@ type GetRolesResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetRolesResponse) GetData() []*GetRolesResponseDataItem {
-	if g == nil {
+func (r *RoleListResponse) GetData() *RoleListResponseData {
+	if r == nil {
 		return nil
 	}
-	return g.Data
+	return r.Data
 }
 
-func (g *GetRolesResponse) GetMeta() *GetRolesResponseMeta {
-	if g == nil {
-		return nil
+func (r *RoleListResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RoleListResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return g.Meta
-}
-
-func (g *GetRolesResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetRolesResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponse) SetData(data []*GetRolesResponseDataItem) {
-	g.Data = data
-	g.require(getRolesResponseFieldData)
+func (r *RoleListResponse) SetData(data *RoleListResponseData) {
+	r.Data = data
+	r.require(roleListResponseFieldData)
 }
 
-// SetMeta sets the Meta field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponse) SetMeta(meta *GetRolesResponseMeta) {
-	g.Meta = meta
-	g.require(getRolesResponseFieldMeta)
-}
-
-func (g *GetRolesResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetRolesResponse
+func (r *RoleListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetRolesResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*r = RoleListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetRolesResponse) MarshalJSON() ([]byte, error) {
-	type embed GetRolesResponse
+func (r *RoleListResponse) MarshalJSON() ([]byte, error) {
+	type embed RoleListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetRolesResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (r *RoleListResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	getRolesResponseDataItemFieldName         = big.NewInt(1 << 0)
-	getRolesResponseDataItemFieldSlug         = big.NewInt(1 << 1)
-	getRolesResponseDataItemFieldDescription  = big.NewInt(1 << 2)
-	getRolesResponseDataItemFieldColor        = big.NewInt(1 << 3)
-	getRolesResponseDataItemFieldExtendedData = big.NewInt(1 << 4)
-	getRolesResponseDataItemFieldID           = big.NewInt(1 << 5)
-	getRolesResponseDataItemFieldCreatedAt    = big.NewInt(1 << 6)
-	getRolesResponseDataItemFieldUpdatedAt    = big.NewInt(1 << 7)
+	roleListResponseDataFieldItems      = big.NewInt(1 << 0)
+	roleListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	roleListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type GetRolesResponseDataItem struct {
-	// Role name
-	Name string `json:"name" url:"name"`
-	// Role slug (unique identifier)
-	Slug *string `json:"slug,omitempty" url:"slug,omitempty"`
-	// Role description
-	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Role color hex
-	Color *string `json:"color,omitempty" url:"color,omitempty"`
-	// Extended data
-	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
-	ID           string                 `json:"id" url:"id"`
-	// Role creation timestamp
-	CreatedAt string `json:"createdAt" url:"createdAt"`
-	// Role last update timestamp
-	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
+type RoleListResponseData struct {
+	Items []*RoleListResponseDataItemsItem `json:"items" url:"items"`
+	// Cursor for next page
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	// Total count of items
+	Count int `json:"count" url:"count"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -650,368 +281,110 @@ type GetRolesResponseDataItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetRolesResponseDataItem) GetName() string {
-	if g == nil {
-		return ""
-	}
-	return g.Name
-}
-
-func (g *GetRolesResponseDataItem) GetSlug() *string {
-	if g == nil {
+func (r *RoleListResponseData) GetItems() []*RoleListResponseDataItemsItem {
+	if r == nil {
 		return nil
 	}
-	return g.Slug
+	return r.Items
 }
 
-func (g *GetRolesResponseDataItem) GetDescription() *string {
-	if g == nil {
+func (r *RoleListResponseData) GetNextCursor() *string {
+	if r == nil {
 		return nil
 	}
-	return g.Description
+	return r.NextCursor
 }
 
-func (g *GetRolesResponseDataItem) GetColor() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Color
-}
-
-func (g *GetRolesResponseDataItem) GetExtendedData() map[string]interface{} {
-	if g == nil {
-		return nil
-	}
-	return g.ExtendedData
-}
-
-func (g *GetRolesResponseDataItem) GetID() string {
-	if g == nil {
-		return ""
-	}
-	return g.ID
-}
-
-func (g *GetRolesResponseDataItem) GetCreatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.CreatedAt
-}
-
-func (g *GetRolesResponseDataItem) GetUpdatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.UpdatedAt
-}
-
-func (g *GetRolesResponseDataItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetRolesResponseDataItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseDataItem) SetName(name string) {
-	g.Name = name
-	g.require(getRolesResponseDataItemFieldName)
-}
-
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseDataItem) SetSlug(slug *string) {
-	g.Slug = slug
-	g.require(getRolesResponseDataItemFieldSlug)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseDataItem) SetDescription(description *string) {
-	g.Description = description
-	g.require(getRolesResponseDataItemFieldDescription)
-}
-
-// SetColor sets the Color field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseDataItem) SetColor(color *string) {
-	g.Color = color
-	g.require(getRolesResponseDataItemFieldColor)
-}
-
-// SetExtendedData sets the ExtendedData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseDataItem) SetExtendedData(extendedData map[string]interface{}) {
-	g.ExtendedData = extendedData
-	g.require(getRolesResponseDataItemFieldExtendedData)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseDataItem) SetID(id string) {
-	g.ID = id
-	g.require(getRolesResponseDataItemFieldID)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseDataItem) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getRolesResponseDataItemFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseDataItem) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getRolesResponseDataItemFieldUpdatedAt)
-}
-
-func (g *GetRolesResponseDataItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetRolesResponseDataItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetRolesResponseDataItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetRolesResponseDataItem) MarshalJSON() ([]byte, error) {
-	type embed GetRolesResponseDataItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetRolesResponseDataItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getRolesResponseMetaFieldTotal = big.NewInt(1 << 0)
-	getRolesResponseMetaFieldPage  = big.NewInt(1 << 1)
-	getRolesResponseMetaFieldLimit = big.NewInt(1 << 2)
-)
-
-type GetRolesResponseMeta struct {
-	Total int `json:"total" url:"total"`
-	Page  int `json:"page" url:"page"`
-	Limit int `json:"limit" url:"limit"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetRolesResponseMeta) GetTotal() int {
-	if g == nil {
+func (r *RoleListResponseData) GetCount() int {
+	if r == nil {
 		return 0
 	}
-	return g.Total
+	return r.Count
 }
 
-func (g *GetRolesResponseMeta) GetPage() int {
-	if g == nil {
-		return 0
+func (r *RoleListResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RoleListResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return g.Page
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
-func (g *GetRolesResponseMeta) GetLimit() int {
-	if g == nil {
-		return 0
-	}
-	return g.Limit
-}
-
-func (g *GetRolesResponseMeta) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetRolesResponseMeta) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTotal sets the Total field and marks it as non-optional;
+// SetItems sets the Items field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseMeta) SetTotal(total int) {
-	g.Total = total
-	g.require(getRolesResponseMetaFieldTotal)
+func (r *RoleListResponseData) SetItems(items []*RoleListResponseDataItemsItem) {
+	r.Items = items
+	r.require(roleListResponseDataFieldItems)
 }
 
-// SetPage sets the Page field and marks it as non-optional;
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseMeta) SetPage(page int) {
-	g.Page = page
-	g.require(getRolesResponseMetaFieldPage)
+func (r *RoleListResponseData) SetNextCursor(nextCursor *string) {
+	r.NextCursor = nextCursor
+	r.require(roleListResponseDataFieldNextCursor)
 }
 
-// SetLimit sets the Limit field and marks it as non-optional;
+// SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRolesResponseMeta) SetLimit(limit int) {
-	g.Limit = limit
-	g.require(getRolesResponseMetaFieldLimit)
+func (r *RoleListResponseData) SetCount(count int) {
+	r.Count = count
+	r.require(roleListResponseDataFieldCount)
 }
 
-func (g *GetRolesResponseMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetRolesResponseMeta
+func (r *RoleListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleListResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetRolesResponseMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*r = RoleListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetRolesResponseMeta) MarshalJSON() ([]byte, error) {
-	type embed GetRolesResponseMeta
+func (r *RoleListResponseData) MarshalJSON() ([]byte, error) {
+	type embed RoleListResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetRolesResponseMeta) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (r *RoleListResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	patchRolesIDResponseFieldData = big.NewInt(1 << 0)
+	roleListResponseDataItemsItemFieldName         = big.NewInt(1 << 0)
+	roleListResponseDataItemsItemFieldSlug         = big.NewInt(1 << 1)
+	roleListResponseDataItemsItemFieldDescription  = big.NewInt(1 << 2)
+	roleListResponseDataItemsItemFieldColor        = big.NewInt(1 << 3)
+	roleListResponseDataItemsItemFieldExtendedData = big.NewInt(1 << 4)
+	roleListResponseDataItemsItemFieldID           = big.NewInt(1 << 5)
+	roleListResponseDataItemsItemFieldCreatedAt    = big.NewInt(1 << 6)
+	roleListResponseDataItemsItemFieldUpdatedAt    = big.NewInt(1 << 7)
 )
 
-type PatchRolesIDResponse struct {
-	Data *PatchRolesIDResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PatchRolesIDResponse) GetData() *PatchRolesIDResponseData {
-	if p == nil {
-		return nil
-	}
-	return p.Data
-}
-
-func (p *PatchRolesIDResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PatchRolesIDResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponse) SetData(data *PatchRolesIDResponseData) {
-	p.Data = data
-	p.require(patchRolesIDResponseFieldData)
-}
-
-func (p *PatchRolesIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchRolesIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PatchRolesIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PatchRolesIDResponse) MarshalJSON() ([]byte, error) {
-	type embed PatchRolesIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PatchRolesIDResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	patchRolesIDResponseDataFieldName         = big.NewInt(1 << 0)
-	patchRolesIDResponseDataFieldSlug         = big.NewInt(1 << 1)
-	patchRolesIDResponseDataFieldDescription  = big.NewInt(1 << 2)
-	patchRolesIDResponseDataFieldColor        = big.NewInt(1 << 3)
-	patchRolesIDResponseDataFieldExtendedData = big.NewInt(1 << 4)
-	patchRolesIDResponseDataFieldID           = big.NewInt(1 << 5)
-	patchRolesIDResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
-	patchRolesIDResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
-)
-
-type PatchRolesIDResponseData struct {
+type RoleListResponseDataItemsItem struct {
 	// Role name
 	Name string `json:"name" url:"name"`
 	// Role slug (unique identifier)
@@ -1035,174 +408,174 @@ type PatchRolesIDResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PatchRolesIDResponseData) GetName() string {
-	if p == nil {
+func (r *RoleListResponseDataItemsItem) GetName() string {
+	if r == nil {
 		return ""
 	}
-	return p.Name
+	return r.Name
 }
 
-func (p *PatchRolesIDResponseData) GetSlug() *string {
-	if p == nil {
+func (r *RoleListResponseDataItemsItem) GetSlug() *string {
+	if r == nil {
 		return nil
 	}
-	return p.Slug
+	return r.Slug
 }
 
-func (p *PatchRolesIDResponseData) GetDescription() *string {
-	if p == nil {
+func (r *RoleListResponseDataItemsItem) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return p.Description
+	return r.Description
 }
 
-func (p *PatchRolesIDResponseData) GetColor() *string {
-	if p == nil {
+func (r *RoleListResponseDataItemsItem) GetColor() *string {
+	if r == nil {
 		return nil
 	}
-	return p.Color
+	return r.Color
 }
 
-func (p *PatchRolesIDResponseData) GetExtendedData() map[string]interface{} {
-	if p == nil {
+func (r *RoleListResponseDataItemsItem) GetExtendedData() map[string]interface{} {
+	if r == nil {
 		return nil
 	}
-	return p.ExtendedData
+	return r.ExtendedData
 }
 
-func (p *PatchRolesIDResponseData) GetID() string {
-	if p == nil {
+func (r *RoleListResponseDataItemsItem) GetID() string {
+	if r == nil {
 		return ""
 	}
-	return p.ID
+	return r.ID
 }
 
-func (p *PatchRolesIDResponseData) GetCreatedAt() string {
-	if p == nil {
+func (r *RoleListResponseDataItemsItem) GetCreatedAt() string {
+	if r == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return r.CreatedAt
 }
 
-func (p *PatchRolesIDResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (r *RoleListResponseDataItemsItem) GetUpdatedAt() string {
+	if r == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (p *PatchRolesIDResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (r *RoleListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
-func (p *PatchRolesIDResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (r *RoleListResponseDataItemsItem) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponseData) SetName(name string) {
-	p.Name = name
-	p.require(patchRolesIDResponseDataFieldName)
+func (r *RoleListResponseDataItemsItem) SetName(name string) {
+	r.Name = name
+	r.require(roleListResponseDataItemsItemFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponseData) SetSlug(slug *string) {
-	p.Slug = slug
-	p.require(patchRolesIDResponseDataFieldSlug)
+func (r *RoleListResponseDataItemsItem) SetSlug(slug *string) {
+	r.Slug = slug
+	r.require(roleListResponseDataItemsItemFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponseData) SetDescription(description *string) {
-	p.Description = description
-	p.require(patchRolesIDResponseDataFieldDescription)
+func (r *RoleListResponseDataItemsItem) SetDescription(description *string) {
+	r.Description = description
+	r.require(roleListResponseDataItemsItemFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponseData) SetColor(color *string) {
-	p.Color = color
-	p.require(patchRolesIDResponseDataFieldColor)
+func (r *RoleListResponseDataItemsItem) SetColor(color *string) {
+	r.Color = color
+	r.require(roleListResponseDataItemsItemFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(patchRolesIDResponseDataFieldExtendedData)
+func (r *RoleListResponseDataItemsItem) SetExtendedData(extendedData map[string]interface{}) {
+	r.ExtendedData = extendedData
+	r.require(roleListResponseDataItemsItemFieldExtendedData)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponseData) SetID(id string) {
-	p.ID = id
-	p.require(patchRolesIDResponseDataFieldID)
+func (r *RoleListResponseDataItemsItem) SetID(id string) {
+	r.ID = id
+	r.require(roleListResponseDataItemsItemFieldID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(patchRolesIDResponseDataFieldCreatedAt)
+func (r *RoleListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	r.CreatedAt = createdAt
+	r.require(roleListResponseDataItemsItemFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(patchRolesIDResponseDataFieldUpdatedAt)
+func (r *RoleListResponseDataItemsItem) SetUpdatedAt(updatedAt string) {
+	r.UpdatedAt = updatedAt
+	r.require(roleListResponseDataItemsItemFieldUpdatedAt)
 }
 
-func (p *PatchRolesIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchRolesIDResponseData
+func (r *RoleListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleListResponseDataItemsItem
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PatchRolesIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*r = RoleListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PatchRolesIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed PatchRolesIDResponseData
+func (r *RoleListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed RoleListResponseDataItemsItem
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PatchRolesIDResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (r *RoleListResponseDataItemsItem) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	postRolesResponseFieldData = big.NewInt(1 << 0)
+	roleResponseFieldData = big.NewInt(1 << 0)
 )
 
-type PostRolesResponse struct {
-	Data *PostRolesResponseData `json:"data,omitempty" url:"data,omitempty"`
+type RoleResponse struct {
+	Data *RoleResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1211,82 +584,82 @@ type PostRolesResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostRolesResponse) GetData() *PostRolesResponseData {
-	if p == nil {
+func (r *RoleResponse) GetData() *RoleResponseData {
+	if r == nil {
 		return nil
 	}
-	return p.Data
+	return r.Data
 }
 
-func (p *PostRolesResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (r *RoleResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
-func (p *PostRolesResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (r *RoleResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponse) SetData(data *PostRolesResponseData) {
-	p.Data = data
-	p.require(postRolesResponseFieldData)
+func (r *RoleResponse) SetData(data *RoleResponseData) {
+	r.Data = data
+	r.require(roleResponseFieldData)
 }
 
-func (p *PostRolesResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostRolesResponse
+func (r *RoleResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostRolesResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*r = RoleResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostRolesResponse) MarshalJSON() ([]byte, error) {
-	type embed PostRolesResponse
+func (r *RoleResponse) MarshalJSON() ([]byte, error) {
+	type embed RoleResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostRolesResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (r *RoleResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
-	postRolesResponseDataFieldName         = big.NewInt(1 << 0)
-	postRolesResponseDataFieldSlug         = big.NewInt(1 << 1)
-	postRolesResponseDataFieldDescription  = big.NewInt(1 << 2)
-	postRolesResponseDataFieldColor        = big.NewInt(1 << 3)
-	postRolesResponseDataFieldExtendedData = big.NewInt(1 << 4)
-	postRolesResponseDataFieldID           = big.NewInt(1 << 5)
-	postRolesResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
-	postRolesResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
+	roleResponseDataFieldName         = big.NewInt(1 << 0)
+	roleResponseDataFieldSlug         = big.NewInt(1 << 1)
+	roleResponseDataFieldDescription  = big.NewInt(1 << 2)
+	roleResponseDataFieldColor        = big.NewInt(1 << 3)
+	roleResponseDataFieldExtendedData = big.NewInt(1 << 4)
+	roleResponseDataFieldID           = big.NewInt(1 << 5)
+	roleResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
+	roleResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
 )
 
-type PostRolesResponseData struct {
+type RoleResponseData struct {
 	// Role name
 	Name string `json:"name" url:"name"`
 	// Role slug (unique identifier)
@@ -1310,178 +683,479 @@ type PostRolesResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostRolesResponseData) GetName() string {
-	if p == nil {
+func (r *RoleResponseData) GetName() string {
+	if r == nil {
 		return ""
 	}
-	return p.Name
+	return r.Name
 }
 
-func (p *PostRolesResponseData) GetSlug() *string {
-	if p == nil {
+func (r *RoleResponseData) GetSlug() *string {
+	if r == nil {
 		return nil
 	}
-	return p.Slug
+	return r.Slug
 }
 
-func (p *PostRolesResponseData) GetDescription() *string {
-	if p == nil {
+func (r *RoleResponseData) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return p.Description
+	return r.Description
 }
 
-func (p *PostRolesResponseData) GetColor() *string {
-	if p == nil {
+func (r *RoleResponseData) GetColor() *string {
+	if r == nil {
 		return nil
 	}
-	return p.Color
+	return r.Color
 }
 
-func (p *PostRolesResponseData) GetExtendedData() map[string]interface{} {
-	if p == nil {
+func (r *RoleResponseData) GetExtendedData() map[string]interface{} {
+	if r == nil {
 		return nil
 	}
-	return p.ExtendedData
+	return r.ExtendedData
 }
 
-func (p *PostRolesResponseData) GetID() string {
-	if p == nil {
+func (r *RoleResponseData) GetID() string {
+	if r == nil {
 		return ""
 	}
-	return p.ID
+	return r.ID
 }
 
-func (p *PostRolesResponseData) GetCreatedAt() string {
-	if p == nil {
+func (r *RoleResponseData) GetCreatedAt() string {
+	if r == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return r.CreatedAt
 }
 
-func (p *PostRolesResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (r *RoleResponseData) GetUpdatedAt() string {
+	if r == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (p *PostRolesResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (r *RoleResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
 }
 
-func (p *PostRolesResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (r *RoleResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponseData) SetName(name string) {
-	p.Name = name
-	p.require(postRolesResponseDataFieldName)
+func (r *RoleResponseData) SetName(name string) {
+	r.Name = name
+	r.require(roleResponseDataFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponseData) SetSlug(slug *string) {
-	p.Slug = slug
-	p.require(postRolesResponseDataFieldSlug)
+func (r *RoleResponseData) SetSlug(slug *string) {
+	r.Slug = slug
+	r.require(roleResponseDataFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponseData) SetDescription(description *string) {
-	p.Description = description
-	p.require(postRolesResponseDataFieldDescription)
+func (r *RoleResponseData) SetDescription(description *string) {
+	r.Description = description
+	r.require(roleResponseDataFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponseData) SetColor(color *string) {
-	p.Color = color
-	p.require(postRolesResponseDataFieldColor)
+func (r *RoleResponseData) SetColor(color *string) {
+	r.Color = color
+	r.require(roleResponseDataFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(postRolesResponseDataFieldExtendedData)
+func (r *RoleResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	r.ExtendedData = extendedData
+	r.require(roleResponseDataFieldExtendedData)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponseData) SetID(id string) {
-	p.ID = id
-	p.require(postRolesResponseDataFieldID)
+func (r *RoleResponseData) SetID(id string) {
+	r.ID = id
+	r.require(roleResponseDataFieldID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(postRolesResponseDataFieldCreatedAt)
+func (r *RoleResponseData) SetCreatedAt(createdAt string) {
+	r.CreatedAt = createdAt
+	r.require(roleResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostRolesResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(postRolesResponseDataFieldUpdatedAt)
+func (r *RoleResponseData) SetUpdatedAt(updatedAt string) {
+	r.UpdatedAt = updatedAt
+	r.require(roleResponseDataFieldUpdatedAt)
 }
 
-func (p *PostRolesResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostRolesResponseData
+func (r *RoleResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler RoleResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostRolesResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*r = RoleResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostRolesResponseData) MarshalJSON() ([]byte, error) {
-	type embed PostRolesResponseData
+func (r *RoleResponseData) MarshalJSON() ([]byte, error) {
+	type embed RoleResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostRolesResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (r *RoleResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", r)
+}
+
+type ListRolesRequestSort string
+
+const (
+	ListRolesRequestSortNewest ListRolesRequestSort = "newest"
+	ListRolesRequestSortOldest ListRolesRequestSort = "oldest"
+	ListRolesRequestSortName   ListRolesRequestSort = "name"
+)
+
+func NewListRolesRequestSortFromString(s string) (ListRolesRequestSort, error) {
+	switch s {
+	case "newest":
+		return ListRolesRequestSortNewest, nil
+	case "oldest":
+		return ListRolesRequestSortOldest, nil
+	case "name":
+		return ListRolesRequestSortName, nil
+	}
+	var t ListRolesRequestSort
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListRolesRequestSort) Ptr() *ListRolesRequestSort {
+	return &l
 }
 
 var (
-	patchRolesIDRequestFieldID           = big.NewInt(1 << 0)
-	patchRolesIDRequestFieldName         = big.NewInt(1 << 1)
-	patchRolesIDRequestFieldSlug         = big.NewInt(1 << 2)
-	patchRolesIDRequestFieldDescription  = big.NewInt(1 << 3)
-	patchRolesIDRequestFieldColor        = big.NewInt(1 << 4)
-	patchRolesIDRequestFieldExtendedData = big.NewInt(1 << 5)
+	updateRolesResponseFieldData = big.NewInt(1 << 0)
 )
 
-type PatchRolesIDRequest struct {
+type UpdateRolesResponse struct {
+	Data *UpdateRolesResponseData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateRolesResponse) GetData() *UpdateRolesResponseData {
+	if u == nil {
+		return nil
+	}
+	return u.Data
+}
+
+func (u *UpdateRolesResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateRolesResponse) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponse) SetData(data *UpdateRolesResponseData) {
+	u.Data = data
+	u.require(updateRolesResponseFieldData)
+}
+
+func (u *UpdateRolesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateRolesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateRolesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateRolesResponse) MarshalJSON() ([]byte, error) {
+	type embed UpdateRolesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateRolesResponse) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateRolesResponseDataFieldName         = big.NewInt(1 << 0)
+	updateRolesResponseDataFieldSlug         = big.NewInt(1 << 1)
+	updateRolesResponseDataFieldDescription  = big.NewInt(1 << 2)
+	updateRolesResponseDataFieldColor        = big.NewInt(1 << 3)
+	updateRolesResponseDataFieldExtendedData = big.NewInt(1 << 4)
+	updateRolesResponseDataFieldID           = big.NewInt(1 << 5)
+	updateRolesResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
+	updateRolesResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
+)
+
+type UpdateRolesResponseData struct {
+	// Role name
+	Name string `json:"name" url:"name"`
+	// Role slug (unique identifier)
+	Slug *string `json:"slug,omitempty" url:"slug,omitempty"`
+	// Role description
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Role color hex
+	Color *string `json:"color,omitempty" url:"color,omitempty"`
+	// Extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
+	ID           string                 `json:"id" url:"id"`
+	// Role creation timestamp
+	CreatedAt string `json:"createdAt" url:"createdAt"`
+	// Role last update timestamp
+	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateRolesResponseData) GetName() string {
+	if u == nil {
+		return ""
+	}
+	return u.Name
+}
+
+func (u *UpdateRolesResponseData) GetSlug() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Slug
+}
+
+func (u *UpdateRolesResponseData) GetDescription() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Description
+}
+
+func (u *UpdateRolesResponseData) GetColor() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Color
+}
+
+func (u *UpdateRolesResponseData) GetExtendedData() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
+	return u.ExtendedData
+}
+
+func (u *UpdateRolesResponseData) GetID() string {
+	if u == nil {
+		return ""
+	}
+	return u.ID
+}
+
+func (u *UpdateRolesResponseData) GetCreatedAt() string {
+	if u == nil {
+		return ""
+	}
+	return u.CreatedAt
+}
+
+func (u *UpdateRolesResponseData) GetUpdatedAt() string {
+	if u == nil {
+		return ""
+	}
+	return u.UpdatedAt
+}
+
+func (u *UpdateRolesResponseData) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateRolesResponseData) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponseData) SetName(name string) {
+	u.Name = name
+	u.require(updateRolesResponseDataFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponseData) SetSlug(slug *string) {
+	u.Slug = slug
+	u.require(updateRolesResponseDataFieldSlug)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponseData) SetDescription(description *string) {
+	u.Description = description
+	u.require(updateRolesResponseDataFieldDescription)
+}
+
+// SetColor sets the Color field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponseData) SetColor(color *string) {
+	u.Color = color
+	u.require(updateRolesResponseDataFieldColor)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateRolesResponseDataFieldExtendedData)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponseData) SetID(id string) {
+	u.ID = id
+	u.require(updateRolesResponseDataFieldID)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponseData) SetCreatedAt(createdAt string) {
+	u.CreatedAt = createdAt
+	u.require(updateRolesResponseDataFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateRolesResponseData) SetUpdatedAt(updatedAt string) {
+	u.UpdatedAt = updatedAt
+	u.require(updateRolesResponseDataFieldUpdatedAt)
+}
+
+func (u *UpdateRolesResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateRolesResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateRolesResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateRolesResponseData) MarshalJSON() ([]byte, error) {
+	type embed UpdateRolesResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateRolesResponseData) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateRolesRequestFieldID           = big.NewInt(1 << 0)
+	updateRolesRequestFieldName         = big.NewInt(1 << 1)
+	updateRolesRequestFieldSlug         = big.NewInt(1 << 2)
+	updateRolesRequestFieldDescription  = big.NewInt(1 << 3)
+	updateRolesRequestFieldColor        = big.NewInt(1 << 4)
+	updateRolesRequestFieldExtendedData = big.NewInt(1 << 5)
+)
+
+type UpdateRolesRequest struct {
+	// Role ID
 	ID string `json:"-" url:"-"`
 	// Role name
 	Name *string `json:"name,omitempty" url:"-"`
@@ -1498,51 +1172,51 @@ type PatchRolesIDRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PatchRolesIDRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateRolesRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDRequest) SetID(id string) {
-	p.ID = id
-	p.require(patchRolesIDRequestFieldID)
+func (u *UpdateRolesRequest) SetID(id string) {
+	u.ID = id
+	u.require(updateRolesRequestFieldID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDRequest) SetName(name *string) {
-	p.Name = name
-	p.require(patchRolesIDRequestFieldName)
+func (u *UpdateRolesRequest) SetName(name *string) {
+	u.Name = name
+	u.require(updateRolesRequestFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDRequest) SetSlug(slug *string) {
-	p.Slug = slug
-	p.require(patchRolesIDRequestFieldSlug)
+func (u *UpdateRolesRequest) SetSlug(slug *string) {
+	u.Slug = slug
+	u.require(updateRolesRequestFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDRequest) SetDescription(description *string) {
-	p.Description = description
-	p.require(patchRolesIDRequestFieldDescription)
+func (u *UpdateRolesRequest) SetDescription(description *string) {
+	u.Description = description
+	u.require(updateRolesRequestFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDRequest) SetColor(color *string) {
-	p.Color = color
-	p.require(patchRolesIDRequestFieldColor)
+func (u *UpdateRolesRequest) SetColor(color *string) {
+	u.Color = color
+	u.require(updateRolesRequestFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchRolesIDRequest) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(patchRolesIDRequestFieldExtendedData)
+func (u *UpdateRolesRequest) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateRolesRequestFieldExtendedData)
 }

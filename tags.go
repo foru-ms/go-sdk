@@ -10,14 +10,14 @@ import (
 )
 
 var (
-	postTagsRequestFieldName         = big.NewInt(1 << 0)
-	postTagsRequestFieldSlug         = big.NewInt(1 << 1)
-	postTagsRequestFieldDescription  = big.NewInt(1 << 2)
-	postTagsRequestFieldColor        = big.NewInt(1 << 3)
-	postTagsRequestFieldExtendedData = big.NewInt(1 << 4)
+	createTagsRequestFieldName         = big.NewInt(1 << 0)
+	createTagsRequestFieldSlug         = big.NewInt(1 << 1)
+	createTagsRequestFieldDescription  = big.NewInt(1 << 2)
+	createTagsRequestFieldColor        = big.NewInt(1 << 3)
+	createTagsRequestFieldExtendedData = big.NewInt(1 << 4)
 )
 
-type PostTagsRequest struct {
+type CreateTagsRequest struct {
 	// Tag name
 	Name string `json:"name" url:"-"`
 	// Tag slug (unique identifier)
@@ -33,54 +33,80 @@ type PostTagsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PostTagsRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (c *CreateTagsRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsRequest) SetName(name string) {
-	p.Name = name
-	p.require(postTagsRequestFieldName)
+func (c *CreateTagsRequest) SetName(name string) {
+	c.Name = name
+	c.require(createTagsRequestFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsRequest) SetSlug(slug *string) {
-	p.Slug = slug
-	p.require(postTagsRequestFieldSlug)
+func (c *CreateTagsRequest) SetSlug(slug *string) {
+	c.Slug = slug
+	c.require(createTagsRequestFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsRequest) SetDescription(description *string) {
-	p.Description = description
-	p.require(postTagsRequestFieldDescription)
+func (c *CreateTagsRequest) SetDescription(description *string) {
+	c.Description = description
+	c.require(createTagsRequestFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsRequest) SetColor(color *string) {
-	p.Color = color
-	p.require(postTagsRequestFieldColor)
+func (c *CreateTagsRequest) SetColor(color *string) {
+	c.Color = color
+	c.require(createTagsRequestFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsRequest) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(postTagsRequestFieldExtendedData)
+func (c *CreateTagsRequest) SetExtendedData(extendedData map[string]interface{}) {
+	c.ExtendedData = extendedData
+	c.require(createTagsRequestFieldExtendedData)
 }
 
 var (
-	deleteTagsIDSubscribersSubIDRequestFieldID    = big.NewInt(1 << 0)
-	deleteTagsIDSubscribersSubIDRequestFieldSubID = big.NewInt(1 << 1)
+	deleteTagsRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeleteTagsIDSubscribersSubIDRequest struct {
+type DeleteTagsRequest struct {
+	// Tag ID
+	ID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (d *DeleteTagsRequest) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteTagsRequest) SetID(id string) {
+	d.ID = id
+	d.require(deleteTagsRequestFieldID)
+}
+
+var (
+	deleteSubscriberTagsRequestFieldID    = big.NewInt(1 << 0)
+	deleteSubscriberTagsRequestFieldSubID = big.NewInt(1 << 1)
+)
+
+type DeleteSubscriberTagsRequest struct {
 	// Tag ID
 	ID string `json:"-" url:"-"`
 	// Subscriber ID
@@ -90,7 +116,7 @@ type DeleteTagsIDSubscribersSubIDRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeleteTagsIDSubscribersSubIDRequest) require(field *big.Int) {
+func (d *DeleteSubscriberTagsRequest) require(field *big.Int) {
 	if d.explicitFields == nil {
 		d.explicitFields = big.NewInt(0)
 	}
@@ -99,630 +125,178 @@ func (d *DeleteTagsIDSubscribersSubIDRequest) require(field *big.Int) {
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteTagsIDSubscribersSubIDRequest) SetID(id string) {
+func (d *DeleteSubscriberTagsRequest) SetID(id string) {
 	d.ID = id
-	d.require(deleteTagsIDSubscribersSubIDRequestFieldID)
+	d.require(deleteSubscriberTagsRequestFieldID)
 }
 
 // SetSubID sets the SubID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteTagsIDSubscribersSubIDRequest) SetSubID(subID string) {
+func (d *DeleteSubscriberTagsRequest) SetSubID(subID string) {
 	d.SubID = subID
-	d.require(deleteTagsIDSubscribersSubIDRequestFieldSubID)
+	d.require(deleteSubscriberTagsRequestFieldSubID)
 }
 
 var (
-	deleteTagsIDRequestFieldID = big.NewInt(1 << 0)
+	listTagsRequestFieldLimit  = big.NewInt(1 << 0)
+	listTagsRequestFieldCursor = big.NewInt(1 << 1)
+	listTagsRequestFieldSearch = big.NewInt(1 << 2)
 )
 
-type DeleteTagsIDRequest struct {
-	ID string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (d *DeleteTagsIDRequest) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteTagsIDRequest) SetID(id string) {
-	d.ID = id
-	d.require(deleteTagsIDRequestFieldID)
-}
-
-var (
-	getTagsIDSubscribersSubIDRequestFieldID    = big.NewInt(1 << 0)
-	getTagsIDSubscribersSubIDRequestFieldSubID = big.NewInt(1 << 1)
-)
-
-type GetTagsIDSubscribersSubIDRequest struct {
-	// Tag ID
-	ID string `json:"-" url:"-"`
-	// Subscriber ID
-	SubID string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetTagsIDSubscribersSubIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersSubIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getTagsIDSubscribersSubIDRequestFieldID)
-}
-
-// SetSubID sets the SubID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersSubIDRequest) SetSubID(subID string) {
-	g.SubID = subID
-	g.require(getTagsIDSubscribersSubIDRequestFieldSubID)
-}
-
-var (
-	getTagsIDRequestFieldID = big.NewInt(1 << 0)
-)
-
-type GetTagsIDRequest struct {
-	ID string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetTagsIDRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDRequest) SetID(id string) {
-	g.ID = id
-	g.require(getTagsIDRequestFieldID)
-}
-
-var (
-	getTagsRequestFieldPage   = big.NewInt(1 << 0)
-	getTagsRequestFieldLimit  = big.NewInt(1 << 1)
-	getTagsRequestFieldSearch = big.NewInt(1 << 2)
-)
-
-type GetTagsRequest struct {
-	Page   *int    `json:"-" url:"page,omitempty"`
-	Limit  *int    `json:"-" url:"limit,omitempty"`
+type ListTagsRequest struct {
+	// Items per page (max 75)
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Cursor for pagination
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// Search tags by name or description
 	Search *string `json:"-" url:"search,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetTagsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *ListTagsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getTagsRequestFieldPage)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getTagsRequestFieldLimit)
-}
-
-// SetSearch sets the Search field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsRequest) SetSearch(search *string) {
-	g.Search = search
-	g.require(getTagsRequestFieldSearch)
-}
-
-var (
-	getTagsIDSubscribersRequestFieldID     = big.NewInt(1 << 0)
-	getTagsIDSubscribersRequestFieldCursor = big.NewInt(1 << 1)
-	getTagsIDSubscribersRequestFieldLimit  = big.NewInt(1 << 2)
-)
-
-type GetTagsIDSubscribersRequest struct {
-	// Tag ID
-	ID string `json:"-" url:"-"`
-	// Pagination cursor
-	Cursor *string `json:"-" url:"cursor,omitempty"`
-	// Items per page
-	Limit *int `json:"-" url:"limit,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetTagsIDSubscribersRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersRequest) SetID(id string) {
-	g.ID = id
-	g.require(getTagsIDSubscribersRequestFieldID)
+func (l *ListTagsRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listTagsRequestFieldLimit)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersRequest) SetCursor(cursor *string) {
-	g.Cursor = cursor
-	g.require(getTagsIDSubscribersRequestFieldCursor)
+func (l *ListTagsRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listTagsRequestFieldCursor)
 }
 
-// SetLimit sets the Limit field and marks it as non-optional;
+// SetSearch sets the Search field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getTagsIDSubscribersRequestFieldLimit)
+func (l *ListTagsRequest) SetSearch(search *string) {
+	l.Search = search
+	l.require(listTagsRequestFieldSearch)
 }
 
 var (
-	deleteTagsIDResponseFieldSuccess = big.NewInt(1 << 0)
+	listSubscribersTagsRequestFieldID     = big.NewInt(1 << 0)
+	listSubscribersTagsRequestFieldLimit  = big.NewInt(1 << 1)
+	listSubscribersTagsRequestFieldCursor = big.NewInt(1 << 2)
 )
 
-type DeleteTagsIDResponse struct {
-	Success bool `json:"success" url:"success"`
+type ListSubscribersTagsRequest struct {
+	// Tag ID
+	ID string `json:"-" url:"-"`
+	// Items per page (max 75)
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Cursor for pagination
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
 }
 
-func (d *DeleteTagsIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
+func (l *ListSubscribersTagsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	return d.Success
-}
-
-func (d *DeleteTagsIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeleteTagsIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteTagsIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deleteTagsIDResponseFieldSuccess)
-}
-
-func (d *DeleteTagsIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteTagsIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteTagsIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteTagsIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteTagsIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteTagsIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	deleteTagsIDSubscribersSubIDResponseFieldSuccess = big.NewInt(1 << 0)
-)
-
-type DeleteTagsIDSubscribersSubIDResponse struct {
-	Success bool `json:"success" url:"success"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (d *DeleteTagsIDSubscribersSubIDResponse) GetSuccess() bool {
-	if d == nil {
-		return false
-	}
-	return d.Success
-}
-
-func (d *DeleteTagsIDSubscribersSubIDResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeleteTagsIDSubscribersSubIDResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteTagsIDSubscribersSubIDResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deleteTagsIDSubscribersSubIDResponseFieldSuccess)
-}
-
-func (d *DeleteTagsIDSubscribersSubIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteTagsIDSubscribersSubIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteTagsIDSubscribersSubIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteTagsIDSubscribersSubIDResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteTagsIDSubscribersSubIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteTagsIDSubscribersSubIDResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	getTagsIDResponseFieldData = big.NewInt(1 << 0)
-)
-
-type GetTagsIDResponse struct {
-	Data *GetTagsIDResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetTagsIDResponse) GetData() *GetTagsIDResponseData {
-	if g == nil {
-		return nil
-	}
-	return g.Data
-}
-
-func (g *GetTagsIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetTagsIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponse) SetData(data *GetTagsIDResponseData) {
-	g.Data = data
-	g.require(getTagsIDResponseFieldData)
-}
-
-func (g *GetTagsIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetTagsIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetTagsIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetTagsIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetTagsIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getTagsIDResponseDataFieldName         = big.NewInt(1 << 0)
-	getTagsIDResponseDataFieldSlug         = big.NewInt(1 << 1)
-	getTagsIDResponseDataFieldDescription  = big.NewInt(1 << 2)
-	getTagsIDResponseDataFieldColor        = big.NewInt(1 << 3)
-	getTagsIDResponseDataFieldExtendedData = big.NewInt(1 << 4)
-	getTagsIDResponseDataFieldID           = big.NewInt(1 << 5)
-	getTagsIDResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
-	getTagsIDResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
-)
-
-type GetTagsIDResponseData struct {
-	// Tag name
-	Name string `json:"name" url:"name"`
-	// Tag slug (unique identifier)
-	Slug *string `json:"slug,omitempty" url:"slug,omitempty"`
-	// Tag description
-	Description *string `json:"description,omitempty" url:"description,omitempty"`
-	// Hex color code
-	Color *string `json:"color,omitempty" url:"color,omitempty"`
-	// Extended data
-	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
-	ID           string                 `json:"id" url:"id"`
-	// Tag creation timestamp
-	CreatedAt string `json:"createdAt" url:"createdAt"`
-	// Tag last update timestamp
-	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetTagsIDResponseData) GetName() string {
-	if g == nil {
-		return ""
-	}
-	return g.Name
-}
-
-func (g *GetTagsIDResponseData) GetSlug() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Slug
-}
-
-func (g *GetTagsIDResponseData) GetDescription() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Description
-}
-
-func (g *GetTagsIDResponseData) GetColor() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Color
-}
-
-func (g *GetTagsIDResponseData) GetExtendedData() map[string]interface{} {
-	if g == nil {
-		return nil
-	}
-	return g.ExtendedData
-}
-
-func (g *GetTagsIDResponseData) GetID() string {
-	if g == nil {
-		return ""
-	}
-	return g.ID
-}
-
-func (g *GetTagsIDResponseData) GetCreatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.CreatedAt
-}
-
-func (g *GetTagsIDResponseData) GetUpdatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.UpdatedAt
-}
-
-func (g *GetTagsIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetTagsIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponseData) SetName(name string) {
-	g.Name = name
-	g.require(getTagsIDResponseDataFieldName)
-}
-
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponseData) SetSlug(slug *string) {
-	g.Slug = slug
-	g.require(getTagsIDResponseDataFieldSlug)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponseData) SetDescription(description *string) {
-	g.Description = description
-	g.require(getTagsIDResponseDataFieldDescription)
-}
-
-// SetColor sets the Color field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponseData) SetColor(color *string) {
-	g.Color = color
-	g.require(getTagsIDResponseDataFieldColor)
-}
-
-// SetExtendedData sets the ExtendedData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	g.ExtendedData = extendedData
-	g.require(getTagsIDResponseDataFieldExtendedData)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponseData) SetID(id string) {
-	g.ID = id
-	g.require(getTagsIDResponseDataFieldID)
+func (l *ListSubscribersTagsRequest) SetID(id string) {
+	l.ID = id
+	l.require(listSubscribersTagsRequestFieldID)
 }
 
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponseData) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getTagsIDResponseDataFieldCreatedAt)
+func (l *ListSubscribersTagsRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listSubscribersTagsRequestFieldLimit)
 }
 
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDResponseData) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getTagsIDResponseDataFieldUpdatedAt)
-}
-
-func (g *GetTagsIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsIDResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetTagsIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetTagsIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetTagsIDResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetTagsIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
+func (l *ListSubscribersTagsRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listSubscribersTagsRequestFieldCursor)
 }
 
 var (
-	getTagsIDSubscribersResponseFieldData = big.NewInt(1 << 0)
+	retrieveTagsRequestFieldID = big.NewInt(1 << 0)
 )
 
-type GetTagsIDSubscribersResponse struct {
-	Data *GetTagsIDSubscribersResponseData `json:"data" url:"data"`
+type RetrieveTagsRequest struct {
+	// Tag ID
+	ID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RetrieveTagsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveTagsRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveTagsRequestFieldID)
+}
+
+var (
+	retrieveSubscriberTagsRequestFieldID    = big.NewInt(1 << 0)
+	retrieveSubscriberTagsRequestFieldSubID = big.NewInt(1 << 1)
+)
+
+type RetrieveSubscriberTagsRequest struct {
+	// Tag ID
+	ID string `json:"-" url:"-"`
+	// Subscriber ID
+	SubID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RetrieveSubscriberTagsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveSubscriberTagsRequestFieldID)
+}
+
+// SetSubID sets the SubID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsRequest) SetSubID(subID string) {
+	r.SubID = subID
+	r.require(retrieveSubscriberTagsRequestFieldSubID)
+}
+
+var (
+	tagListResponseFieldData = big.NewInt(1 << 0)
+)
+
+type TagListResponse struct {
+	Data *TagListResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -731,80 +305,82 @@ type GetTagsIDSubscribersResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetTagsIDSubscribersResponse) GetData() *GetTagsIDSubscribersResponseData {
-	if g == nil {
+func (t *TagListResponse) GetData() *TagListResponseData {
+	if t == nil {
 		return nil
 	}
-	return g.Data
+	return t.Data
 }
 
-func (g *GetTagsIDSubscribersResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (t *TagListResponse) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
 }
 
-func (g *GetTagsIDSubscribersResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (t *TagListResponse) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersResponse) SetData(data *GetTagsIDSubscribersResponseData) {
-	g.Data = data
-	g.require(getTagsIDSubscribersResponseFieldData)
+func (t *TagListResponse) SetData(data *TagListResponseData) {
+	t.Data = data
+	t.require(tagListResponseFieldData)
 }
 
-func (g *GetTagsIDSubscribersResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsIDSubscribersResponse
+func (t *TagListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetTagsIDSubscribersResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*t = TagListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetTagsIDSubscribersResponse) MarshalJSON() ([]byte, error) {
-	type embed GetTagsIDSubscribersResponse
+func (t *TagListResponse) MarshalJSON() ([]byte, error) {
+	type embed TagListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*t),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetTagsIDSubscribersResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (t *TagListResponse) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", t)
 }
 
 var (
-	getTagsIDSubscribersResponseDataFieldItems      = big.NewInt(1 << 0)
-	getTagsIDSubscribersResponseDataFieldNextCursor = big.NewInt(1 << 1)
-	getTagsIDSubscribersResponseDataFieldCount      = big.NewInt(1 << 2)
+	tagListResponseDataFieldItems      = big.NewInt(1 << 0)
+	tagListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	tagListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type GetTagsIDSubscribersResponseData struct {
-	Items      []*GetTagsIDSubscribersResponseDataItemsItem `json:"items" url:"items"`
-	NextCursor *string                                      `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
-	Count      int                                          `json:"count" url:"count"`
+type TagListResponseData struct {
+	Items []*TagListResponseDataItemsItem `json:"items" url:"items"`
+	// Cursor for next page
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	// Total count of items
+	Count int `json:"count" url:"count"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -813,400 +389,110 @@ type GetTagsIDSubscribersResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetTagsIDSubscribersResponseData) GetItems() []*GetTagsIDSubscribersResponseDataItemsItem {
-	if g == nil {
+func (t *TagListResponseData) GetItems() []*TagListResponseDataItemsItem {
+	if t == nil {
 		return nil
 	}
-	return g.Items
+	return t.Items
 }
 
-func (g *GetTagsIDSubscribersResponseData) GetNextCursor() *string {
-	if g == nil {
+func (t *TagListResponseData) GetNextCursor() *string {
+	if t == nil {
 		return nil
 	}
-	return g.NextCursor
+	return t.NextCursor
 }
 
-func (g *GetTagsIDSubscribersResponseData) GetCount() int {
-	if g == nil {
+func (t *TagListResponseData) GetCount() int {
+	if t == nil {
 		return 0
 	}
-	return g.Count
+	return t.Count
 }
 
-func (g *GetTagsIDSubscribersResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (t *TagListResponseData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
 }
 
-func (g *GetTagsIDSubscribersResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (t *TagListResponseData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetItems sets the Items field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersResponseData) SetItems(items []*GetTagsIDSubscribersResponseDataItemsItem) {
-	g.Items = items
-	g.require(getTagsIDSubscribersResponseDataFieldItems)
+func (t *TagListResponseData) SetItems(items []*TagListResponseDataItemsItem) {
+	t.Items = items
+	t.require(tagListResponseDataFieldItems)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersResponseData) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(getTagsIDSubscribersResponseDataFieldNextCursor)
+func (t *TagListResponseData) SetNextCursor(nextCursor *string) {
+	t.NextCursor = nextCursor
+	t.require(tagListResponseDataFieldNextCursor)
 }
 
 // SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersResponseData) SetCount(count int) {
-	g.Count = count
-	g.require(getTagsIDSubscribersResponseDataFieldCount)
+func (t *TagListResponseData) SetCount(count int) {
+	t.Count = count
+	t.require(tagListResponseDataFieldCount)
 }
 
-func (g *GetTagsIDSubscribersResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsIDSubscribersResponseData
+func (t *TagListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagListResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetTagsIDSubscribersResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*t = TagListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetTagsIDSubscribersResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetTagsIDSubscribersResponseData
+func (t *TagListResponseData) MarshalJSON() ([]byte, error) {
+	type embed TagListResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*t),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetTagsIDSubscribersResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (t *TagListResponseData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
-}
-
-type GetTagsIDSubscribersResponseDataItemsItem struct {
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetTagsIDSubscribersResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetTagsIDSubscribersResponseDataItemsItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-func (g *GetTagsIDSubscribersResponseDataItemsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsIDSubscribersResponseDataItemsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetTagsIDSubscribersResponseDataItemsItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetTagsIDSubscribersResponseDataItemsItem) MarshalJSON() ([]byte, error) {
-	type embed GetTagsIDSubscribersResponseDataItemsItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetTagsIDSubscribersResponseDataItemsItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", t)
 }
 
 var (
-	getTagsIDSubscribersSubIDResponseFieldData = big.NewInt(1 << 0)
+	tagListResponseDataItemsItemFieldName         = big.NewInt(1 << 0)
+	tagListResponseDataItemsItemFieldSlug         = big.NewInt(1 << 1)
+	tagListResponseDataItemsItemFieldDescription  = big.NewInt(1 << 2)
+	tagListResponseDataItemsItemFieldColor        = big.NewInt(1 << 3)
+	tagListResponseDataItemsItemFieldExtendedData = big.NewInt(1 << 4)
+	tagListResponseDataItemsItemFieldID           = big.NewInt(1 << 5)
+	tagListResponseDataItemsItemFieldCreatedAt    = big.NewInt(1 << 6)
+	tagListResponseDataItemsItemFieldUpdatedAt    = big.NewInt(1 << 7)
 )
 
-type GetTagsIDSubscribersSubIDResponse struct {
-	Data *GetTagsIDSubscribersSubIDResponseData `json:"data" url:"data"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetTagsIDSubscribersSubIDResponse) GetData() *GetTagsIDSubscribersSubIDResponseData {
-	if g == nil {
-		return nil
-	}
-	return g.Data
-}
-
-func (g *GetTagsIDSubscribersSubIDResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetTagsIDSubscribersSubIDResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsIDSubscribersSubIDResponse) SetData(data *GetTagsIDSubscribersSubIDResponseData) {
-	g.Data = data
-	g.require(getTagsIDSubscribersSubIDResponseFieldData)
-}
-
-func (g *GetTagsIDSubscribersSubIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsIDSubscribersSubIDResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetTagsIDSubscribersSubIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetTagsIDSubscribersSubIDResponse) MarshalJSON() ([]byte, error) {
-	type embed GetTagsIDSubscribersSubIDResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetTagsIDSubscribersSubIDResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-type GetTagsIDSubscribersSubIDResponseData struct {
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetTagsIDSubscribersSubIDResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetTagsIDSubscribersSubIDResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-func (g *GetTagsIDSubscribersSubIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsIDSubscribersSubIDResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetTagsIDSubscribersSubIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetTagsIDSubscribersSubIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetTagsIDSubscribersSubIDResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetTagsIDSubscribersSubIDResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getTagsResponseFieldData = big.NewInt(1 << 0)
-	getTagsResponseFieldMeta = big.NewInt(1 << 1)
-)
-
-type GetTagsResponse struct {
-	Data []*GetTagsResponseDataItem `json:"data" url:"data"`
-	Meta *GetTagsResponseMeta       `json:"meta" url:"meta"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetTagsResponse) GetData() []*GetTagsResponseDataItem {
-	if g == nil {
-		return nil
-	}
-	return g.Data
-}
-
-func (g *GetTagsResponse) GetMeta() *GetTagsResponseMeta {
-	if g == nil {
-		return nil
-	}
-	return g.Meta
-}
-
-func (g *GetTagsResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetTagsResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponse) SetData(data []*GetTagsResponseDataItem) {
-	g.Data = data
-	g.require(getTagsResponseFieldData)
-}
-
-// SetMeta sets the Meta field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponse) SetMeta(meta *GetTagsResponseMeta) {
-	g.Meta = meta
-	g.require(getTagsResponseFieldMeta)
-}
-
-func (g *GetTagsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetTagsResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetTagsResponse) MarshalJSON() ([]byte, error) {
-	type embed GetTagsResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetTagsResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getTagsResponseDataItemFieldName         = big.NewInt(1 << 0)
-	getTagsResponseDataItemFieldSlug         = big.NewInt(1 << 1)
-	getTagsResponseDataItemFieldDescription  = big.NewInt(1 << 2)
-	getTagsResponseDataItemFieldColor        = big.NewInt(1 << 3)
-	getTagsResponseDataItemFieldExtendedData = big.NewInt(1 << 4)
-	getTagsResponseDataItemFieldID           = big.NewInt(1 << 5)
-	getTagsResponseDataItemFieldCreatedAt    = big.NewInt(1 << 6)
-	getTagsResponseDataItemFieldUpdatedAt    = big.NewInt(1 << 7)
-)
-
-type GetTagsResponseDataItem struct {
+type TagListResponseDataItemsItem struct {
 	// Tag name
 	Name string `json:"name" url:"name"`
 	// Tag slug (unique identifier)
@@ -1230,178 +516,174 @@ type GetTagsResponseDataItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetTagsResponseDataItem) GetName() string {
-	if g == nil {
+func (t *TagListResponseDataItemsItem) GetName() string {
+	if t == nil {
 		return ""
 	}
-	return g.Name
+	return t.Name
 }
 
-func (g *GetTagsResponseDataItem) GetSlug() *string {
-	if g == nil {
+func (t *TagListResponseDataItemsItem) GetSlug() *string {
+	if t == nil {
 		return nil
 	}
-	return g.Slug
+	return t.Slug
 }
 
-func (g *GetTagsResponseDataItem) GetDescription() *string {
-	if g == nil {
+func (t *TagListResponseDataItemsItem) GetDescription() *string {
+	if t == nil {
 		return nil
 	}
-	return g.Description
+	return t.Description
 }
 
-func (g *GetTagsResponseDataItem) GetColor() *string {
-	if g == nil {
+func (t *TagListResponseDataItemsItem) GetColor() *string {
+	if t == nil {
 		return nil
 	}
-	return g.Color
+	return t.Color
 }
 
-func (g *GetTagsResponseDataItem) GetExtendedData() map[string]interface{} {
-	if g == nil {
+func (t *TagListResponseDataItemsItem) GetExtendedData() map[string]interface{} {
+	if t == nil {
 		return nil
 	}
-	return g.ExtendedData
+	return t.ExtendedData
 }
 
-func (g *GetTagsResponseDataItem) GetID() string {
-	if g == nil {
+func (t *TagListResponseDataItemsItem) GetID() string {
+	if t == nil {
 		return ""
 	}
-	return g.ID
+	return t.ID
 }
 
-func (g *GetTagsResponseDataItem) GetCreatedAt() string {
-	if g == nil {
+func (t *TagListResponseDataItemsItem) GetCreatedAt() string {
+	if t == nil {
 		return ""
 	}
-	return g.CreatedAt
+	return t.CreatedAt
 }
 
-func (g *GetTagsResponseDataItem) GetUpdatedAt() string {
-	if g == nil {
+func (t *TagListResponseDataItemsItem) GetUpdatedAt() string {
+	if t == nil {
 		return ""
 	}
-	return g.UpdatedAt
+	return t.UpdatedAt
 }
 
-func (g *GetTagsResponseDataItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (t *TagListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
 }
 
-func (g *GetTagsResponseDataItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (t *TagListResponseDataItemsItem) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseDataItem) SetName(name string) {
-	g.Name = name
-	g.require(getTagsResponseDataItemFieldName)
+func (t *TagListResponseDataItemsItem) SetName(name string) {
+	t.Name = name
+	t.require(tagListResponseDataItemsItemFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseDataItem) SetSlug(slug *string) {
-	g.Slug = slug
-	g.require(getTagsResponseDataItemFieldSlug)
+func (t *TagListResponseDataItemsItem) SetSlug(slug *string) {
+	t.Slug = slug
+	t.require(tagListResponseDataItemsItemFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseDataItem) SetDescription(description *string) {
-	g.Description = description
-	g.require(getTagsResponseDataItemFieldDescription)
+func (t *TagListResponseDataItemsItem) SetDescription(description *string) {
+	t.Description = description
+	t.require(tagListResponseDataItemsItemFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseDataItem) SetColor(color *string) {
-	g.Color = color
-	g.require(getTagsResponseDataItemFieldColor)
+func (t *TagListResponseDataItemsItem) SetColor(color *string) {
+	t.Color = color
+	t.require(tagListResponseDataItemsItemFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseDataItem) SetExtendedData(extendedData map[string]interface{}) {
-	g.ExtendedData = extendedData
-	g.require(getTagsResponseDataItemFieldExtendedData)
+func (t *TagListResponseDataItemsItem) SetExtendedData(extendedData map[string]interface{}) {
+	t.ExtendedData = extendedData
+	t.require(tagListResponseDataItemsItemFieldExtendedData)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseDataItem) SetID(id string) {
-	g.ID = id
-	g.require(getTagsResponseDataItemFieldID)
+func (t *TagListResponseDataItemsItem) SetID(id string) {
+	t.ID = id
+	t.require(tagListResponseDataItemsItemFieldID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseDataItem) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getTagsResponseDataItemFieldCreatedAt)
+func (t *TagListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	t.CreatedAt = createdAt
+	t.require(tagListResponseDataItemsItemFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseDataItem) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getTagsResponseDataItemFieldUpdatedAt)
+func (t *TagListResponseDataItemsItem) SetUpdatedAt(updatedAt string) {
+	t.UpdatedAt = updatedAt
+	t.require(tagListResponseDataItemsItemFieldUpdatedAt)
 }
 
-func (g *GetTagsResponseDataItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsResponseDataItem
+func (t *TagListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagListResponseDataItemsItem
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetTagsResponseDataItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*t = TagListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetTagsResponseDataItem) MarshalJSON() ([]byte, error) {
-	type embed GetTagsResponseDataItem
+func (t *TagListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed TagListResponseDataItemsItem
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*t),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetTagsResponseDataItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (t *TagListResponseDataItemsItem) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", t)
 }
 
 var (
-	getTagsResponseMetaFieldTotal = big.NewInt(1 << 0)
-	getTagsResponseMetaFieldPage  = big.NewInt(1 << 1)
-	getTagsResponseMetaFieldLimit = big.NewInt(1 << 2)
+	tagResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetTagsResponseMeta struct {
-	Total int `json:"total" url:"total"`
-	Page  int `json:"page" url:"page"`
-	Limit int `json:"limit" url:"limit"`
+type TagResponse struct {
+	Data *TagResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1410,188 +692,82 @@ type GetTagsResponseMeta struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetTagsResponseMeta) GetTotal() int {
-	if g == nil {
-		return 0
-	}
-	return g.Total
-}
-
-func (g *GetTagsResponseMeta) GetPage() int {
-	if g == nil {
-		return 0
-	}
-	return g.Page
-}
-
-func (g *GetTagsResponseMeta) GetLimit() int {
-	if g == nil {
-		return 0
-	}
-	return g.Limit
-}
-
-func (g *GetTagsResponseMeta) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetTagsResponseMeta) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTotal sets the Total field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseMeta) SetTotal(total int) {
-	g.Total = total
-	g.require(getTagsResponseMetaFieldTotal)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseMeta) SetPage(page int) {
-	g.Page = page
-	g.require(getTagsResponseMetaFieldPage)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTagsResponseMeta) SetLimit(limit int) {
-	g.Limit = limit
-	g.require(getTagsResponseMetaFieldLimit)
-}
-
-func (g *GetTagsResponseMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetTagsResponseMeta
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetTagsResponseMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetTagsResponseMeta) MarshalJSON() ([]byte, error) {
-	type embed GetTagsResponseMeta
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetTagsResponseMeta) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	patchTagsIDResponseFieldData = big.NewInt(1 << 0)
-)
-
-type PatchTagsIDResponse struct {
-	Data *PatchTagsIDResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PatchTagsIDResponse) GetData() *PatchTagsIDResponseData {
-	if p == nil {
+func (t *TagResponse) GetData() *TagResponseData {
+	if t == nil {
 		return nil
 	}
-	return p.Data
+	return t.Data
 }
 
-func (p *PatchTagsIDResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (t *TagResponse) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
 }
 
-func (p *PatchTagsIDResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (t *TagResponse) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponse) SetData(data *PatchTagsIDResponseData) {
-	p.Data = data
-	p.require(patchTagsIDResponseFieldData)
+func (t *TagResponse) SetData(data *TagResponseData) {
+	t.Data = data
+	t.require(tagResponseFieldData)
 }
 
-func (p *PatchTagsIDResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchTagsIDResponse
+func (t *TagResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PatchTagsIDResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*t = TagResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PatchTagsIDResponse) MarshalJSON() ([]byte, error) {
-	type embed PatchTagsIDResponse
+func (t *TagResponse) MarshalJSON() ([]byte, error) {
+	type embed TagResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*t),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PatchTagsIDResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (t *TagResponse) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", t)
 }
 
 var (
-	patchTagsIDResponseDataFieldName         = big.NewInt(1 << 0)
-	patchTagsIDResponseDataFieldSlug         = big.NewInt(1 << 1)
-	patchTagsIDResponseDataFieldDescription  = big.NewInt(1 << 2)
-	patchTagsIDResponseDataFieldColor        = big.NewInt(1 << 3)
-	patchTagsIDResponseDataFieldExtendedData = big.NewInt(1 << 4)
-	patchTagsIDResponseDataFieldID           = big.NewInt(1 << 5)
-	patchTagsIDResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
-	patchTagsIDResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
+	tagResponseDataFieldName         = big.NewInt(1 << 0)
+	tagResponseDataFieldSlug         = big.NewInt(1 << 1)
+	tagResponseDataFieldDescription  = big.NewInt(1 << 2)
+	tagResponseDataFieldColor        = big.NewInt(1 << 3)
+	tagResponseDataFieldExtendedData = big.NewInt(1 << 4)
+	tagResponseDataFieldID           = big.NewInt(1 << 5)
+	tagResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
+	tagResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
 )
 
-type PatchTagsIDResponseData struct {
+type TagResponseData struct {
 	// Tag name
 	Name string `json:"name" url:"name"`
 	// Tag slug (unique identifier)
@@ -1615,174 +791,174 @@ type PatchTagsIDResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PatchTagsIDResponseData) GetName() string {
-	if p == nil {
+func (t *TagResponseData) GetName() string {
+	if t == nil {
 		return ""
 	}
-	return p.Name
+	return t.Name
 }
 
-func (p *PatchTagsIDResponseData) GetSlug() *string {
-	if p == nil {
+func (t *TagResponseData) GetSlug() *string {
+	if t == nil {
 		return nil
 	}
-	return p.Slug
+	return t.Slug
 }
 
-func (p *PatchTagsIDResponseData) GetDescription() *string {
-	if p == nil {
+func (t *TagResponseData) GetDescription() *string {
+	if t == nil {
 		return nil
 	}
-	return p.Description
+	return t.Description
 }
 
-func (p *PatchTagsIDResponseData) GetColor() *string {
-	if p == nil {
+func (t *TagResponseData) GetColor() *string {
+	if t == nil {
 		return nil
 	}
-	return p.Color
+	return t.Color
 }
 
-func (p *PatchTagsIDResponseData) GetExtendedData() map[string]interface{} {
-	if p == nil {
+func (t *TagResponseData) GetExtendedData() map[string]interface{} {
+	if t == nil {
 		return nil
 	}
-	return p.ExtendedData
+	return t.ExtendedData
 }
 
-func (p *PatchTagsIDResponseData) GetID() string {
-	if p == nil {
+func (t *TagResponseData) GetID() string {
+	if t == nil {
 		return ""
 	}
-	return p.ID
+	return t.ID
 }
 
-func (p *PatchTagsIDResponseData) GetCreatedAt() string {
-	if p == nil {
+func (t *TagResponseData) GetCreatedAt() string {
+	if t == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return t.CreatedAt
 }
 
-func (p *PatchTagsIDResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (t *TagResponseData) GetUpdatedAt() string {
+	if t == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return t.UpdatedAt
 }
 
-func (p *PatchTagsIDResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (t *TagResponseData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
 }
 
-func (p *PatchTagsIDResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (t *TagResponseData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponseData) SetName(name string) {
-	p.Name = name
-	p.require(patchTagsIDResponseDataFieldName)
+func (t *TagResponseData) SetName(name string) {
+	t.Name = name
+	t.require(tagResponseDataFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponseData) SetSlug(slug *string) {
-	p.Slug = slug
-	p.require(patchTagsIDResponseDataFieldSlug)
+func (t *TagResponseData) SetSlug(slug *string) {
+	t.Slug = slug
+	t.require(tagResponseDataFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponseData) SetDescription(description *string) {
-	p.Description = description
-	p.require(patchTagsIDResponseDataFieldDescription)
+func (t *TagResponseData) SetDescription(description *string) {
+	t.Description = description
+	t.require(tagResponseDataFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponseData) SetColor(color *string) {
-	p.Color = color
-	p.require(patchTagsIDResponseDataFieldColor)
+func (t *TagResponseData) SetColor(color *string) {
+	t.Color = color
+	t.require(tagResponseDataFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(patchTagsIDResponseDataFieldExtendedData)
+func (t *TagResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	t.ExtendedData = extendedData
+	t.require(tagResponseDataFieldExtendedData)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponseData) SetID(id string) {
-	p.ID = id
-	p.require(patchTagsIDResponseDataFieldID)
+func (t *TagResponseData) SetID(id string) {
+	t.ID = id
+	t.require(tagResponseDataFieldID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(patchTagsIDResponseDataFieldCreatedAt)
+func (t *TagResponseData) SetCreatedAt(createdAt string) {
+	t.CreatedAt = createdAt
+	t.require(tagResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(patchTagsIDResponseDataFieldUpdatedAt)
+func (t *TagResponseData) SetUpdatedAt(updatedAt string) {
+	t.UpdatedAt = updatedAt
+	t.require(tagResponseDataFieldUpdatedAt)
 }
 
-func (p *PatchTagsIDResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchTagsIDResponseData
+func (t *TagResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PatchTagsIDResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*t = TagResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PatchTagsIDResponseData) MarshalJSON() ([]byte, error) {
-	type embed PatchTagsIDResponseData
+func (t *TagResponseData) MarshalJSON() ([]byte, error) {
+	type embed TagResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*t),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PatchTagsIDResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (t *TagResponseData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", t)
 }
 
 var (
-	postTagsResponseFieldData = big.NewInt(1 << 0)
+	tagSubscriberListResponseFieldData = big.NewInt(1 << 0)
 )
 
-type PostTagsResponse struct {
-	Data *PostTagsResponseData `json:"data,omitempty" url:"data,omitempty"`
+type TagSubscriberListResponse struct {
+	Data *TagSubscriberListResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1791,82 +967,852 @@ type PostTagsResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostTagsResponse) GetData() *PostTagsResponseData {
-	if p == nil {
+func (t *TagSubscriberListResponse) GetData() *TagSubscriberListResponseData {
+	if t == nil {
 		return nil
 	}
-	return p.Data
+	return t.Data
 }
 
-func (p *PostTagsResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (t *TagSubscriberListResponse) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
 }
 
-func (p *PostTagsResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (t *TagSubscriberListResponse) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponse) SetData(data *PostTagsResponseData) {
-	p.Data = data
-	p.require(postTagsResponseFieldData)
+func (t *TagSubscriberListResponse) SetData(data *TagSubscriberListResponseData) {
+	t.Data = data
+	t.require(tagSubscriberListResponseFieldData)
 }
 
-func (p *PostTagsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostTagsResponse
+func (t *TagSubscriberListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagSubscriberListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostTagsResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*t = TagSubscriberListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostTagsResponse) MarshalJSON() ([]byte, error) {
-	type embed PostTagsResponse
+func (t *TagSubscriberListResponse) MarshalJSON() ([]byte, error) {
+	type embed TagSubscriberListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*t),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostTagsResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (t *TagSubscriberListResponse) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(t); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", t)
 }
 
 var (
-	postTagsResponseDataFieldName         = big.NewInt(1 << 0)
-	postTagsResponseDataFieldSlug         = big.NewInt(1 << 1)
-	postTagsResponseDataFieldDescription  = big.NewInt(1 << 2)
-	postTagsResponseDataFieldColor        = big.NewInt(1 << 3)
-	postTagsResponseDataFieldExtendedData = big.NewInt(1 << 4)
-	postTagsResponseDataFieldID           = big.NewInt(1 << 5)
-	postTagsResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
-	postTagsResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
+	tagSubscriberListResponseDataFieldItems      = big.NewInt(1 << 0)
+	tagSubscriberListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	tagSubscriberListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type PostTagsResponseData struct {
+type TagSubscriberListResponseData struct {
+	Items      []*TagSubscriberListResponseDataItemsItem `json:"items" url:"items"`
+	NextCursor *string                                   `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	Count      int                                       `json:"count" url:"count"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TagSubscriberListResponseData) GetItems() []*TagSubscriberListResponseDataItemsItem {
+	if t == nil {
+		return nil
+	}
+	return t.Items
+}
+
+func (t *TagSubscriberListResponseData) GetNextCursor() *string {
+	if t == nil {
+		return nil
+	}
+	return t.NextCursor
+}
+
+func (t *TagSubscriberListResponseData) GetCount() int {
+	if t == nil {
+		return 0
+	}
+	return t.Count
+}
+
+func (t *TagSubscriberListResponseData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TagSubscriberListResponseData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseData) SetItems(items []*TagSubscriberListResponseDataItemsItem) {
+	t.Items = items
+	t.require(tagSubscriberListResponseDataFieldItems)
+}
+
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseData) SetNextCursor(nextCursor *string) {
+	t.NextCursor = nextCursor
+	t.require(tagSubscriberListResponseDataFieldNextCursor)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseData) SetCount(count int) {
+	t.Count = count
+	t.require(tagSubscriberListResponseDataFieldCount)
+}
+
+func (t *TagSubscriberListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagSubscriberListResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TagSubscriberListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TagSubscriberListResponseData) MarshalJSON() ([]byte, error) {
+	type embed TagSubscriberListResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TagSubscriberListResponseData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+var (
+	tagSubscriberListResponseDataItemsItemFieldID        = big.NewInt(1 << 0)
+	tagSubscriberListResponseDataItemsItemFieldUserID    = big.NewInt(1 << 1)
+	tagSubscriberListResponseDataItemsItemFieldTagID     = big.NewInt(1 << 2)
+	tagSubscriberListResponseDataItemsItemFieldUser      = big.NewInt(1 << 3)
+	tagSubscriberListResponseDataItemsItemFieldCreatedAt = big.NewInt(1 << 4)
+)
+
+type TagSubscriberListResponseDataItemsItem struct {
+	ID        string                                      `json:"id" url:"id"`
+	UserID    string                                      `json:"userId" url:"userId"`
+	TagID     *string                                     `json:"tagId,omitempty" url:"tagId,omitempty"`
+	User      *TagSubscriberListResponseDataItemsItemUser `json:"user,omitempty" url:"user,omitempty"`
+	CreatedAt string                                      `json:"createdAt" url:"createdAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) GetID() string {
+	if t == nil {
+		return ""
+	}
+	return t.ID
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) GetUserID() string {
+	if t == nil {
+		return ""
+	}
+	return t.UserID
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) GetTagID() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TagID
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) GetUser() *TagSubscriberListResponseDataItemsItemUser {
+	if t == nil {
+		return nil
+	}
+	return t.User
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) GetCreatedAt() string {
+	if t == nil {
+		return ""
+	}
+	return t.CreatedAt
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseDataItemsItem) SetID(id string) {
+	t.ID = id
+	t.require(tagSubscriberListResponseDataItemsItemFieldID)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseDataItemsItem) SetUserID(userID string) {
+	t.UserID = userID
+	t.require(tagSubscriberListResponseDataItemsItemFieldUserID)
+}
+
+// SetTagID sets the TagID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseDataItemsItem) SetTagID(tagID *string) {
+	t.TagID = tagID
+	t.require(tagSubscriberListResponseDataItemsItemFieldTagID)
+}
+
+// SetUser sets the User field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseDataItemsItem) SetUser(user *TagSubscriberListResponseDataItemsItemUser) {
+	t.User = user
+	t.require(tagSubscriberListResponseDataItemsItemFieldUser)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	t.CreatedAt = createdAt
+	t.require(tagSubscriberListResponseDataItemsItemFieldCreatedAt)
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagSubscriberListResponseDataItemsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TagSubscriberListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed TagSubscriberListResponseDataItemsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TagSubscriberListResponseDataItemsItem) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+var (
+	tagSubscriberListResponseDataItemsItemUserFieldID          = big.NewInt(1 << 0)
+	tagSubscriberListResponseDataItemsItemUserFieldUsername    = big.NewInt(1 << 1)
+	tagSubscriberListResponseDataItemsItemUserFieldDisplayName = big.NewInt(1 << 2)
+)
+
+type TagSubscriberListResponseDataItemsItemUser struct {
+	ID          string  `json:"id" url:"id"`
+	Username    string  `json:"username" url:"username"`
+	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TagSubscriberListResponseDataItemsItemUser) GetID() string {
+	if t == nil {
+		return ""
+	}
+	return t.ID
+}
+
+func (t *TagSubscriberListResponseDataItemsItemUser) GetUsername() string {
+	if t == nil {
+		return ""
+	}
+	return t.Username
+}
+
+func (t *TagSubscriberListResponseDataItemsItemUser) GetDisplayName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.DisplayName
+}
+
+func (t *TagSubscriberListResponseDataItemsItemUser) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TagSubscriberListResponseDataItemsItemUser) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseDataItemsItemUser) SetID(id string) {
+	t.ID = id
+	t.require(tagSubscriberListResponseDataItemsItemUserFieldID)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseDataItemsItemUser) SetUsername(username string) {
+	t.Username = username
+	t.require(tagSubscriberListResponseDataItemsItemUserFieldUsername)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TagSubscriberListResponseDataItemsItemUser) SetDisplayName(displayName *string) {
+	t.DisplayName = displayName
+	t.require(tagSubscriberListResponseDataItemsItemUserFieldDisplayName)
+}
+
+func (t *TagSubscriberListResponseDataItemsItemUser) UnmarshalJSON(data []byte) error {
+	type unmarshaler TagSubscriberListResponseDataItemsItemUser
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TagSubscriberListResponseDataItemsItemUser(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TagSubscriberListResponseDataItemsItemUser) MarshalJSON() ([]byte, error) {
+	type embed TagSubscriberListResponseDataItemsItemUser
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TagSubscriberListResponseDataItemsItemUser) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+var (
+	retrieveSubscriberTagsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type RetrieveSubscriberTagsResponse struct {
+	Data *RetrieveSubscriberTagsResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RetrieveSubscriberTagsResponse) GetData() *RetrieveSubscriberTagsResponseData {
+	if r == nil {
+		return nil
+	}
+	return r.Data
+}
+
+func (r *RetrieveSubscriberTagsResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RetrieveSubscriberTagsResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponse) SetData(data *RetrieveSubscriberTagsResponseData) {
+	r.Data = data
+	r.require(retrieveSubscriberTagsResponseFieldData)
+}
+
+func (r *RetrieveSubscriberTagsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RetrieveSubscriberTagsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RetrieveSubscriberTagsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RetrieveSubscriberTagsResponse) MarshalJSON() ([]byte, error) {
+	type embed RetrieveSubscriberTagsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RetrieveSubscriberTagsResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	retrieveSubscriberTagsResponseDataFieldID        = big.NewInt(1 << 0)
+	retrieveSubscriberTagsResponseDataFieldUserID    = big.NewInt(1 << 1)
+	retrieveSubscriberTagsResponseDataFieldTagID     = big.NewInt(1 << 2)
+	retrieveSubscriberTagsResponseDataFieldUser      = big.NewInt(1 << 3)
+	retrieveSubscriberTagsResponseDataFieldCreatedAt = big.NewInt(1 << 4)
+)
+
+type RetrieveSubscriberTagsResponseData struct {
+	ID        string                                  `json:"id" url:"id"`
+	UserID    string                                  `json:"userId" url:"userId"`
+	TagID     *string                                 `json:"tagId,omitempty" url:"tagId,omitempty"`
+	User      *RetrieveSubscriberTagsResponseDataUser `json:"user,omitempty" url:"user,omitempty"`
+	CreatedAt string                                  `json:"createdAt" url:"createdAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RetrieveSubscriberTagsResponseData) GetID() string {
+	if r == nil {
+		return ""
+	}
+	return r.ID
+}
+
+func (r *RetrieveSubscriberTagsResponseData) GetUserID() string {
+	if r == nil {
+		return ""
+	}
+	return r.UserID
+}
+
+func (r *RetrieveSubscriberTagsResponseData) GetTagID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.TagID
+}
+
+func (r *RetrieveSubscriberTagsResponseData) GetUser() *RetrieveSubscriberTagsResponseDataUser {
+	if r == nil {
+		return nil
+	}
+	return r.User
+}
+
+func (r *RetrieveSubscriberTagsResponseData) GetCreatedAt() string {
+	if r == nil {
+		return ""
+	}
+	return r.CreatedAt
+}
+
+func (r *RetrieveSubscriberTagsResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RetrieveSubscriberTagsResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponseData) SetID(id string) {
+	r.ID = id
+	r.require(retrieveSubscriberTagsResponseDataFieldID)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponseData) SetUserID(userID string) {
+	r.UserID = userID
+	r.require(retrieveSubscriberTagsResponseDataFieldUserID)
+}
+
+// SetTagID sets the TagID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponseData) SetTagID(tagID *string) {
+	r.TagID = tagID
+	r.require(retrieveSubscriberTagsResponseDataFieldTagID)
+}
+
+// SetUser sets the User field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponseData) SetUser(user *RetrieveSubscriberTagsResponseDataUser) {
+	r.User = user
+	r.require(retrieveSubscriberTagsResponseDataFieldUser)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponseData) SetCreatedAt(createdAt string) {
+	r.CreatedAt = createdAt
+	r.require(retrieveSubscriberTagsResponseDataFieldCreatedAt)
+}
+
+func (r *RetrieveSubscriberTagsResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler RetrieveSubscriberTagsResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RetrieveSubscriberTagsResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RetrieveSubscriberTagsResponseData) MarshalJSON() ([]byte, error) {
+	type embed RetrieveSubscriberTagsResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RetrieveSubscriberTagsResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	retrieveSubscriberTagsResponseDataUserFieldID          = big.NewInt(1 << 0)
+	retrieveSubscriberTagsResponseDataUserFieldUsername    = big.NewInt(1 << 1)
+	retrieveSubscriberTagsResponseDataUserFieldDisplayName = big.NewInt(1 << 2)
+)
+
+type RetrieveSubscriberTagsResponseDataUser struct {
+	ID          string  `json:"id" url:"id"`
+	Username    string  `json:"username" url:"username"`
+	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RetrieveSubscriberTagsResponseDataUser) GetID() string {
+	if r == nil {
+		return ""
+	}
+	return r.ID
+}
+
+func (r *RetrieveSubscriberTagsResponseDataUser) GetUsername() string {
+	if r == nil {
+		return ""
+	}
+	return r.Username
+}
+
+func (r *RetrieveSubscriberTagsResponseDataUser) GetDisplayName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.DisplayName
+}
+
+func (r *RetrieveSubscriberTagsResponseDataUser) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RetrieveSubscriberTagsResponseDataUser) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponseDataUser) SetID(id string) {
+	r.ID = id
+	r.require(retrieveSubscriberTagsResponseDataUserFieldID)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponseDataUser) SetUsername(username string) {
+	r.Username = username
+	r.require(retrieveSubscriberTagsResponseDataUserFieldUsername)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RetrieveSubscriberTagsResponseDataUser) SetDisplayName(displayName *string) {
+	r.DisplayName = displayName
+	r.require(retrieveSubscriberTagsResponseDataUserFieldDisplayName)
+}
+
+func (r *RetrieveSubscriberTagsResponseDataUser) UnmarshalJSON(data []byte) error {
+	type unmarshaler RetrieveSubscriberTagsResponseDataUser
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RetrieveSubscriberTagsResponseDataUser(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RetrieveSubscriberTagsResponseDataUser) MarshalJSON() ([]byte, error) {
+	type embed RetrieveSubscriberTagsResponseDataUser
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RetrieveSubscriberTagsResponseDataUser) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	updateTagsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type UpdateTagsResponse struct {
+	Data *UpdateTagsResponseData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateTagsResponse) GetData() *UpdateTagsResponseData {
+	if u == nil {
+		return nil
+	}
+	return u.Data
+}
+
+func (u *UpdateTagsResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateTagsResponse) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateTagsResponse) SetData(data *UpdateTagsResponseData) {
+	u.Data = data
+	u.require(updateTagsResponseFieldData)
+}
+
+func (u *UpdateTagsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateTagsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateTagsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateTagsResponse) MarshalJSON() ([]byte, error) {
+	type embed UpdateTagsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateTagsResponse) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateTagsResponseDataFieldName         = big.NewInt(1 << 0)
+	updateTagsResponseDataFieldSlug         = big.NewInt(1 << 1)
+	updateTagsResponseDataFieldDescription  = big.NewInt(1 << 2)
+	updateTagsResponseDataFieldColor        = big.NewInt(1 << 3)
+	updateTagsResponseDataFieldExtendedData = big.NewInt(1 << 4)
+	updateTagsResponseDataFieldID           = big.NewInt(1 << 5)
+	updateTagsResponseDataFieldCreatedAt    = big.NewInt(1 << 6)
+	updateTagsResponseDataFieldUpdatedAt    = big.NewInt(1 << 7)
+)
+
+type UpdateTagsResponseData struct {
 	// Tag name
 	Name string `json:"name" url:"name"`
 	// Tag slug (unique identifier)
@@ -1890,178 +1836,179 @@ type PostTagsResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostTagsResponseData) GetName() string {
-	if p == nil {
+func (u *UpdateTagsResponseData) GetName() string {
+	if u == nil {
 		return ""
 	}
-	return p.Name
+	return u.Name
 }
 
-func (p *PostTagsResponseData) GetSlug() *string {
-	if p == nil {
+func (u *UpdateTagsResponseData) GetSlug() *string {
+	if u == nil {
 		return nil
 	}
-	return p.Slug
+	return u.Slug
 }
 
-func (p *PostTagsResponseData) GetDescription() *string {
-	if p == nil {
+func (u *UpdateTagsResponseData) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return p.Description
+	return u.Description
 }
 
-func (p *PostTagsResponseData) GetColor() *string {
-	if p == nil {
+func (u *UpdateTagsResponseData) GetColor() *string {
+	if u == nil {
 		return nil
 	}
-	return p.Color
+	return u.Color
 }
 
-func (p *PostTagsResponseData) GetExtendedData() map[string]interface{} {
-	if p == nil {
+func (u *UpdateTagsResponseData) GetExtendedData() map[string]interface{} {
+	if u == nil {
 		return nil
 	}
-	return p.ExtendedData
+	return u.ExtendedData
 }
 
-func (p *PostTagsResponseData) GetID() string {
-	if p == nil {
+func (u *UpdateTagsResponseData) GetID() string {
+	if u == nil {
 		return ""
 	}
-	return p.ID
+	return u.ID
 }
 
-func (p *PostTagsResponseData) GetCreatedAt() string {
-	if p == nil {
+func (u *UpdateTagsResponseData) GetCreatedAt() string {
+	if u == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return u.CreatedAt
 }
 
-func (p *PostTagsResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (u *UpdateTagsResponseData) GetUpdatedAt() string {
+	if u == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return u.UpdatedAt
 }
 
-func (p *PostTagsResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (u *UpdateTagsResponseData) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
 }
 
-func (p *PostTagsResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateTagsResponseData) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponseData) SetName(name string) {
-	p.Name = name
-	p.require(postTagsResponseDataFieldName)
+func (u *UpdateTagsResponseData) SetName(name string) {
+	u.Name = name
+	u.require(updateTagsResponseDataFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponseData) SetSlug(slug *string) {
-	p.Slug = slug
-	p.require(postTagsResponseDataFieldSlug)
+func (u *UpdateTagsResponseData) SetSlug(slug *string) {
+	u.Slug = slug
+	u.require(updateTagsResponseDataFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponseData) SetDescription(description *string) {
-	p.Description = description
-	p.require(postTagsResponseDataFieldDescription)
+func (u *UpdateTagsResponseData) SetDescription(description *string) {
+	u.Description = description
+	u.require(updateTagsResponseDataFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponseData) SetColor(color *string) {
-	p.Color = color
-	p.require(postTagsResponseDataFieldColor)
+func (u *UpdateTagsResponseData) SetColor(color *string) {
+	u.Color = color
+	u.require(updateTagsResponseDataFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponseData) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(postTagsResponseDataFieldExtendedData)
+func (u *UpdateTagsResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateTagsResponseDataFieldExtendedData)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponseData) SetID(id string) {
-	p.ID = id
-	p.require(postTagsResponseDataFieldID)
+func (u *UpdateTagsResponseData) SetID(id string) {
+	u.ID = id
+	u.require(updateTagsResponseDataFieldID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(postTagsResponseDataFieldCreatedAt)
+func (u *UpdateTagsResponseData) SetCreatedAt(createdAt string) {
+	u.CreatedAt = createdAt
+	u.require(updateTagsResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostTagsResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(postTagsResponseDataFieldUpdatedAt)
+func (u *UpdateTagsResponseData) SetUpdatedAt(updatedAt string) {
+	u.UpdatedAt = updatedAt
+	u.require(updateTagsResponseDataFieldUpdatedAt)
 }
 
-func (p *PostTagsResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostTagsResponseData
+func (u *UpdateTagsResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateTagsResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostTagsResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*u = UpdateTagsResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostTagsResponseData) MarshalJSON() ([]byte, error) {
-	type embed PostTagsResponseData
+func (u *UpdateTagsResponseData) MarshalJSON() ([]byte, error) {
+	type embed UpdateTagsResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*u),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostTagsResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (u *UpdateTagsResponseData) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(u); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", u)
 }
 
 var (
-	patchTagsIDRequestFieldID           = big.NewInt(1 << 0)
-	patchTagsIDRequestFieldName         = big.NewInt(1 << 1)
-	patchTagsIDRequestFieldSlug         = big.NewInt(1 << 2)
-	patchTagsIDRequestFieldDescription  = big.NewInt(1 << 3)
-	patchTagsIDRequestFieldColor        = big.NewInt(1 << 4)
-	patchTagsIDRequestFieldExtendedData = big.NewInt(1 << 5)
+	updateTagsRequestFieldID           = big.NewInt(1 << 0)
+	updateTagsRequestFieldName         = big.NewInt(1 << 1)
+	updateTagsRequestFieldSlug         = big.NewInt(1 << 2)
+	updateTagsRequestFieldDescription  = big.NewInt(1 << 3)
+	updateTagsRequestFieldColor        = big.NewInt(1 << 4)
+	updateTagsRequestFieldExtendedData = big.NewInt(1 << 5)
 )
 
-type PatchTagsIDRequest struct {
+type UpdateTagsRequest struct {
+	// Tag ID
 	ID string `json:"-" url:"-"`
 	// Tag name
 	Name *string `json:"name,omitempty" url:"-"`
@@ -2078,51 +2025,51 @@ type PatchTagsIDRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PatchTagsIDRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateTagsRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDRequest) SetID(id string) {
-	p.ID = id
-	p.require(patchTagsIDRequestFieldID)
+func (u *UpdateTagsRequest) SetID(id string) {
+	u.ID = id
+	u.require(updateTagsRequestFieldID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDRequest) SetName(name *string) {
-	p.Name = name
-	p.require(patchTagsIDRequestFieldName)
+func (u *UpdateTagsRequest) SetName(name *string) {
+	u.Name = name
+	u.require(updateTagsRequestFieldName)
 }
 
 // SetSlug sets the Slug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDRequest) SetSlug(slug *string) {
-	p.Slug = slug
-	p.require(patchTagsIDRequestFieldSlug)
+func (u *UpdateTagsRequest) SetSlug(slug *string) {
+	u.Slug = slug
+	u.require(updateTagsRequestFieldSlug)
 }
 
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDRequest) SetDescription(description *string) {
-	p.Description = description
-	p.require(patchTagsIDRequestFieldDescription)
+func (u *UpdateTagsRequest) SetDescription(description *string) {
+	u.Description = description
+	u.require(updateTagsRequestFieldDescription)
 }
 
 // SetColor sets the Color field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDRequest) SetColor(color *string) {
-	p.Color = color
-	p.require(patchTagsIDRequestFieldColor)
+func (u *UpdateTagsRequest) SetColor(color *string) {
+	u.Color = color
+	u.require(updateTagsRequestFieldColor)
 }
 
 // SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchTagsIDRequest) SetExtendedData(extendedData map[string]interface{}) {
-	p.ExtendedData = extendedData
-	p.require(patchTagsIDRequestFieldExtendedData)
+func (u *UpdateTagsRequest) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateTagsRequestFieldExtendedData)
 }

@@ -32,12 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllRoles(
+// Retrieve a paginated list of roles. Use cursor for pagination.
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetRolesRequest,
+	request *foru_ms_sdk.ListRolesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetRolesResponse, error) {
-	response, err := c.WithRawResponse.ListAllRoles(
+) (*foru_ms_sdk.RoleListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +49,13 @@ func (c *Client) ListAllRoles(
 	return response.Body, nil
 }
 
-func (c *Client) CreateARole(
+// Create a new role.
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostRolesRequest,
+	request *foru_ms_sdk.CreateRolesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostRolesResponse, error) {
-	response, err := c.WithRawResponse.CreateARole(
+) (*foru_ms_sdk.RoleResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +66,13 @@ func (c *Client) CreateARole(
 	return response.Body, nil
 }
 
-func (c *Client) GetARole(
+// Retrieve a role by ID or slug (if supported).
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetRolesIDRequest,
+	request *foru_ms_sdk.RetrieveRolesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetRolesIDResponse, error) {
-	response, err := c.WithRawResponse.GetARole(
+) (*foru_ms_sdk.RoleResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +83,13 @@ func (c *Client) GetARole(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteARole(
+// Permanently delete a role.
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteRolesIDRequest,
+	request *foru_ms_sdk.DeleteRolesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteRolesIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteARole(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +100,13 @@ func (c *Client) DeleteARole(
 	return response.Body, nil
 }
 
-func (c *Client) UpdateARole(
+// Update an existing role. Only provided fields will be modified.
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchRolesIDRequest,
+	request *foru_ms_sdk.UpdateRolesRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchRolesIDResponse, error) {
-	response, err := c.WithRawResponse.UpdateARole(
+) (*foru_ms_sdk.UpdateRolesResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,

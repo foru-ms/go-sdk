@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestSsOsListAllSsOsWithWireMock(
+func TestSsOsListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestSsOsListAllSsOsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetSSORequest{}
-	_, invocationErr := client.SsOs.ListAllSsOs(
+	request := &foru_ms_sdk.ListSsOsRequest{}
+	_, invocationErr := client.SsOs.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestSsOsListAllSsOsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestSsOsListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestSsOsListAllSsOsWithWireMock", "GET", "/sso", nil, 1)
+	VerifyRequestCount(t, "TestSsOsListWithWireMock", "GET", "/sso", nil, 1)
 }
 
-func TestSsOsCreateAnSSOWithWireMock(
+func TestSsOsCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,28 +101,26 @@ func TestSsOsCreateAnSSOWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostSSORequest{
-		Name:                  "name",
-		ClientID:              "clientId",
-		ClientSecret:          "clientSecret",
-		Issuer:                "issuer",
-		AuthorizationEndpoint: "authorizationEndpoint",
-		TokenEndpoint:         "tokenEndpoint",
-		UserInfoEndpoint:      "userInfoEndpoint",
+	request := &foru_ms_sdk.CreateSsOsRequest{
+		Provider: foru_ms_sdk.CreateSsOsRequestProviderOkta,
+		Domain:   "domain",
+		Config: map[string]any{
+			"key": "value",
+		},
 	}
-	_, invocationErr := client.SsOs.CreateAnSSO(
+	_, invocationErr := client.SsOs.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestSsOsCreateAnSSOWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestSsOsCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestSsOsCreateAnSSOWithWireMock", "POST", "/sso", nil, 1)
+	VerifyRequestCount(t, "TestSsOsCreateWithWireMock", "POST", "/sso", nil, 1)
 }
 
-func TestSsOsGetAnSSOWithWireMock(
+func TestSsOsRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -135,22 +133,22 @@ func TestSsOsGetAnSSOWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetSsoIdRequest{
+	request := &foru_ms_sdk.RetrieveSsOsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.SsOs.GetAnSSO(
+	_, invocationErr := client.SsOs.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestSsOsGetAnSSOWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestSsOsRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestSsOsGetAnSSOWithWireMock", "GET", "/sso/id", nil, 1)
+	VerifyRequestCount(t, "TestSsOsRetrieveWithWireMock", "GET", "/sso/id", nil, 1)
 }
 
-func TestSsOsDeleteAnSSOWithWireMock(
+func TestSsOsDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -163,22 +161,22 @@ func TestSsOsDeleteAnSSOWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteSsoIdRequest{
+	request := &foru_ms_sdk.DeleteSsOsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.SsOs.DeleteAnSSO(
+	_, invocationErr := client.SsOs.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestSsOsDeleteAnSSOWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestSsOsDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestSsOsDeleteAnSSOWithWireMock", "DELETE", "/sso/id", nil, 1)
+	VerifyRequestCount(t, "TestSsOsDeleteWithWireMock", "DELETE", "/sso/id", nil, 1)
 }
 
-func TestSsOsUpdateAnSSOWithWireMock(
+func TestSsOsUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -191,17 +189,17 @@ func TestSsOsUpdateAnSSOWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PatchSsoIdRequest{
+	request := &foru_ms_sdk.UpdateSsOsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.SsOs.UpdateAnSSO(
+	_, invocationErr := client.SsOs.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestSsOsUpdateAnSSOWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestSsOsUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestSsOsUpdateAnSSOWithWireMock", "PATCH", "/sso/id", nil, 1)
+	VerifyRequestCount(t, "TestSsOsUpdateWithWireMock", "PATCH", "/sso/id", nil, 1)
 }

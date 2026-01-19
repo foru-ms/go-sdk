@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestNotificationsListAllNotificationsWithWireMock(
+func TestNotificationsListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestNotificationsListAllNotificationsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetNotificationsRequest{}
-	_, invocationErr := client.Notifications.ListAllNotifications(
+	request := &foru_ms_sdk.ListNotificationsRequest{}
+	_, invocationErr := client.Notifications.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestNotificationsListAllNotificationsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestNotificationsListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestNotificationsListAllNotificationsWithWireMock", "GET", "/notifications", nil, 1)
+	VerifyRequestCount(t, "TestNotificationsListWithWireMock", "GET", "/notifications", nil, 1)
 }
 
-func TestNotificationsCreateANotificationWithWireMock(
+func TestNotificationsCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,23 +101,23 @@ func TestNotificationsCreateANotificationWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostNotificationsRequest{
+	request := &foru_ms_sdk.CreateNotificationsRequest{
 		UserID: "userId",
 		Type:   "type",
 	}
-	_, invocationErr := client.Notifications.CreateANotification(
+	_, invocationErr := client.Notifications.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestNotificationsCreateANotificationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestNotificationsCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestNotificationsCreateANotificationWithWireMock", "POST", "/notifications", nil, 1)
+	VerifyRequestCount(t, "TestNotificationsCreateWithWireMock", "POST", "/notifications", nil, 1)
 }
 
-func TestNotificationsGetANotificationWithWireMock(
+func TestNotificationsRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -130,22 +130,22 @@ func TestNotificationsGetANotificationWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetNotificationsIDRequest{
+	request := &foru_ms_sdk.RetrieveNotificationsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Notifications.GetANotification(
+	_, invocationErr := client.Notifications.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestNotificationsGetANotificationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestNotificationsRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestNotificationsGetANotificationWithWireMock", "GET", "/notifications/id", nil, 1)
+	VerifyRequestCount(t, "TestNotificationsRetrieveWithWireMock", "GET", "/notifications/id", nil, 1)
 }
 
-func TestNotificationsDeleteANotificationWithWireMock(
+func TestNotificationsDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -158,22 +158,22 @@ func TestNotificationsDeleteANotificationWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteNotificationsIDRequest{
+	request := &foru_ms_sdk.DeleteNotificationsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Notifications.DeleteANotification(
+	_, invocationErr := client.Notifications.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestNotificationsDeleteANotificationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestNotificationsDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestNotificationsDeleteANotificationWithWireMock", "DELETE", "/notifications/id", nil, 1)
+	VerifyRequestCount(t, "TestNotificationsDeleteWithWireMock", "DELETE", "/notifications/id", nil, 1)
 }
 
-func TestNotificationsUpdateANotificationWithWireMock(
+func TestNotificationsUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -186,17 +186,17 @@ func TestNotificationsUpdateANotificationWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PatchNotificationsIDRequest{
+	request := &foru_ms_sdk.UpdateNotificationsRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Notifications.UpdateANotification(
+	_, invocationErr := client.Notifications.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestNotificationsUpdateANotificationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestNotificationsUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestNotificationsUpdateANotificationWithWireMock", "PATCH", "/notifications/id", nil, 1)
+	VerifyRequestCount(t, "TestNotificationsUpdateWithWireMock", "PATCH", "/notifications/id", nil, 1)
 }

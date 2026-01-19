@@ -32,12 +32,15 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllSsOs(
+// Retrieve a paginated list of ssos. Use cursor for pagination.
+//
+// **Requires feature: sso**
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetSSORequest,
+	request *foru_ms_sdk.ListSsOsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetSSOResponse, error) {
-	response, err := c.WithRawResponse.ListAllSsOs(
+) (*foru_ms_sdk.SSOListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +51,15 @@ func (c *Client) ListAllSsOs(
 	return response.Body, nil
 }
 
-func (c *Client) CreateAnSSO(
+// Create an new sso.
+//
+// **Requires feature: sso**
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostSSORequest,
+	request *foru_ms_sdk.CreateSsOsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PostSSOResponse, error) {
-	response, err := c.WithRawResponse.CreateAnSSO(
+) (*foru_ms_sdk.SSOResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +70,15 @@ func (c *Client) CreateAnSSO(
 	return response.Body, nil
 }
 
-func (c *Client) GetAnSSO(
+// Retrieve an sso by ID or slug (if supported).
+//
+// **Requires feature: sso**
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetSsoIdRequest,
+	request *foru_ms_sdk.RetrieveSsOsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetSsoIdResponse, error) {
-	response, err := c.WithRawResponse.GetAnSSO(
+) (*foru_ms_sdk.SSOResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +89,15 @@ func (c *Client) GetAnSSO(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAnSSO(
+// Permanently delete an sso.
+//
+// **Requires feature: sso**
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteSsoIdRequest,
+	request *foru_ms_sdk.DeleteSsOsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteSsoIdResponse, error) {
-	response, err := c.WithRawResponse.DeleteAnSSO(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +108,15 @@ func (c *Client) DeleteAnSSO(
 	return response.Body, nil
 }
 
-func (c *Client) UpdateAnSSO(
+// Update an existing sso. Only provided fields will be modified.
+//
+// **Requires feature: sso**
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchSsoIdRequest,
+	request *foru_ms_sdk.UpdateSsOsRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchSsoIdResponse, error) {
-	response, err := c.WithRawResponse.UpdateAnSSO(
+) (*foru_ms_sdk.UpdateSsOsResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,

@@ -62,7 +62,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-func TestWebhooksListAllWebhooksWithWireMock(
+func TestWebhooksListWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -75,20 +75,20 @@ func TestWebhooksListAllWebhooksWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetWebhooksRequest{}
-	_, invocationErr := client.Webhooks.ListAllWebhooks(
+	request := &foru_ms_sdk.ListWebhooksRequest{}
+	_, invocationErr := client.Webhooks.List(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestWebhooksListAllWebhooksWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestWebhooksListWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestWebhooksListAllWebhooksWithWireMock", "GET", "/webhooks", nil, 1)
+	VerifyRequestCount(t, "TestWebhooksListWithWireMock", "GET", "/webhooks", nil, 1)
 }
 
-func TestWebhooksCreateAWebhookWithWireMock(
+func TestWebhooksCreateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -101,26 +101,26 @@ func TestWebhooksCreateAWebhookWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.PostWebhooksRequest{
+	request := &foru_ms_sdk.CreateWebhooksRequest{
 		Name: "name",
 		URL:  "url",
 		Events: []string{
 			"events",
 		},
 	}
-	_, invocationErr := client.Webhooks.CreateAWebhook(
+	_, invocationErr := client.Webhooks.Create(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestWebhooksCreateAWebhookWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestWebhooksCreateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestWebhooksCreateAWebhookWithWireMock", "POST", "/webhooks", nil, 1)
+	VerifyRequestCount(t, "TestWebhooksCreateWithWireMock", "POST", "/webhooks", nil, 1)
 }
 
-func TestWebhooksGetAWebhookWithWireMock(
+func TestWebhooksRetrieveWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -133,22 +133,22 @@ func TestWebhooksGetAWebhookWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetWebhooksIDRequest{
+	request := &foru_ms_sdk.RetrieveWebhooksRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Webhooks.GetAWebhook(
+	_, invocationErr := client.Webhooks.Retrieve(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestWebhooksGetAWebhookWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestWebhooksRetrieveWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestWebhooksGetAWebhookWithWireMock", "GET", "/webhooks/id", nil, 1)
+	VerifyRequestCount(t, "TestWebhooksRetrieveWithWireMock", "GET", "/webhooks/id", nil, 1)
 }
 
-func TestWebhooksDeleteAWebhookWithWireMock(
+func TestWebhooksDeleteWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -161,22 +161,22 @@ func TestWebhooksDeleteAWebhookWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteWebhooksIDRequest{
+	request := &foru_ms_sdk.DeleteWebhooksRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Webhooks.DeleteAWebhook(
+	_, invocationErr := client.Webhooks.Delete(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestWebhooksDeleteAWebhookWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestWebhooksDeleteWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestWebhooksDeleteAWebhookWithWireMock", "DELETE", "/webhooks/id", nil, 1)
+	VerifyRequestCount(t, "TestWebhooksDeleteWithWireMock", "DELETE", "/webhooks/id", nil, 1)
 }
 
-func TestWebhooksListWebhookDeliveriesWithWireMock(
+func TestWebhooksUpdateWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -189,22 +189,22 @@ func TestWebhooksListWebhookDeliveriesWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetWebhooksIDDeliveriesRequest{
+	request := &foru_ms_sdk.UpdateWebhooksRequest{
 		ID: "id",
 	}
-	_, invocationErr := client.Webhooks.ListWebhookDeliveries(
+	_, invocationErr := client.Webhooks.Update(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestWebhooksListWebhookDeliveriesWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestWebhooksUpdateWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestWebhooksListWebhookDeliveriesWithWireMock", "GET", "/webhooks/id/deliveries", nil, 1)
+	VerifyRequestCount(t, "TestWebhooksUpdateWithWireMock", "PATCH", "/webhooks/id", nil, 1)
 }
 
-func TestWebhooksGetADeliveryFromWebhookWithWireMock(
+func TestWebhooksListDeliveriesWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -217,23 +217,51 @@ func TestWebhooksGetADeliveryFromWebhookWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.GetWebhooksIDDeliveriesSubIDRequest{
+	request := &foru_ms_sdk.ListDeliveriesWebhooksRequest{
+		ID: "id",
+	}
+	_, invocationErr := client.Webhooks.ListDeliveries(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestWebhooksListDeliveriesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestWebhooksListDeliveriesWithWireMock", "GET", "/webhooks/id/deliveries", nil, 1)
+}
+
+func TestWebhooksRetrieveDeliveryWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(
+			WireMockBaseURL,
+		),
+	)
+	request := &foru_ms_sdk.RetrieveDeliveryWebhooksRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Webhooks.GetADeliveryFromWebhook(
+	_, invocationErr := client.Webhooks.RetrieveDelivery(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestWebhooksGetADeliveryFromWebhookWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestWebhooksRetrieveDeliveryWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestWebhooksGetADeliveryFromWebhookWithWireMock", "GET", "/webhooks/id/deliveries/subId", nil, 1)
+	VerifyRequestCount(t, "TestWebhooksRetrieveDeliveryWithWireMock", "GET", "/webhooks/id/deliveries/subId", nil, 1)
 }
 
-func TestWebhooksDeleteADeliveryFromWebhookWithWireMock(
+func TestWebhooksDeleteDeliveryWithWireMock(
 	t *testing.T,
 ) {
 	wiremockPort := os.Getenv("WIREMOCK_PORT")
@@ -246,18 +274,18 @@ func TestWebhooksDeleteADeliveryFromWebhookWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	request := &foru_ms_sdk.DeleteWebhooksIDDeliveriesSubIDRequest{
+	request := &foru_ms_sdk.DeleteDeliveryWebhooksRequest{
 		ID:    "id",
 		SubID: "subId",
 	}
-	_, invocationErr := client.Webhooks.DeleteADeliveryFromWebhook(
+	_, invocationErr := client.Webhooks.DeleteDelivery(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestWebhooksDeleteADeliveryFromWebhookWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestWebhooksDeleteDeliveryWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestWebhooksDeleteADeliveryFromWebhookWithWireMock", "DELETE", "/webhooks/id/deliveries/subId", nil, 1)
+	VerifyRequestCount(t, "TestWebhooksDeleteDeliveryWithWireMock", "DELETE", "/webhooks/id/deliveries/subId", nil, 1)
 }

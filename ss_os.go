@@ -10,97 +10,84 @@ import (
 )
 
 var (
-	postSSORequestFieldName                  = big.NewInt(1 << 0)
-	postSSORequestFieldClientID              = big.NewInt(1 << 1)
-	postSSORequestFieldClientSecret          = big.NewInt(1 << 2)
-	postSSORequestFieldIssuer                = big.NewInt(1 << 3)
-	postSSORequestFieldAuthorizationEndpoint = big.NewInt(1 << 4)
-	postSSORequestFieldTokenEndpoint         = big.NewInt(1 << 5)
-	postSSORequestFieldUserInfoEndpoint      = big.NewInt(1 << 6)
+	createSsOsRequestFieldProvider     = big.NewInt(1 << 0)
+	createSsOsRequestFieldDomain       = big.NewInt(1 << 1)
+	createSsOsRequestFieldConfig       = big.NewInt(1 << 2)
+	createSsOsRequestFieldActive       = big.NewInt(1 << 3)
+	createSsOsRequestFieldExtendedData = big.NewInt(1 << 4)
 )
 
-type PostSSORequest struct {
-	// Provider name (e.g. Google)
-	Name                  string `json:"name" url:"-"`
-	ClientID              string `json:"clientId" url:"-"`
-	ClientSecret          string `json:"clientSecret" url:"-"`
-	Issuer                string `json:"issuer" url:"-"`
-	AuthorizationEndpoint string `json:"authorizationEndpoint" url:"-"`
-	TokenEndpoint         string `json:"tokenEndpoint" url:"-"`
-	UserInfoEndpoint      string `json:"userInfoEndpoint" url:"-"`
+type CreateSsOsRequest struct {
+	// SSO provider type
+	Provider CreateSsOsRequestProvider `json:"provider" url:"-"`
+	// Email domain to match (e.g. 'acme.com')
+	Domain string `json:"domain" url:"-"`
+	// Provider configuration (clientId, issuer, etc.)
+	Config map[string]interface{} `json:"config,omitempty" url:"-"`
+	// Whether SSO is active
+	Active *bool `json:"active,omitempty" url:"-"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PostSSORequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (c *CreateSsOsRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetName sets the Name field and marks it as non-optional;
+// SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSORequest) SetName(name string) {
-	p.Name = name
-	p.require(postSSORequestFieldName)
+func (c *CreateSsOsRequest) SetProvider(provider CreateSsOsRequestProvider) {
+	c.Provider = provider
+	c.require(createSsOsRequestFieldProvider)
 }
 
-// SetClientID sets the ClientID field and marks it as non-optional;
+// SetDomain sets the Domain field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSORequest) SetClientID(clientID string) {
-	p.ClientID = clientID
-	p.require(postSSORequestFieldClientID)
+func (c *CreateSsOsRequest) SetDomain(domain string) {
+	c.Domain = domain
+	c.require(createSsOsRequestFieldDomain)
 }
 
-// SetClientSecret sets the ClientSecret field and marks it as non-optional;
+// SetConfig sets the Config field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSORequest) SetClientSecret(clientSecret string) {
-	p.ClientSecret = clientSecret
-	p.require(postSSORequestFieldClientSecret)
+func (c *CreateSsOsRequest) SetConfig(config map[string]interface{}) {
+	c.Config = config
+	c.require(createSsOsRequestFieldConfig)
 }
 
-// SetIssuer sets the Issuer field and marks it as non-optional;
+// SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSORequest) SetIssuer(issuer string) {
-	p.Issuer = issuer
-	p.require(postSSORequestFieldIssuer)
+func (c *CreateSsOsRequest) SetActive(active *bool) {
+	c.Active = active
+	c.require(createSsOsRequestFieldActive)
 }
 
-// SetAuthorizationEndpoint sets the AuthorizationEndpoint field and marks it as non-optional;
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSORequest) SetAuthorizationEndpoint(authorizationEndpoint string) {
-	p.AuthorizationEndpoint = authorizationEndpoint
-	p.require(postSSORequestFieldAuthorizationEndpoint)
-}
-
-// SetTokenEndpoint sets the TokenEndpoint field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSORequest) SetTokenEndpoint(tokenEndpoint string) {
-	p.TokenEndpoint = tokenEndpoint
-	p.require(postSSORequestFieldTokenEndpoint)
-}
-
-// SetUserInfoEndpoint sets the UserInfoEndpoint field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSORequest) SetUserInfoEndpoint(userInfoEndpoint string) {
-	p.UserInfoEndpoint = userInfoEndpoint
-	p.require(postSSORequestFieldUserInfoEndpoint)
+func (c *CreateSsOsRequest) SetExtendedData(extendedData map[string]interface{}) {
+	c.ExtendedData = extendedData
+	c.require(createSsOsRequestFieldExtendedData)
 }
 
 var (
-	deleteSsoIdRequestFieldID = big.NewInt(1 << 0)
+	deleteSsOsRequestFieldID = big.NewInt(1 << 0)
 )
 
-type DeleteSsoIdRequest struct {
+type DeleteSsOsRequest struct {
+	// SSO ID
 	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DeleteSsoIdRequest) require(field *big.Int) {
+func (d *DeleteSsOsRequest) require(field *big.Int) {
 	if d.explicitFields == nil {
 		d.explicitFields = big.NewInt(0)
 	}
@@ -109,85 +96,79 @@ func (d *DeleteSsoIdRequest) require(field *big.Int) {
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteSsoIdRequest) SetID(id string) {
+func (d *DeleteSsOsRequest) SetID(id string) {
 	d.ID = id
-	d.require(deleteSsoIdRequestFieldID)
+	d.require(deleteSsOsRequestFieldID)
 }
 
 var (
-	getSsoIdRequestFieldID = big.NewInt(1 << 0)
+	listSsOsRequestFieldLimit  = big.NewInt(1 << 0)
+	listSsOsRequestFieldCursor = big.NewInt(1 << 1)
 )
 
-type GetSsoIdRequest struct {
+type ListSsOsRequest struct {
+	// Items per page (max 75)
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Cursor for pagination
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListSsOsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSsOsRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listSsOsRequestFieldLimit)
+}
+
+// SetCursor sets the Cursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSsOsRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listSsOsRequestFieldCursor)
+}
+
+var (
+	retrieveSsOsRequestFieldID = big.NewInt(1 << 0)
+)
+
+type RetrieveSsOsRequest struct {
+	// SSO ID
 	ID string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetSsoIdRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (r *RetrieveSsOsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSsoIdRequest) SetID(id string) {
-	g.ID = id
-	g.require(getSsoIdRequestFieldID)
+func (r *RetrieveSsOsRequest) SetID(id string) {
+	r.ID = id
+	r.require(retrieveSsOsRequestFieldID)
 }
 
 var (
-	getSSORequestFieldPage   = big.NewInt(1 << 0)
-	getSSORequestFieldLimit  = big.NewInt(1 << 1)
-	getSSORequestFieldSearch = big.NewInt(1 << 2)
+	sSOListResponseFieldData = big.NewInt(1 << 0)
 )
 
-type GetSSORequest struct {
-	Page   *int    `json:"-" url:"page,omitempty"`
-	Limit  *int    `json:"-" url:"limit,omitempty"`
-	Search *string `json:"-" url:"search,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetSSORequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSORequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getSSORequestFieldPage)
-}
-
-// SetLimit sets the Limit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSORequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getSSORequestFieldLimit)
-}
-
-// SetSearch sets the Search field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSORequest) SetSearch(search *string) {
-	g.Search = search
-	g.require(getSSORequestFieldSearch)
-}
-
-var (
-	deleteSsoIdResponseFieldSuccess = big.NewInt(1 << 0)
-)
-
-type DeleteSsoIdResponse struct {
-	Success bool `json:"success" url:"success"`
+type SSOListResponse struct {
+	Data *SSOListResponseData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -196,169 +177,82 @@ type DeleteSsoIdResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (d *DeleteSsoIdResponse) GetSuccess() bool {
-	if d == nil {
-		return false
-	}
-	return d.Success
-}
-
-func (d *DeleteSsoIdResponse) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeleteSsoIdResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteSsoIdResponse) SetSuccess(success bool) {
-	d.Success = success
-	d.require(deleteSsoIdResponseFieldSuccess)
-}
-
-func (d *DeleteSsoIdResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteSsoIdResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteSsoIdResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteSsoIdResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteSsoIdResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteSsoIdResponse) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	getSsoIdResponseFieldData = big.NewInt(1 << 0)
-)
-
-type GetSsoIdResponse struct {
-	Data *GetSsoIdResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetSsoIdResponse) GetData() *GetSsoIdResponseData {
-	if g == nil {
+func (s *SSOListResponse) GetData() *SSOListResponseData {
+	if s == nil {
 		return nil
 	}
-	return g.Data
+	return s.Data
 }
 
-func (g *GetSsoIdResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
+func (s *SSOListResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
-func (g *GetSsoIdResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (s *SSOListResponse) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSsoIdResponse) SetData(data *GetSsoIdResponseData) {
-	g.Data = data
-	g.require(getSsoIdResponseFieldData)
+func (s *SSOListResponse) SetData(data *SSOListResponseData) {
+	s.Data = data
+	s.require(sSOListResponseFieldData)
 }
 
-func (g *GetSsoIdResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetSsoIdResponse
+func (s *SSOListResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SSOListResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetSsoIdResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*s = SSOListResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetSsoIdResponse) MarshalJSON() ([]byte, error) {
-	type embed GetSsoIdResponse
+func (s *SSOListResponse) MarshalJSON() ([]byte, error) {
+	type embed SSOListResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*s),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetSsoIdResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (s *SSOListResponse) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", s)
 }
 
 var (
-	getSsoIdResponseDataFieldID        = big.NewInt(1 << 0)
-	getSsoIdResponseDataFieldProvider  = big.NewInt(1 << 1)
-	getSsoIdResponseDataFieldDomain    = big.NewInt(1 << 2)
-	getSsoIdResponseDataFieldActive    = big.NewInt(1 << 3)
-	getSsoIdResponseDataFieldCreatedAt = big.NewInt(1 << 4)
-	getSsoIdResponseDataFieldUpdatedAt = big.NewInt(1 << 5)
+	sSOListResponseDataFieldItems      = big.NewInt(1 << 0)
+	sSOListResponseDataFieldNextCursor = big.NewInt(1 << 1)
+	sSOListResponseDataFieldCount      = big.NewInt(1 << 2)
 )
 
-type GetSsoIdResponseData struct {
-	ID string `json:"id" url:"id"`
-	// SSO provider type
-	Provider GetSsoIdResponseDataProvider `json:"provider" url:"provider"`
-	// Email domain for this provider
-	Domain string `json:"domain" url:"domain"`
-	// Whether SSO is active
-	Active bool `json:"active" url:"active"`
-	// SSO configuration creation timestamp
-	CreatedAt string `json:"createdAt" url:"createdAt"`
-	// SSO configuration last update timestamp
-	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
+type SSOListResponseData struct {
+	Items []*SSOListResponseDataItemsItem `json:"items" url:"items"`
+	// Cursor for next page
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+	// Total count of items
+	Count int `json:"count" url:"count"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -367,654 +261,118 @@ type GetSsoIdResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetSsoIdResponseData) GetID() string {
-	if g == nil {
-		return ""
-	}
-	return g.ID
-}
-
-func (g *GetSsoIdResponseData) GetProvider() GetSsoIdResponseDataProvider {
-	if g == nil {
-		return ""
-	}
-	return g.Provider
-}
-
-func (g *GetSsoIdResponseData) GetDomain() string {
-	if g == nil {
-		return ""
-	}
-	return g.Domain
-}
-
-func (g *GetSsoIdResponseData) GetActive() bool {
-	if g == nil {
-		return false
-	}
-	return g.Active
-}
-
-func (g *GetSsoIdResponseData) GetCreatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.CreatedAt
-}
-
-func (g *GetSsoIdResponseData) GetUpdatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.UpdatedAt
-}
-
-func (g *GetSsoIdResponseData) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetSsoIdResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSsoIdResponseData) SetID(id string) {
-	g.ID = id
-	g.require(getSsoIdResponseDataFieldID)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSsoIdResponseData) SetProvider(provider GetSsoIdResponseDataProvider) {
-	g.Provider = provider
-	g.require(getSsoIdResponseDataFieldProvider)
-}
-
-// SetDomain sets the Domain field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSsoIdResponseData) SetDomain(domain string) {
-	g.Domain = domain
-	g.require(getSsoIdResponseDataFieldDomain)
-}
-
-// SetActive sets the Active field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSsoIdResponseData) SetActive(active bool) {
-	g.Active = active
-	g.require(getSsoIdResponseDataFieldActive)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSsoIdResponseData) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getSsoIdResponseDataFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSsoIdResponseData) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getSsoIdResponseDataFieldUpdatedAt)
-}
-
-func (g *GetSsoIdResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetSsoIdResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetSsoIdResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetSsoIdResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetSsoIdResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetSsoIdResponseData) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-// SSO provider type
-type GetSsoIdResponseDataProvider string
-
-const (
-	GetSsoIdResponseDataProviderOkta  GetSsoIdResponseDataProvider = "OKTA"
-	GetSsoIdResponseDataProviderAuth0 GetSsoIdResponseDataProvider = "AUTH0"
-	GetSsoIdResponseDataProviderSAML  GetSsoIdResponseDataProvider = "SAML"
-)
-
-func NewGetSsoIdResponseDataProviderFromString(s string) (GetSsoIdResponseDataProvider, error) {
-	switch s {
-	case "OKTA":
-		return GetSsoIdResponseDataProviderOkta, nil
-	case "AUTH0":
-		return GetSsoIdResponseDataProviderAuth0, nil
-	case "SAML":
-		return GetSsoIdResponseDataProviderSAML, nil
-	}
-	var t GetSsoIdResponseDataProvider
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (g GetSsoIdResponseDataProvider) Ptr() *GetSsoIdResponseDataProvider {
-	return &g
-}
-
-var (
-	getSSOResponseFieldData = big.NewInt(1 << 0)
-	getSSOResponseFieldMeta = big.NewInt(1 << 1)
-)
-
-type GetSSOResponse struct {
-	Data []*GetSSOResponseDataItem `json:"data" url:"data"`
-	Meta *GetSSOResponseMeta       `json:"meta" url:"meta"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetSSOResponse) GetData() []*GetSSOResponseDataItem {
-	if g == nil {
+func (s *SSOListResponseData) GetItems() []*SSOListResponseDataItemsItem {
+	if s == nil {
 		return nil
 	}
-	return g.Data
+	return s.Items
 }
 
-func (g *GetSSOResponse) GetMeta() *GetSSOResponseMeta {
-	if g == nil {
+func (s *SSOListResponseData) GetNextCursor() *string {
+	if s == nil {
 		return nil
 	}
-	return g.Meta
+	return s.NextCursor
 }
 
-func (g *GetSSOResponse) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetSSOResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponse) SetData(data []*GetSSOResponseDataItem) {
-	g.Data = data
-	g.require(getSSOResponseFieldData)
-}
-
-// SetMeta sets the Meta field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponse) SetMeta(meta *GetSSOResponseMeta) {
-	g.Meta = meta
-	g.require(getSSOResponseFieldMeta)
-}
-
-func (g *GetSSOResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetSSOResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetSSOResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetSSOResponse) MarshalJSON() ([]byte, error) {
-	type embed GetSSOResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetSSOResponse) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getSSOResponseDataItemFieldID        = big.NewInt(1 << 0)
-	getSSOResponseDataItemFieldProvider  = big.NewInt(1 << 1)
-	getSSOResponseDataItemFieldDomain    = big.NewInt(1 << 2)
-	getSSOResponseDataItemFieldActive    = big.NewInt(1 << 3)
-	getSSOResponseDataItemFieldCreatedAt = big.NewInt(1 << 4)
-	getSSOResponseDataItemFieldUpdatedAt = big.NewInt(1 << 5)
-)
-
-type GetSSOResponseDataItem struct {
-	ID string `json:"id" url:"id"`
-	// SSO provider type
-	Provider GetSSOResponseDataItemProvider `json:"provider" url:"provider"`
-	// Email domain for this provider
-	Domain string `json:"domain" url:"domain"`
-	// Whether SSO is active
-	Active bool `json:"active" url:"active"`
-	// SSO configuration creation timestamp
-	CreatedAt string `json:"createdAt" url:"createdAt"`
-	// SSO configuration last update timestamp
-	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetSSOResponseDataItem) GetID() string {
-	if g == nil {
-		return ""
-	}
-	return g.ID
-}
-
-func (g *GetSSOResponseDataItem) GetProvider() GetSSOResponseDataItemProvider {
-	if g == nil {
-		return ""
-	}
-	return g.Provider
-}
-
-func (g *GetSSOResponseDataItem) GetDomain() string {
-	if g == nil {
-		return ""
-	}
-	return g.Domain
-}
-
-func (g *GetSSOResponseDataItem) GetActive() bool {
-	if g == nil {
-		return false
-	}
-	return g.Active
-}
-
-func (g *GetSSOResponseDataItem) GetCreatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.CreatedAt
-}
-
-func (g *GetSSOResponseDataItem) GetUpdatedAt() string {
-	if g == nil {
-		return ""
-	}
-	return g.UpdatedAt
-}
-
-func (g *GetSSOResponseDataItem) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetSSOResponseDataItem) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseDataItem) SetID(id string) {
-	g.ID = id
-	g.require(getSSOResponseDataItemFieldID)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseDataItem) SetProvider(provider GetSSOResponseDataItemProvider) {
-	g.Provider = provider
-	g.require(getSSOResponseDataItemFieldProvider)
-}
-
-// SetDomain sets the Domain field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseDataItem) SetDomain(domain string) {
-	g.Domain = domain
-	g.require(getSSOResponseDataItemFieldDomain)
-}
-
-// SetActive sets the Active field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseDataItem) SetActive(active bool) {
-	g.Active = active
-	g.require(getSSOResponseDataItemFieldActive)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseDataItem) SetCreatedAt(createdAt string) {
-	g.CreatedAt = createdAt
-	g.require(getSSOResponseDataItemFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseDataItem) SetUpdatedAt(updatedAt string) {
-	g.UpdatedAt = updatedAt
-	g.require(getSSOResponseDataItemFieldUpdatedAt)
-}
-
-func (g *GetSSOResponseDataItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetSSOResponseDataItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetSSOResponseDataItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetSSOResponseDataItem) MarshalJSON() ([]byte, error) {
-	type embed GetSSOResponseDataItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetSSOResponseDataItem) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-// SSO provider type
-type GetSSOResponseDataItemProvider string
-
-const (
-	GetSSOResponseDataItemProviderOkta  GetSSOResponseDataItemProvider = "OKTA"
-	GetSSOResponseDataItemProviderAuth0 GetSSOResponseDataItemProvider = "AUTH0"
-	GetSSOResponseDataItemProviderSAML  GetSSOResponseDataItemProvider = "SAML"
-)
-
-func NewGetSSOResponseDataItemProviderFromString(s string) (GetSSOResponseDataItemProvider, error) {
-	switch s {
-	case "OKTA":
-		return GetSSOResponseDataItemProviderOkta, nil
-	case "AUTH0":
-		return GetSSOResponseDataItemProviderAuth0, nil
-	case "SAML":
-		return GetSSOResponseDataItemProviderSAML, nil
-	}
-	var t GetSSOResponseDataItemProvider
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (g GetSSOResponseDataItemProvider) Ptr() *GetSSOResponseDataItemProvider {
-	return &g
-}
-
-var (
-	getSSOResponseMetaFieldTotal = big.NewInt(1 << 0)
-	getSSOResponseMetaFieldPage  = big.NewInt(1 << 1)
-	getSSOResponseMetaFieldLimit = big.NewInt(1 << 2)
-)
-
-type GetSSOResponseMeta struct {
-	Total int `json:"total" url:"total"`
-	Page  int `json:"page" url:"page"`
-	Limit int `json:"limit" url:"limit"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetSSOResponseMeta) GetTotal() int {
-	if g == nil {
+func (s *SSOListResponseData) GetCount() int {
+	if s == nil {
 		return 0
 	}
-	return g.Total
+	return s.Count
 }
 
-func (g *GetSSOResponseMeta) GetPage() int {
-	if g == nil {
-		return 0
+func (s *SSOListResponseData) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SSOListResponseData) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	return g.Page
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
-func (g *GetSSOResponseMeta) GetLimit() int {
-	if g == nil {
-		return 0
-	}
-	return g.Limit
-}
-
-func (g *GetSSOResponseMeta) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetSSOResponseMeta) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTotal sets the Total field and marks it as non-optional;
+// SetItems sets the Items field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseMeta) SetTotal(total int) {
-	g.Total = total
-	g.require(getSSOResponseMetaFieldTotal)
+func (s *SSOListResponseData) SetItems(items []*SSOListResponseDataItemsItem) {
+	s.Items = items
+	s.require(sSOListResponseDataFieldItems)
 }
 
-// SetPage sets the Page field and marks it as non-optional;
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseMeta) SetPage(page int) {
-	g.Page = page
-	g.require(getSSOResponseMetaFieldPage)
+func (s *SSOListResponseData) SetNextCursor(nextCursor *string) {
+	s.NextCursor = nextCursor
+	s.require(sSOListResponseDataFieldNextCursor)
 }
 
-// SetLimit sets the Limit field and marks it as non-optional;
+// SetCount sets the Count field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSSOResponseMeta) SetLimit(limit int) {
-	g.Limit = limit
-	g.require(getSSOResponseMetaFieldLimit)
+func (s *SSOListResponseData) SetCount(count int) {
+	s.Count = count
+	s.require(sSOListResponseDataFieldCount)
 }
 
-func (g *GetSSOResponseMeta) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetSSOResponseMeta
+func (s *SSOListResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler SSOListResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetSSOResponseMeta(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	*s = SSOListResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
 	if err != nil {
 		return err
 	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (g *GetSSOResponseMeta) MarshalJSON() ([]byte, error) {
-	type embed GetSSOResponseMeta
+func (s *SSOListResponseData) MarshalJSON() ([]byte, error) {
+	type embed SSOListResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*g),
+		embed: embed(*s),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetSSOResponseMeta) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+func (s *SSOListResponseData) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(g); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", g)
+	return fmt.Sprintf("%#v", s)
 }
 
 var (
-	patchSsoIdResponseFieldData = big.NewInt(1 << 0)
+	sSOListResponseDataItemsItemFieldID           = big.NewInt(1 << 0)
+	sSOListResponseDataItemsItemFieldProvider     = big.NewInt(1 << 1)
+	sSOListResponseDataItemsItemFieldDomain       = big.NewInt(1 << 2)
+	sSOListResponseDataItemsItemFieldActive       = big.NewInt(1 << 3)
+	sSOListResponseDataItemsItemFieldExtendedData = big.NewInt(1 << 4)
+	sSOListResponseDataItemsItemFieldCreatedAt    = big.NewInt(1 << 5)
+	sSOListResponseDataItemsItemFieldUpdatedAt    = big.NewInt(1 << 6)
 )
 
-type PatchSsoIdResponse struct {
-	Data *PatchSsoIdResponseData `json:"data,omitempty" url:"data,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PatchSsoIdResponse) GetData() *PatchSsoIdResponseData {
-	if p == nil {
-		return nil
-	}
-	return p.Data
-}
-
-func (p *PatchSsoIdResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PatchSsoIdResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdResponse) SetData(data *PatchSsoIdResponseData) {
-	p.Data = data
-	p.require(patchSsoIdResponseFieldData)
-}
-
-func (p *PatchSsoIdResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchSsoIdResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PatchSsoIdResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PatchSsoIdResponse) MarshalJSON() ([]byte, error) {
-	type embed PatchSsoIdResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PatchSsoIdResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	patchSsoIdResponseDataFieldID        = big.NewInt(1 << 0)
-	patchSsoIdResponseDataFieldProvider  = big.NewInt(1 << 1)
-	patchSsoIdResponseDataFieldDomain    = big.NewInt(1 << 2)
-	patchSsoIdResponseDataFieldActive    = big.NewInt(1 << 3)
-	patchSsoIdResponseDataFieldCreatedAt = big.NewInt(1 << 4)
-	patchSsoIdResponseDataFieldUpdatedAt = big.NewInt(1 << 5)
-)
-
-type PatchSsoIdResponseData struct {
+type SSOListResponseDataItemsItem struct {
 	ID string `json:"id" url:"id"`
 	// SSO provider type
-	Provider PatchSsoIdResponseDataProvider `json:"provider" url:"provider"`
+	Provider SSOListResponseDataItemsItemProvider `json:"provider" url:"provider"`
 	// Email domain for this provider
 	Domain string `json:"domain" url:"domain"`
 	// Whether SSO is active
 	Active bool `json:"active" url:"active"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
 	// SSO configuration creation timestamp
 	CreatedAt string `json:"createdAt" url:"createdAt"`
 	// SSO configuration last update timestamp
@@ -1027,172 +385,186 @@ type PatchSsoIdResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PatchSsoIdResponseData) GetID() string {
-	if p == nil {
+func (s *SSOListResponseDataItemsItem) GetID() string {
+	if s == nil {
 		return ""
 	}
-	return p.ID
+	return s.ID
 }
 
-func (p *PatchSsoIdResponseData) GetProvider() PatchSsoIdResponseDataProvider {
-	if p == nil {
+func (s *SSOListResponseDataItemsItem) GetProvider() SSOListResponseDataItemsItemProvider {
+	if s == nil {
 		return ""
 	}
-	return p.Provider
+	return s.Provider
 }
 
-func (p *PatchSsoIdResponseData) GetDomain() string {
-	if p == nil {
+func (s *SSOListResponseDataItemsItem) GetDomain() string {
+	if s == nil {
 		return ""
 	}
-	return p.Domain
+	return s.Domain
 }
 
-func (p *PatchSsoIdResponseData) GetActive() bool {
-	if p == nil {
+func (s *SSOListResponseDataItemsItem) GetActive() bool {
+	if s == nil {
 		return false
 	}
-	return p.Active
+	return s.Active
 }
 
-func (p *PatchSsoIdResponseData) GetCreatedAt() string {
-	if p == nil {
+func (s *SSOListResponseDataItemsItem) GetExtendedData() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.ExtendedData
+}
+
+func (s *SSOListResponseDataItemsItem) GetCreatedAt() string {
+	if s == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return s.CreatedAt
 }
 
-func (p *PatchSsoIdResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (s *SSOListResponseDataItemsItem) GetUpdatedAt() string {
+	if s == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (p *PatchSsoIdResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (s *SSOListResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
-func (p *PatchSsoIdResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (s *SSOListResponseDataItemsItem) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdResponseData) SetID(id string) {
-	p.ID = id
-	p.require(patchSsoIdResponseDataFieldID)
+func (s *SSOListResponseDataItemsItem) SetID(id string) {
+	s.ID = id
+	s.require(sSOListResponseDataItemsItemFieldID)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdResponseData) SetProvider(provider PatchSsoIdResponseDataProvider) {
-	p.Provider = provider
-	p.require(patchSsoIdResponseDataFieldProvider)
+func (s *SSOListResponseDataItemsItem) SetProvider(provider SSOListResponseDataItemsItemProvider) {
+	s.Provider = provider
+	s.require(sSOListResponseDataItemsItemFieldProvider)
 }
 
 // SetDomain sets the Domain field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdResponseData) SetDomain(domain string) {
-	p.Domain = domain
-	p.require(patchSsoIdResponseDataFieldDomain)
+func (s *SSOListResponseDataItemsItem) SetDomain(domain string) {
+	s.Domain = domain
+	s.require(sSOListResponseDataItemsItemFieldDomain)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdResponseData) SetActive(active bool) {
-	p.Active = active
-	p.require(patchSsoIdResponseDataFieldActive)
+func (s *SSOListResponseDataItemsItem) SetActive(active bool) {
+	s.Active = active
+	s.require(sSOListResponseDataItemsItemFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SSOListResponseDataItemsItem) SetExtendedData(extendedData map[string]interface{}) {
+	s.ExtendedData = extendedData
+	s.require(sSOListResponseDataItemsItemFieldExtendedData)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(patchSsoIdResponseDataFieldCreatedAt)
+func (s *SSOListResponseDataItemsItem) SetCreatedAt(createdAt string) {
+	s.CreatedAt = createdAt
+	s.require(sSOListResponseDataItemsItemFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(patchSsoIdResponseDataFieldUpdatedAt)
+func (s *SSOListResponseDataItemsItem) SetUpdatedAt(updatedAt string) {
+	s.UpdatedAt = updatedAt
+	s.require(sSOListResponseDataItemsItemFieldUpdatedAt)
 }
 
-func (p *PatchSsoIdResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchSsoIdResponseData
+func (s *SSOListResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler SSOListResponseDataItemsItem
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PatchSsoIdResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*s = SSOListResponseDataItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PatchSsoIdResponseData) MarshalJSON() ([]byte, error) {
-	type embed PatchSsoIdResponseData
+func (s *SSOListResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed SSOListResponseDataItemsItem
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*s),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PatchSsoIdResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (s *SSOListResponseDataItemsItem) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", s)
 }
 
 // SSO provider type
-type PatchSsoIdResponseDataProvider string
+type SSOListResponseDataItemsItemProvider string
 
 const (
-	PatchSsoIdResponseDataProviderOkta  PatchSsoIdResponseDataProvider = "OKTA"
-	PatchSsoIdResponseDataProviderAuth0 PatchSsoIdResponseDataProvider = "AUTH0"
-	PatchSsoIdResponseDataProviderSAML  PatchSsoIdResponseDataProvider = "SAML"
+	SSOListResponseDataItemsItemProviderOkta  SSOListResponseDataItemsItemProvider = "OKTA"
+	SSOListResponseDataItemsItemProviderAuth0 SSOListResponseDataItemsItemProvider = "AUTH0"
+	SSOListResponseDataItemsItemProviderSAML  SSOListResponseDataItemsItemProvider = "SAML"
 )
 
-func NewPatchSsoIdResponseDataProviderFromString(s string) (PatchSsoIdResponseDataProvider, error) {
+func NewSSOListResponseDataItemsItemProviderFromString(s string) (SSOListResponseDataItemsItemProvider, error) {
 	switch s {
 	case "OKTA":
-		return PatchSsoIdResponseDataProviderOkta, nil
+		return SSOListResponseDataItemsItemProviderOkta, nil
 	case "AUTH0":
-		return PatchSsoIdResponseDataProviderAuth0, nil
+		return SSOListResponseDataItemsItemProviderAuth0, nil
 	case "SAML":
-		return PatchSsoIdResponseDataProviderSAML, nil
+		return SSOListResponseDataItemsItemProviderSAML, nil
 	}
-	var t PatchSsoIdResponseDataProvider
+	var t SSOListResponseDataItemsItemProvider
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (p PatchSsoIdResponseDataProvider) Ptr() *PatchSsoIdResponseDataProvider {
-	return &p
+func (s SSOListResponseDataItemsItemProvider) Ptr() *SSOListResponseDataItemsItemProvider {
+	return &s
 }
 
 var (
-	postSSOResponseFieldData = big.NewInt(1 << 0)
+	sSOResponseFieldData = big.NewInt(1 << 0)
 )
 
-type PostSSOResponse struct {
-	Data *PostSSOResponseData `json:"data,omitempty" url:"data,omitempty"`
+type SSOResponse struct {
+	Data *SSOResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1201,87 +573,90 @@ type PostSSOResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostSSOResponse) GetData() *PostSSOResponseData {
-	if p == nil {
+func (s *SSOResponse) GetData() *SSOResponseData {
+	if s == nil {
 		return nil
 	}
-	return p.Data
+	return s.Data
 }
 
-func (p *PostSSOResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (s *SSOResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
-func (p *PostSSOResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (s *SSOResponse) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSOResponse) SetData(data *PostSSOResponseData) {
-	p.Data = data
-	p.require(postSSOResponseFieldData)
+func (s *SSOResponse) SetData(data *SSOResponseData) {
+	s.Data = data
+	s.require(sSOResponseFieldData)
 }
 
-func (p *PostSSOResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostSSOResponse
+func (s *SSOResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SSOResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostSSOResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*s = SSOResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostSSOResponse) MarshalJSON() ([]byte, error) {
-	type embed PostSSOResponse
+func (s *SSOResponse) MarshalJSON() ([]byte, error) {
+	type embed SSOResponse
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*s),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostSSOResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (s *SSOResponse) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", s)
 }
 
 var (
-	postSSOResponseDataFieldID        = big.NewInt(1 << 0)
-	postSSOResponseDataFieldProvider  = big.NewInt(1 << 1)
-	postSSOResponseDataFieldDomain    = big.NewInt(1 << 2)
-	postSSOResponseDataFieldActive    = big.NewInt(1 << 3)
-	postSSOResponseDataFieldCreatedAt = big.NewInt(1 << 4)
-	postSSOResponseDataFieldUpdatedAt = big.NewInt(1 << 5)
+	sSOResponseDataFieldID           = big.NewInt(1 << 0)
+	sSOResponseDataFieldProvider     = big.NewInt(1 << 1)
+	sSOResponseDataFieldDomain       = big.NewInt(1 << 2)
+	sSOResponseDataFieldActive       = big.NewInt(1 << 3)
+	sSOResponseDataFieldExtendedData = big.NewInt(1 << 4)
+	sSOResponseDataFieldCreatedAt    = big.NewInt(1 << 5)
+	sSOResponseDataFieldUpdatedAt    = big.NewInt(1 << 6)
 )
 
-type PostSSOResponseData struct {
+type SSOResponseData struct {
 	ID string `json:"id" url:"id"`
 	// SSO provider type
-	Provider PostSSOResponseDataProvider `json:"provider" url:"provider"`
+	Provider SSOResponseDataProvider `json:"provider" url:"provider"`
 	// Email domain for this provider
 	Domain string `json:"domain" url:"domain"`
 	// Whether SSO is active
 	Active bool `json:"active" url:"active"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
 	// SSO configuration creation timestamp
 	CreatedAt string `json:"createdAt" url:"createdAt"`
 	// SSO configuration last update timestamp
@@ -1294,271 +669,588 @@ type PostSSOResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PostSSOResponseData) GetID() string {
-	if p == nil {
+func (s *SSOResponseData) GetID() string {
+	if s == nil {
 		return ""
 	}
-	return p.ID
+	return s.ID
 }
 
-func (p *PostSSOResponseData) GetProvider() PostSSOResponseDataProvider {
-	if p == nil {
+func (s *SSOResponseData) GetProvider() SSOResponseDataProvider {
+	if s == nil {
 		return ""
 	}
-	return p.Provider
+	return s.Provider
 }
 
-func (p *PostSSOResponseData) GetDomain() string {
-	if p == nil {
+func (s *SSOResponseData) GetDomain() string {
+	if s == nil {
 		return ""
 	}
-	return p.Domain
+	return s.Domain
 }
 
-func (p *PostSSOResponseData) GetActive() bool {
-	if p == nil {
+func (s *SSOResponseData) GetActive() bool {
+	if s == nil {
 		return false
 	}
-	return p.Active
+	return s.Active
 }
 
-func (p *PostSSOResponseData) GetCreatedAt() string {
-	if p == nil {
+func (s *SSOResponseData) GetExtendedData() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.ExtendedData
+}
+
+func (s *SSOResponseData) GetCreatedAt() string {
+	if s == nil {
 		return ""
 	}
-	return p.CreatedAt
+	return s.CreatedAt
 }
 
-func (p *PostSSOResponseData) GetUpdatedAt() string {
-	if p == nil {
+func (s *SSOResponseData) GetUpdatedAt() string {
+	if s == nil {
 		return ""
 	}
-	return p.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (p *PostSSOResponseData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
+func (s *SSOResponseData) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
 }
 
-func (p *PostSSOResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (s *SSOResponseData) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSOResponseData) SetID(id string) {
-	p.ID = id
-	p.require(postSSOResponseDataFieldID)
+func (s *SSOResponseData) SetID(id string) {
+	s.ID = id
+	s.require(sSOResponseDataFieldID)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSOResponseData) SetProvider(provider PostSSOResponseDataProvider) {
-	p.Provider = provider
-	p.require(postSSOResponseDataFieldProvider)
+func (s *SSOResponseData) SetProvider(provider SSOResponseDataProvider) {
+	s.Provider = provider
+	s.require(sSOResponseDataFieldProvider)
 }
 
 // SetDomain sets the Domain field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSOResponseData) SetDomain(domain string) {
-	p.Domain = domain
-	p.require(postSSOResponseDataFieldDomain)
+func (s *SSOResponseData) SetDomain(domain string) {
+	s.Domain = domain
+	s.require(sSOResponseDataFieldDomain)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSOResponseData) SetActive(active bool) {
-	p.Active = active
-	p.require(postSSOResponseDataFieldActive)
+func (s *SSOResponseData) SetActive(active bool) {
+	s.Active = active
+	s.require(sSOResponseDataFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SSOResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	s.ExtendedData = extendedData
+	s.require(sSOResponseDataFieldExtendedData)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSOResponseData) SetCreatedAt(createdAt string) {
-	p.CreatedAt = createdAt
-	p.require(postSSOResponseDataFieldCreatedAt)
+func (s *SSOResponseData) SetCreatedAt(createdAt string) {
+	s.CreatedAt = createdAt
+	s.require(sSOResponseDataFieldCreatedAt)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PostSSOResponseData) SetUpdatedAt(updatedAt string) {
-	p.UpdatedAt = updatedAt
-	p.require(postSSOResponseDataFieldUpdatedAt)
+func (s *SSOResponseData) SetUpdatedAt(updatedAt string) {
+	s.UpdatedAt = updatedAt
+	s.require(sSOResponseDataFieldUpdatedAt)
 }
 
-func (p *PostSSOResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostSSOResponseData
+func (s *SSOResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler SSOResponseData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PostSSOResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*s = SSOResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
 	if err != nil {
 		return err
 	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PostSSOResponseData) MarshalJSON() ([]byte, error) {
-	type embed PostSSOResponseData
+func (s *SSOResponseData) MarshalJSON() ([]byte, error) {
+	type embed SSOResponseData
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*p),
+		embed: embed(*s),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PostSSOResponseData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+func (s *SSOResponseData) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(p); err == nil {
+	if value, err := internal.StringifyJSON(s); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", p)
+	return fmt.Sprintf("%#v", s)
 }
 
 // SSO provider type
-type PostSSOResponseDataProvider string
+type SSOResponseDataProvider string
 
 const (
-	PostSSOResponseDataProviderOkta  PostSSOResponseDataProvider = "OKTA"
-	PostSSOResponseDataProviderAuth0 PostSSOResponseDataProvider = "AUTH0"
-	PostSSOResponseDataProviderSAML  PostSSOResponseDataProvider = "SAML"
+	SSOResponseDataProviderOkta  SSOResponseDataProvider = "OKTA"
+	SSOResponseDataProviderAuth0 SSOResponseDataProvider = "AUTH0"
+	SSOResponseDataProviderSAML  SSOResponseDataProvider = "SAML"
 )
 
-func NewPostSSOResponseDataProviderFromString(s string) (PostSSOResponseDataProvider, error) {
+func NewSSOResponseDataProviderFromString(s string) (SSOResponseDataProvider, error) {
 	switch s {
 	case "OKTA":
-		return PostSSOResponseDataProviderOkta, nil
+		return SSOResponseDataProviderOkta, nil
 	case "AUTH0":
-		return PostSSOResponseDataProviderAuth0, nil
+		return SSOResponseDataProviderAuth0, nil
 	case "SAML":
-		return PostSSOResponseDataProviderSAML, nil
+		return SSOResponseDataProviderSAML, nil
 	}
-	var t PostSSOResponseDataProvider
+	var t SSOResponseDataProvider
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (p PostSSOResponseDataProvider) Ptr() *PostSSOResponseDataProvider {
-	return &p
+func (s SSOResponseDataProvider) Ptr() *SSOResponseDataProvider {
+	return &s
+}
+
+// SSO provider type
+type CreateSsOsRequestProvider string
+
+const (
+	CreateSsOsRequestProviderOkta  CreateSsOsRequestProvider = "OKTA"
+	CreateSsOsRequestProviderAuth0 CreateSsOsRequestProvider = "AUTH0"
+	CreateSsOsRequestProviderSAML  CreateSsOsRequestProvider = "SAML"
+)
+
+func NewCreateSsOsRequestProviderFromString(s string) (CreateSsOsRequestProvider, error) {
+	switch s {
+	case "OKTA":
+		return CreateSsOsRequestProviderOkta, nil
+	case "AUTH0":
+		return CreateSsOsRequestProviderAuth0, nil
+	case "SAML":
+		return CreateSsOsRequestProviderSAML, nil
+	}
+	var t CreateSsOsRequestProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateSsOsRequestProvider) Ptr() *CreateSsOsRequestProvider {
+	return &c
+}
+
+// SSO provider type
+type UpdateSsOsRequestProvider string
+
+const (
+	UpdateSsOsRequestProviderOkta  UpdateSsOsRequestProvider = "OKTA"
+	UpdateSsOsRequestProviderAuth0 UpdateSsOsRequestProvider = "AUTH0"
+	UpdateSsOsRequestProviderSAML  UpdateSsOsRequestProvider = "SAML"
+)
+
+func NewUpdateSsOsRequestProviderFromString(s string) (UpdateSsOsRequestProvider, error) {
+	switch s {
+	case "OKTA":
+		return UpdateSsOsRequestProviderOkta, nil
+	case "AUTH0":
+		return UpdateSsOsRequestProviderAuth0, nil
+	case "SAML":
+		return UpdateSsOsRequestProviderSAML, nil
+	}
+	var t UpdateSsOsRequestProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateSsOsRequestProvider) Ptr() *UpdateSsOsRequestProvider {
+	return &u
 }
 
 var (
-	patchSsoIdRequestFieldID                    = big.NewInt(1 << 0)
-	patchSsoIdRequestFieldName                  = big.NewInt(1 << 1)
-	patchSsoIdRequestFieldDomain                = big.NewInt(1 << 2)
-	patchSsoIdRequestFieldClientID              = big.NewInt(1 << 3)
-	patchSsoIdRequestFieldClientSecret          = big.NewInt(1 << 4)
-	patchSsoIdRequestFieldIssuer                = big.NewInt(1 << 5)
-	patchSsoIdRequestFieldAuthorizationEndpoint = big.NewInt(1 << 6)
-	patchSsoIdRequestFieldTokenEndpoint         = big.NewInt(1 << 7)
-	patchSsoIdRequestFieldUserInfoEndpoint      = big.NewInt(1 << 8)
-	patchSsoIdRequestFieldActive                = big.NewInt(1 << 9)
+	updateSsOsResponseFieldData = big.NewInt(1 << 0)
 )
 
-type PatchSsoIdRequest struct {
+type UpdateSsOsResponse struct {
+	Data *UpdateSsOsResponseData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateSsOsResponse) GetData() *UpdateSsOsResponseData {
+	if u == nil {
+		return nil
+	}
+	return u.Data
+}
+
+func (u *UpdateSsOsResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateSsOsResponse) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsResponse) SetData(data *UpdateSsOsResponseData) {
+	u.Data = data
+	u.require(updateSsOsResponseFieldData)
+}
+
+func (u *UpdateSsOsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateSsOsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateSsOsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateSsOsResponse) MarshalJSON() ([]byte, error) {
+	type embed UpdateSsOsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateSsOsResponse) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateSsOsResponseDataFieldID           = big.NewInt(1 << 0)
+	updateSsOsResponseDataFieldProvider     = big.NewInt(1 << 1)
+	updateSsOsResponseDataFieldDomain       = big.NewInt(1 << 2)
+	updateSsOsResponseDataFieldActive       = big.NewInt(1 << 3)
+	updateSsOsResponseDataFieldExtendedData = big.NewInt(1 << 4)
+	updateSsOsResponseDataFieldCreatedAt    = big.NewInt(1 << 5)
+	updateSsOsResponseDataFieldUpdatedAt    = big.NewInt(1 << 6)
+)
+
+type UpdateSsOsResponseData struct {
+	ID string `json:"id" url:"id"`
+	// SSO provider type
+	Provider UpdateSsOsResponseDataProvider `json:"provider" url:"provider"`
+	// Email domain for this provider
+	Domain string `json:"domain" url:"domain"`
+	// Whether SSO is active
+	Active bool `json:"active" url:"active"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"extendedData,omitempty"`
+	// SSO configuration creation timestamp
+	CreatedAt string `json:"createdAt" url:"createdAt"`
+	// SSO configuration last update timestamp
+	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateSsOsResponseData) GetID() string {
+	if u == nil {
+		return ""
+	}
+	return u.ID
+}
+
+func (u *UpdateSsOsResponseData) GetProvider() UpdateSsOsResponseDataProvider {
+	if u == nil {
+		return ""
+	}
+	return u.Provider
+}
+
+func (u *UpdateSsOsResponseData) GetDomain() string {
+	if u == nil {
+		return ""
+	}
+	return u.Domain
+}
+
+func (u *UpdateSsOsResponseData) GetActive() bool {
+	if u == nil {
+		return false
+	}
+	return u.Active
+}
+
+func (u *UpdateSsOsResponseData) GetExtendedData() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
+	return u.ExtendedData
+}
+
+func (u *UpdateSsOsResponseData) GetCreatedAt() string {
+	if u == nil {
+		return ""
+	}
+	return u.CreatedAt
+}
+
+func (u *UpdateSsOsResponseData) GetUpdatedAt() string {
+	if u == nil {
+		return ""
+	}
+	return u.UpdatedAt
+}
+
+func (u *UpdateSsOsResponseData) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateSsOsResponseData) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsResponseData) SetID(id string) {
+	u.ID = id
+	u.require(updateSsOsResponseDataFieldID)
+}
+
+// SetProvider sets the Provider field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsResponseData) SetProvider(provider UpdateSsOsResponseDataProvider) {
+	u.Provider = provider
+	u.require(updateSsOsResponseDataFieldProvider)
+}
+
+// SetDomain sets the Domain field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsResponseData) SetDomain(domain string) {
+	u.Domain = domain
+	u.require(updateSsOsResponseDataFieldDomain)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsResponseData) SetActive(active bool) {
+	u.Active = active
+	u.require(updateSsOsResponseDataFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsResponseData) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateSsOsResponseDataFieldExtendedData)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsResponseData) SetCreatedAt(createdAt string) {
+	u.CreatedAt = createdAt
+	u.require(updateSsOsResponseDataFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsResponseData) SetUpdatedAt(updatedAt string) {
+	u.UpdatedAt = updatedAt
+	u.require(updateSsOsResponseDataFieldUpdatedAt)
+}
+
+func (u *UpdateSsOsResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateSsOsResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateSsOsResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateSsOsResponseData) MarshalJSON() ([]byte, error) {
+	type embed UpdateSsOsResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateSsOsResponseData) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+// SSO provider type
+type UpdateSsOsResponseDataProvider string
+
+const (
+	UpdateSsOsResponseDataProviderOkta  UpdateSsOsResponseDataProvider = "OKTA"
+	UpdateSsOsResponseDataProviderAuth0 UpdateSsOsResponseDataProvider = "AUTH0"
+	UpdateSsOsResponseDataProviderSAML  UpdateSsOsResponseDataProvider = "SAML"
+)
+
+func NewUpdateSsOsResponseDataProviderFromString(s string) (UpdateSsOsResponseDataProvider, error) {
+	switch s {
+	case "OKTA":
+		return UpdateSsOsResponseDataProviderOkta, nil
+	case "AUTH0":
+		return UpdateSsOsResponseDataProviderAuth0, nil
+	case "SAML":
+		return UpdateSsOsResponseDataProviderSAML, nil
+	}
+	var t UpdateSsOsResponseDataProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateSsOsResponseDataProvider) Ptr() *UpdateSsOsResponseDataProvider {
+	return &u
+}
+
+var (
+	updateSsOsRequestFieldID           = big.NewInt(1 << 0)
+	updateSsOsRequestFieldProvider     = big.NewInt(1 << 1)
+	updateSsOsRequestFieldDomain       = big.NewInt(1 << 2)
+	updateSsOsRequestFieldConfig       = big.NewInt(1 << 3)
+	updateSsOsRequestFieldActive       = big.NewInt(1 << 4)
+	updateSsOsRequestFieldExtendedData = big.NewInt(1 << 5)
+)
+
+type UpdateSsOsRequest struct {
+	// SSO ID
 	ID string `json:"-" url:"-"`
-	// Provider name
-	Name *string `json:"name,omitempty" url:"-"`
+	// SSO provider type
+	Provider *UpdateSsOsRequestProvider `json:"provider,omitempty" url:"-"`
 	// Email domain to match
-	Domain                *string `json:"domain,omitempty" url:"-"`
-	ClientID              *string `json:"clientId,omitempty" url:"-"`
-	ClientSecret          *string `json:"clientSecret,omitempty" url:"-"`
-	Issuer                *string `json:"issuer,omitempty" url:"-"`
-	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty" url:"-"`
-	TokenEndpoint         *string `json:"tokenEndpoint,omitempty" url:"-"`
-	UserInfoEndpoint      *string `json:"userInfoEndpoint,omitempty" url:"-"`
+	Domain *string `json:"domain,omitempty" url:"-"`
+	// Provider configuration
+	Config map[string]interface{} `json:"config,omitempty" url:"-"`
 	// Enable/disable provider
 	Active *bool `json:"active,omitempty" url:"-"`
+	// Custom extended data
+	ExtendedData map[string]interface{} `json:"extendedData,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PatchSsoIdRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (u *UpdateSsOsRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetID(id string) {
-	p.ID = id
-	p.require(patchSsoIdRequestFieldID)
+func (u *UpdateSsOsRequest) SetID(id string) {
+	u.ID = id
+	u.require(updateSsOsRequestFieldID)
 }
 
-// SetName sets the Name field and marks it as non-optional;
+// SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetName(name *string) {
-	p.Name = name
-	p.require(patchSsoIdRequestFieldName)
+func (u *UpdateSsOsRequest) SetProvider(provider *UpdateSsOsRequestProvider) {
+	u.Provider = provider
+	u.require(updateSsOsRequestFieldProvider)
 }
 
 // SetDomain sets the Domain field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetDomain(domain *string) {
-	p.Domain = domain
-	p.require(patchSsoIdRequestFieldDomain)
+func (u *UpdateSsOsRequest) SetDomain(domain *string) {
+	u.Domain = domain
+	u.require(updateSsOsRequestFieldDomain)
 }
 
-// SetClientID sets the ClientID field and marks it as non-optional;
+// SetConfig sets the Config field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetClientID(clientID *string) {
-	p.ClientID = clientID
-	p.require(patchSsoIdRequestFieldClientID)
-}
-
-// SetClientSecret sets the ClientSecret field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetClientSecret(clientSecret *string) {
-	p.ClientSecret = clientSecret
-	p.require(patchSsoIdRequestFieldClientSecret)
-}
-
-// SetIssuer sets the Issuer field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetIssuer(issuer *string) {
-	p.Issuer = issuer
-	p.require(patchSsoIdRequestFieldIssuer)
-}
-
-// SetAuthorizationEndpoint sets the AuthorizationEndpoint field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetAuthorizationEndpoint(authorizationEndpoint *string) {
-	p.AuthorizationEndpoint = authorizationEndpoint
-	p.require(patchSsoIdRequestFieldAuthorizationEndpoint)
-}
-
-// SetTokenEndpoint sets the TokenEndpoint field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetTokenEndpoint(tokenEndpoint *string) {
-	p.TokenEndpoint = tokenEndpoint
-	p.require(patchSsoIdRequestFieldTokenEndpoint)
-}
-
-// SetUserInfoEndpoint sets the UserInfoEndpoint field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetUserInfoEndpoint(userInfoEndpoint *string) {
-	p.UserInfoEndpoint = userInfoEndpoint
-	p.require(patchSsoIdRequestFieldUserInfoEndpoint)
+func (u *UpdateSsOsRequest) SetConfig(config map[string]interface{}) {
+	u.Config = config
+	u.require(updateSsOsRequestFieldConfig)
 }
 
 // SetActive sets the Active field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchSsoIdRequest) SetActive(active *bool) {
-	p.Active = active
-	p.require(patchSsoIdRequestFieldActive)
+func (u *UpdateSsOsRequest) SetActive(active *bool) {
+	u.Active = active
+	u.require(updateSsOsRequestFieldActive)
+}
+
+// SetExtendedData sets the ExtendedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSsOsRequest) SetExtendedData(extendedData map[string]interface{}) {
+	u.ExtendedData = extendedData
+	u.require(updateSsOsRequestFieldExtendedData)
 }

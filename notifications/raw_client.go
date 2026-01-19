@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllNotifications(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetNotificationsRequest,
+	request *foru_ms_sdk.ListNotificationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetNotificationsResponse], error) {
+) (*core.Response[*foru_ms_sdk.NotificationListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllNotifications(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetNotificationsResponse
+	var response *foru_ms_sdk.NotificationListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllNotifications(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetNotificationsResponse]{
+	return &core.Response[*foru_ms_sdk.NotificationListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateANotification(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostNotificationsRequest,
+	request *foru_ms_sdk.CreateNotificationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostNotificationsResponse], error) {
+) (*core.Response[*foru_ms_sdk.NotificationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateANotification(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostNotificationsResponse
+	var response *foru_ms_sdk.NotificationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateANotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostNotificationsResponse]{
+	return &core.Response[*foru_ms_sdk.NotificationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetANotification(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetNotificationsIDRequest,
+	request *foru_ms_sdk.RetrieveNotificationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetNotificationsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.NotificationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetANotification(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetNotificationsIDResponse
+	var response *foru_ms_sdk.NotificationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetANotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetNotificationsIDResponse]{
+	return &core.Response[*foru_ms_sdk.NotificationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteANotification(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteNotificationsIDRequest,
+	request *foru_ms_sdk.DeleteNotificationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteNotificationsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteANotification(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteNotificationsIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,18 +202,18 @@ func (r *RawClient) DeleteANotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteNotificationsIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdateANotification(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchNotificationsIDRequest,
+	request *foru_ms_sdk.UpdateNotificationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PatchNotificationsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdateNotificationsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateANotification(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PatchNotificationsIDResponse
+	var response *foru_ms_sdk.UpdateNotificationsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -248,7 +248,7 @@ func (r *RawClient) UpdateANotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PatchNotificationsIDResponse]{
+	return &core.Response[*foru_ms_sdk.UpdateNotificationsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -32,12 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-func (c *Client) ListAllUsers(
+// Retrieve a paginated list of users. Use cursor for pagination.
+func (c *Client) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersRequest,
+	request *foru_ms_sdk.ListUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetUsersResponse, error) {
-	response, err := c.WithRawResponse.ListAllUsers(
+) (*foru_ms_sdk.UserListResponse, error) {
+	response, err := c.WithRawResponse.List(
 		ctx,
 		request,
 		opts...,
@@ -48,12 +49,13 @@ func (c *Client) ListAllUsers(
 	return response.Body, nil
 }
 
-func (c *Client) GetAUser(
+// Create a new user.
+func (c *Client) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDRequest,
+	request *foru_ms_sdk.CreateUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetUsersIDResponse, error) {
-	response, err := c.WithRawResponse.GetAUser(
+) (*foru_ms_sdk.UserResponse, error) {
+	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
 		opts...,
@@ -64,12 +66,13 @@ func (c *Client) GetAUser(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAUser(
+// Retrieve a user by ID or slug (if supported).
+func (c *Client) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteUsersIDRequest,
+	request *foru_ms_sdk.RetrieveUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteUsersIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAUser(
+) (*foru_ms_sdk.UserResponse, error) {
+	response, err := c.WithRawResponse.Retrieve(
 		ctx,
 		request,
 		opts...,
@@ -80,12 +83,13 @@ func (c *Client) DeleteAUser(
 	return response.Body, nil
 }
 
-func (c *Client) UpdateAUser(
+// Permanently delete a user.
+func (c *Client) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchUsersIDRequest,
+	request *foru_ms_sdk.DeleteUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.PatchUsersIDResponse, error) {
-	response, err := c.WithRawResponse.UpdateAUser(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.Delete(
 		ctx,
 		request,
 		opts...,
@@ -96,12 +100,13 @@ func (c *Client) UpdateAUser(
 	return response.Body, nil
 }
 
-func (c *Client) ListUserFollowers(
+// Update an existing user. Only provided fields will be modified.
+func (c *Client) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDFollowersRequest,
+	request *foru_ms_sdk.UpdateUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetUsersIDFollowersResponse, error) {
-	response, err := c.WithRawResponse.ListUserFollowers(
+) (*foru_ms_sdk.UpdateUsersResponse, error) {
+	response, err := c.WithRawResponse.Update(
 		ctx,
 		request,
 		opts...,
@@ -112,12 +117,13 @@ func (c *Client) ListUserFollowers(
 	return response.Body, nil
 }
 
-func (c *Client) GetAFollowerFromUser(
+// Retrieve a paginated list of followers for User.
+func (c *Client) ListFollowers(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDFollowersSubIDRequest,
+	request *foru_ms_sdk.ListFollowersUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetUsersIDFollowersSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetAFollowerFromUser(
+) (*foru_ms_sdk.UserFollowerListResponse, error) {
+	response, err := c.WithRawResponse.ListFollowers(
 		ctx,
 		request,
 		opts...,
@@ -128,12 +134,12 @@ func (c *Client) GetAFollowerFromUser(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAFollowerFromUser(
+func (c *Client) RetrieveFollower(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteUsersIDFollowersSubIDRequest,
+	request *foru_ms_sdk.RetrieveFollowerUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteUsersIDFollowersSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAFollowerFromUser(
+) (*foru_ms_sdk.RetrieveFollowerUsersResponse, error) {
+	response, err := c.WithRawResponse.RetrieveFollower(
 		ctx,
 		request,
 		opts...,
@@ -144,12 +150,12 @@ func (c *Client) DeleteAFollowerFromUser(
 	return response.Body, nil
 }
 
-func (c *Client) ListUserFollowing(
+func (c *Client) DeleteFollower(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDFollowingRequest,
+	request *foru_ms_sdk.DeleteFollowerUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetUsersIDFollowingResponse, error) {
-	response, err := c.WithRawResponse.ListUserFollowing(
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeleteFollower(
 		ctx,
 		request,
 		opts...,
@@ -160,12 +166,13 @@ func (c *Client) ListUserFollowing(
 	return response.Body, nil
 }
 
-func (c *Client) GetAFollowingFromUser(
+// Retrieve a paginated list of following for User.
+func (c *Client) ListFollowing(
 	ctx context.Context,
-	request *foru_ms_sdk.GetUsersIDFollowingSubIDRequest,
+	request *foru_ms_sdk.ListFollowingUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.GetUsersIDFollowingSubIDResponse, error) {
-	response, err := c.WithRawResponse.GetAFollowingFromUser(
+) (*foru_ms_sdk.UserFollowingListResponse, error) {
+	response, err := c.WithRawResponse.ListFollowing(
 		ctx,
 		request,
 		opts...,
@@ -176,12 +183,28 @@ func (c *Client) GetAFollowingFromUser(
 	return response.Body, nil
 }
 
-func (c *Client) DeleteAFollowingFromUser(
+func (c *Client) RetrieveFollowing(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteUsersIDFollowingSubIDRequest,
+	request *foru_ms_sdk.RetrieveFollowingUsersRequest,
 	opts ...option.RequestOption,
-) (*foru_ms_sdk.DeleteUsersIDFollowingSubIDResponse, error) {
-	response, err := c.WithRawResponse.DeleteAFollowingFromUser(
+) (*foru_ms_sdk.RetrieveFollowingUsersResponse, error) {
+	response, err := c.WithRawResponse.RetrieveFollowing(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+func (c *Client) DeleteFollowing(
+	ctx context.Context,
+	request *foru_ms_sdk.DeleteFollowingUsersRequest,
+	opts ...option.RequestOption,
+) (*foru_ms_sdk.SuccessResponse, error) {
+	response, err := c.WithRawResponse.DeleteFollowing(
 		ctx,
 		request,
 		opts...,

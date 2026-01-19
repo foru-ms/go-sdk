@@ -30,11 +30,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) ListAllIntegrations(
+func (r *RawClient) List(
 	ctx context.Context,
-	request *foru_ms_sdk.GetIntegrationsRequest,
+	request *foru_ms_sdk.ListIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetIntegrationsResponse], error) {
+) (*core.Response[*foru_ms_sdk.IntegrationListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListAllIntegrations(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetIntegrationsResponse
+	var response *foru_ms_sdk.IntegrationListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -71,18 +71,18 @@ func (r *RawClient) ListAllIntegrations(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetIntegrationsResponse]{
+	return &core.Response[*foru_ms_sdk.IntegrationListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) CreateAnIntegration(
+func (r *RawClient) Create(
 	ctx context.Context,
-	request *foru_ms_sdk.PostIntegrationsRequest,
+	request *foru_ms_sdk.CreateIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PostIntegrationsResponse], error) {
+) (*core.Response[*foru_ms_sdk.IntegrationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateAnIntegration(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PostIntegrationsResponse
+	var response *foru_ms_sdk.IntegrationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,18 +114,18 @@ func (r *RawClient) CreateAnIntegration(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PostIntegrationsResponse]{
+	return &core.Response[*foru_ms_sdk.IntegrationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetAnIntegration(
+func (r *RawClient) Retrieve(
 	ctx context.Context,
-	request *foru_ms_sdk.GetIntegrationsIDRequest,
+	request *foru_ms_sdk.RetrieveIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.GetIntegrationsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.IntegrationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetAnIntegration(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.GetIntegrationsIDResponse
+	var response *foru_ms_sdk.IntegrationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,18 +158,18 @@ func (r *RawClient) GetAnIntegration(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.GetIntegrationsIDResponse]{
+	return &core.Response[*foru_ms_sdk.IntegrationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeleteAnIntegration(
+func (r *RawClient) Delete(
 	ctx context.Context,
-	request *foru_ms_sdk.DeleteIntegrationsIDRequest,
+	request *foru_ms_sdk.DeleteIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.DeleteIntegrationsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.SuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteAnIntegration(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *foru_ms_sdk.DeleteIntegrationsIDResponse
+	var response *foru_ms_sdk.SuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,18 +202,18 @@ func (r *RawClient) DeleteAnIntegration(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.DeleteIntegrationsIDResponse]{
+	return &core.Response[*foru_ms_sdk.SuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdateAnIntegration(
+func (r *RawClient) Update(
 	ctx context.Context,
-	request *foru_ms_sdk.PatchIntegrationsIDRequest,
+	request *foru_ms_sdk.UpdateIntegrationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*foru_ms_sdk.PatchIntegrationsIDResponse], error) {
+) (*core.Response[*foru_ms_sdk.UpdateIntegrationsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateAnIntegration(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *foru_ms_sdk.PatchIntegrationsIDResponse
+	var response *foru_ms_sdk.UpdateIntegrationsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -248,7 +248,7 @@ func (r *RawClient) UpdateAnIntegration(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*foru_ms_sdk.PatchIntegrationsIDResponse]{
+	return &core.Response[*foru_ms_sdk.UpdateIntegrationsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
